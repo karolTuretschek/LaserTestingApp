@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,7 @@ using OfficeOpenXml;
 
 namespace LaserTestingApp
 {
-    
+
     public partial class MainWindow : Window
     {
         string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\DataLaserData.xlsx";
@@ -28,6 +29,8 @@ namespace LaserTestingApp
         List<laserInfo> laserData = new List<laserInfo>{
                 new laserInfo { Time =  1, AmbientTemp = 0.00, UnitTemp = 0.00, Divergence = 1.00, PowerOutput = 5.00},
             };
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,7 +39,7 @@ namespace LaserTestingApp
         {
 
             public int Time { get; set; }
-            public double AmbientTemp{ get; set; }
+            public double AmbientTemp { get; set; }
             public double UnitTemp { get; set; }
             public double Divergence { get; set; }
             public double PowerOutput { get; set; }
@@ -47,14 +50,18 @@ namespace LaserTestingApp
         {
             Debug.WriteLine("Start of things");
             string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData.xlsx";
+            LaserDataGrid.AutoGenerateColumns = false;
+
             try
             {
-                
+
                 using (ExcelPackage package = new ExcelPackage(filePath))
                 {
-                    
+                    LaserDataGrid.ItemsSource = LoadExcel();
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Licence
                     ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+
+                    List<laserInfo> laserData = new List<laserInfo>();
 
                     int rowCount = worksheet.Dimension.Rows;
                     int columnCount = worksheet.Dimension.Columns;
@@ -65,8 +72,8 @@ namespace LaserTestingApp
                         {
                             var cellValue = worksheet.Cells[row, col].Text;
                             Debug.WriteLine(cellValue + "\t");
+                            //Debug.WriteLine("");
                         }
-                        //Debug.WriteLine("");
                     }
 
                 }
@@ -76,6 +83,19 @@ namespace LaserTestingApp
                 Debug.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
+        private List<laserInfo> LoadExcel()
+        {
+            List<laserInfo> laserInfos = new List<laserInfo>();
+
+            laserInfos.Add(new laserInfo()
+            {
+                Time =  1, AmbientTemp = 0.00, UnitTemp = 0.00, Divergence = 1.00, PowerOutput = 5.00
+            });
+
+            return laserInfos;
+        }
+   
     }
     
 }
