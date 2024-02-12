@@ -17,5 +17,6 @@
         <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
         </DataGrid.Columns>
         </DataGrid>
+        <Rectangle HorizontalAlignment="Left" Height="563" Margin="560,55,0,0" Stroke="Black" VerticalAlignment="Top" Width="608"/>
     </Grid>
 </Window>
