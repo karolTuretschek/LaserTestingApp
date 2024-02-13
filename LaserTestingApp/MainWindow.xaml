@@ -8,7 +8,7 @@
         Title="MainWindow" Height="750" Width="1300">
     <Grid>
         <Button x:Name ="LoadDataButton" Content="Load Data" HorizontalAlignment="Left" Margin="128,646,0,0" VerticalAlignment="Top" Click="LoadDataButton_Click"/>
-        <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,10,842,331">
+        <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,10,842,331" SelectionChanged="LaserDataGrid_SelectionChanged">
         <DataGrid.Columns>
         <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
         <DataGridTextColumn Header="Ambient Temp" Binding="{Binding AmbientTemp}" />
@@ -17,6 +17,24 @@
         <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
         </DataGrid.Columns>
         </DataGrid>
-        <Rectangle HorizontalAlignment="Left" Height="563" Margin="560,55,0,0" Stroke="Black" VerticalAlignment="Top" Width="608"/>
+        <TabControl Margin="546,41,283,196">
+            <TabItem x:Name="ScatterChart" Header="Scatter Chart">
+                <Grid Background="#FFE5E5E5">
+                    <Frame Content="Frame" Navigated="Frame_Navigated"/>
+                    <Label x:Name ="MyLabel" Content="Label" HorizontalAlignment="Left" Margin="117,275,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Bar Chart">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12*"/>
+                        <ColumnDefinition Width="143*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Border BorderBrush="Black" BorderThickness="1">
+            <Frame x:Name ="MyFrame" Content="Frame" Margin="274,417,791,146" Navigated="Frame_Navigated_1"/>
+        </Border>
     </Grid>
 </Window>

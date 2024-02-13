@@ -1,29 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Extensions.Primitives;
 using OfficeOpenXml;
-using static LaserTestingApp.MainWindow;
-using Plotly.NET;
+//using Plotly.NET;
+using System.IO;
+using Plotly.NET.CSharp;
+using System.Linq;
 
 namespace LaserTestingApp
 {
-    
+
     public partial class MainWindow : Window
     {
         
@@ -33,6 +22,7 @@ namespace LaserTestingApp
         public MainWindow()
         {
             InitializeComponent();
+            showScatterChart();
         }
         public class laserInfo
         {
@@ -44,9 +34,27 @@ namespace LaserTestingApp
             public double PowerOutput { get; set; }
 
         }
+        private void showScatterChart()
+        {
+
+            Chart.Point<double, double, string>(
+             x: new double[] { 1, 2 },
+             y: new double[] { 5, 10 }
+            )
+            .WithTraceInfo("Hello from C#", ShowLegend: true)
+            .WithXAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("xAxis"))
+            .WithYAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("yAxis"))
+             .Show();
+
+
+        }
+
         private List<laserInfo> laserInfos = new List<laserInfo>();
+
         private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
         {
+            showScatterChart();
+
             string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData.xlsx";
             LaserDataGrid.AutoGenerateColumns = false;
 
@@ -90,7 +98,23 @@ namespace LaserTestingApp
 
             return laserInfos;
         }
-   
+
+        TabControl myTab = new TabControl();
+
+        private void LaserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+           
+        }
+
+        private void Frame_Navigated_1(object sender, NavigationEventArgs e)
+        {
+
+        }
     }
     
 }
