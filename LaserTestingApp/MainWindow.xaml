@@ -1,40 +1,40 @@
 ﻿<Window x:Class="LaserTestingApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:oxy1="clr-namespace:OxyPlot.Series;assembly=OxyPlot"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LaserTestingApp"
+        xmlns:local="clr-namespace:LaserTestingApp" 
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1300">
+    <Window.DataContext>
+        <local:MainWindow/>
+    </Window.DataContext>
     <Grid>
         <Button x:Name ="LoadDataButton" Content="Load Data" HorizontalAlignment="Left" Margin="128,646,0,0" VerticalAlignment="Top" Click="LoadDataButton_Click"/>
         <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,10,842,331" SelectionChanged="LaserDataGrid_SelectionChanged">
-        <DataGrid.Columns>
-        <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
-        <DataGridTextColumn Header="Ambient Temp" Binding="{Binding AmbientTemp}" />
-        <DataGridTextColumn Header="Unit Temp" Binding="{Binding UnitTemp}" />
-        <DataGridTextColumn Header="Divergence" Binding="{Binding Divergence}" />
-        <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
-        </DataGrid.Columns>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
+                <DataGridTextColumn Header="Ambient Temp" Binding="{Binding AmbientTemp}" />
+                <DataGridTextColumn Header="Unit Temp" Binding="{Binding UnitTemp}" />
+                <DataGridTextColumn Header="Divergence" Binding="{Binding Divergence}" />
+                <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
+            </DataGrid.Columns>
         </DataGrid>
         <TabControl Margin="546,41,283,196">
             <TabItem x:Name="ScatterChart" Header="Scatter Chart">
                 <Grid Background="#FFE5E5E5">
+                    <oxy:PlotView Model="{Binding MyModel}"/>
                     <Frame Content="Frame" Navigated="Frame_Navigated"/>
-                    <Label x:Name ="MyLabel" Content="Label" HorizontalAlignment="Left" Margin="117,275,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Bar Chart">
                 <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="12*"/>
-                        <ColumnDefinition Width="143*"/>
-                    </Grid.ColumnDefinitions>
+                    <oxy:PlotView Model="{Binding MyModel2}"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Border BorderBrush="Black" BorderThickness="1">
-            <Frame x:Name ="MyFrame" Content="Frame" Margin="274,417,791,146" Navigated="Frame_Navigated_1"/>
-        </Border>
+        <Border BorderBrush="Black" BorderThickness="1"/>
     </Grid>
 </Window>
