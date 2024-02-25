@@ -10,6 +10,9 @@ using OxyPlot;
 using OxyPlot.Series;
 using Plotly.NET;
 using OxyPlot.Axes;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using System.Linq;
 
 namespace LaserTestingApp
 {
@@ -18,44 +21,19 @@ namespace LaserTestingApp
     {
         string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\DataLaserData.xlsx";
 
+        List<double> laserTime = new List<double>();
+        List<double> laserAmbientTemp = new List<double>();
+        List<double> laserUnitTemp = new List<double>();
+        List<double> laserDivergence = new List<double>();
+        List<double> laserPowerOutput = new List<double>();
+
+
+
+
         public MainWindow()
         {
-            this.MyModel = new PlotModel{ Title = "Example" };
-            this.MyModel.Series.Add(new FunctionSeries(Math.Cos, 0, 30, 0.1, "sin(x)"));
-
-            var model = new PlotModel { Title = "ScatterSeries" };
-            var scatterSeries = new ScatterSeries { MarkerType = MarkerType.Circle };
-            var r = new Random(314);
-            for (int i = 0; i < 100; i++)
-            {
-                var x = r.NextDouble();
-                var y = r.NextDouble();
-                var size = r.Next(5, 15);
-                var colorValue = r.Next(100, 1000);
-                scatterSeries.Points.Add(new ScatterPoint(x, y, size, colorValue));
-            }
-            model.Series.Add(scatterSeries);
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-
-            this.MyModel2 = new PlotModel { Title = "Example2" };
-            var scatterSeries2 = new ScatterSeries { MarkerType = MarkerType.Circle };
-            for (int i = 0; i < 100; i++)
-            {
-                var x = r.NextDouble();
-                var y = r.NextDouble();
-                var size = r.Next(5, 15);
-                var colorValue = r.Next(100, 1000);
-                scatterSeries2.Points.Add(new ScatterPoint(x, y, size, colorValue));
-            }
-            MyModel2.Series.Add(scatterSeries2);
-            this.MyModel2.Series.Add(new ScatterSeries { MarkerType = MarkerType.Circle });
-
-
+            //InitializeComponent();
         }
-
-        public PlotModel MyModel { get; private set; }
-        public PlotModel MyModel2 { get; private set; }
-
         public class laserInfo
         {
 
@@ -66,32 +44,11 @@ namespace LaserTestingApp
             public double PowerOutput { get; set; }
 
         }
-        private void showScatterChart()
-        {
 
-/*            var scatterChart = Chart.Point<double, double, string>(
-             x: new double[] { 1, 3, 4, 2 },
-             y: new double[] { 5, 10, 12, 19 }
-            )
-            .WithTraceInfo("Test Run", ShowLegend: true)
-            .WithXAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("xAxis"))
-            .WithYAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("yAxis"));
-
-            ScatterChart.Content = scatterChart;
-
-            //Display in html
-            scatterChart.Show();*/
-            
-
-            
-
-        }
         private List<laserInfo> laserInfos = new List<laserInfo>();
 
         private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
         {
-            showScatterChart();
-
             string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData.xlsx";
             LaserDataGrid.AutoGenerateColumns = false;
 
@@ -115,6 +72,13 @@ namespace LaserTestingApp
                                 double.Parse((worksheet.Cells[row, 4].Text)),
                                 double.Parse((worksheet.Cells[row, 5].Text))
                                 ); // Insert data from rows into DataGrid
+                        laserTime.Add(double.Parse(worksheet.Cells[row, 1].Text));
+                        laserAmbientTemp.Add(double.Parse(worksheet.Cells[row, 2].Text));
+                        laserUnitTemp.Add(double.Parse(worksheet.Cells[row, 3].Text));
+                        laserDivergence.Add(double.Parse(worksheet.Cells[row, 4].Text));
+                        laserPowerOutput.Add(double.Parse(worksheet.Cells[row, 5].Text));
+
+
                     }
                     LaserDataGrid.ItemsSource = data;
                 }
@@ -123,6 +87,13 @@ namespace LaserTestingApp
             {
                 Debug.WriteLine($"An error occurred: {ex.Message}");
             }
+
+            int RowsData = laserTime.Count(); // Find number of rows
+
+            MainViewModel mainViewModel = new MainViewModel(laserTime, laserAmbientTemp, laserDivergence, RowsData);//Assign model 
+
+            ScatterChart.DataContext = mainViewModel; // Populate plot
+            
         }
         private List<laserInfo> LoadExcel(double Time, double AmbientTemp, double UnitTemp, double Divergence, double PowerOutput)
         {

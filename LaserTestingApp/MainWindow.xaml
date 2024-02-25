@@ -8,9 +8,6 @@
         xmlns:local="clr-namespace:LaserTestingApp" 
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1300">
-    <Window.DataContext>
-        <local:MainWindow/>
-    </Window.DataContext>
     <Grid>
         <Button x:Name ="LoadDataButton" Content="Load Data" HorizontalAlignment="Left" Margin="128,646,0,0" VerticalAlignment="Top" Click="LoadDataButton_Click"/>
         <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,10,842,331" SelectionChanged="LaserDataGrid_SelectionChanged">
@@ -22,14 +19,14 @@
                 <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
             </DataGrid.Columns>
         </DataGrid>
-        <TabControl Margin="546,41,283,196">
-            <TabItem x:Name="ScatterChart" Header="Scatter Chart">
+        <TabControl Margin="546,41,87,153">
+            <TabItem x:Name="TestChart" Header="Test Chart">
                 <Grid Background="#FFE5E5E5">
                     <oxy:PlotView Model="{Binding MyModel}"/>
                     <Frame Content="Frame" Navigated="Frame_Navigated"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Bar Chart">
+            <TabItem x:Name="ScatterChart" Header="Scatter Chart">
                 <Grid Background="#FFE5E5E5">
                     <oxy:PlotView Model="{Binding MyModel2}"/>
                 </Grid>
