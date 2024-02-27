@@ -26,13 +26,11 @@ namespace LaserTestingApp
         List<double> laserUnitTemp = new List<double>();
         List<double> laserDivergence = new List<double>();
         List<double> laserPowerOutput = new List<double>();
-
-
-
+        string yLabel ="", xLabel = "";
 
         public MainWindow()
         {
-            //InitializeComponent();
+            InitializeComponent();
         }
         public class laserInfo
         {
@@ -51,7 +49,7 @@ namespace LaserTestingApp
         {
             string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData.xlsx";
             LaserDataGrid.AutoGenerateColumns = false;
-
+            
             try
             {
                 
@@ -90,7 +88,7 @@ namespace LaserTestingApp
 
             int RowsData = laserTime.Count(); // Find number of rows
 
-            MainViewModel mainViewModel = new MainViewModel(laserTime, laserAmbientTemp, laserDivergence, RowsData);//Assign model 
+            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel ,laserTime, laserAmbientTemp, laserDivergence, RowsData);//Assign model 
 
             ScatterChart.DataContext = mainViewModel; // Populate plot
             
@@ -122,6 +120,21 @@ namespace LaserTestingApp
         private void Frame_Navigated_1(object sender, NavigationEventArgs e)
         {
 
+        }
+
+        private void RadioTime_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ComboBoxX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            xLabel = ComboBoxX.SelectedValue?.ToString();
+        }
+
+        private void ComboBoxY_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            yLabel = ComboBoxY.SelectedValue?.ToString();          
         }
     }
     
