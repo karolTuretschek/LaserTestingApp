@@ -91,6 +91,7 @@ namespace LaserTestingApp
             MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel ,laserTime, laserAmbientTemp, laserDivergence, RowsData);//Assign model 
 
             ScatterChart.DataContext = mainViewModel; // Populate plot
+            LineChart.DataContext = mainViewModel; // Populate plot
             
         }
         private List<laserInfo> LoadExcel(double Time, double AmbientTemp, double UnitTemp, double Divergence, double PowerOutput)

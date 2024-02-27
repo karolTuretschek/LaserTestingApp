@@ -20,7 +20,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <TabControl Margin="612,12,21,182">
-            <TabItem x:Name="TestChart" Header="Test Chart">
+            <TabItem x:Name="LineChart" Header="Line Chart">
                 <Grid Background="#FFE5E5E5">
                     <oxy:PlotView Model="{Binding MyModel}"/>
                     <Frame Content="Frame" Navigated="Frame_Navigated"/>
