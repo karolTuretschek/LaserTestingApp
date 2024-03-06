@@ -16,36 +16,36 @@ namespace LaserTestingApp
     public class MainViewModel
     {
         MainWindow myWindow = new MainWindow();
-        public MainViewModel(string yLabel, string xLabel,List<double> laserTime, List<double>laserAmbientTemp,List<double>laserDivergence, int ListLength)
+        public MainViewModel(string yLabel, string xLabel,List<double> laserTime, List<double>laserAmbientTemp,List<double>laserDivergence, int ListLength, double DotSize)
         {
             //Points graph
             var r = new Random(314);
-
-            this.MyModel2 = new PlotModel { Title = "Points Plot" };
+            MyModel2 = new PlotModel { Title = "Points Plot" };
             var scatterSeries2 = new ScatterSeries { MarkerType = MarkerType.Circle };
             for (int i = 0; i < ListLength; i++)
             {
-                var size = r.Next(5, 15);
-                scatterSeries2.Points.Add(new ScatterPoint(laserTime[i], laserAmbientTemp[i], laserDivergence[i]*10, laserDivergence[i]));
+                scatterSeries2.Points.Add(new ScatterPoint(laserTime[i], laserAmbientTemp[i], DotSize, laserDivergence[i]));
             }
-            this.MyModel2.Series.Add(scatterSeries2);
-            this.MyModel2.Series.Add(new ScatterSeries { MarkerType = MarkerType.Circle });
-            this.MyModel2.Series.Add(new ScatterSeries { MarkerSize = 55});
-            this.MyModel2.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            this.MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            this.MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel2.Series.Add(scatterSeries2);
+            MyModel2.Series.Add(new ScatterSeries { MarkerType = MarkerType.Circle });
+            MyModel2.Series.Add(new ScatterSeries { MarkerSize = 55});
+            MyModel2.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+            MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
             //Scatter Line
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle }; ;
-            for (int i = 0; i < ListLength; i++)
+            for (int i = 0; i < ListLength; i++) 
             {
                 lineSeries.Points.Add(new DataPoint(laserTime[i], laserDivergence[i]));
             }
-            this.MyModel = new PlotModel { Title = "Line Plot" };
-            this.MyModel.Series.Add(lineSeries);
-            this.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            this.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            this.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel = new PlotModel { Title = "Line Plot" };
+            MyModel.Series.Add(lineSeries);
+            MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            
+            
             //Create line
             double horizontalLineYValue = 1.0; // At 1.0 of the divergence
             var horizontalLine = new LineAnnotation
@@ -71,12 +71,13 @@ namespace LaserTestingApp
                 Color = OxyColors.Red,
                 StrokeThickness = 1.5
             };
-            this.MyModel.Annotations.Add(horizontalLine);
-            this.MyModel.Annotations.Add(horizontalLineUp);
-            this.MyModel.Annotations.Add(horizontalLineDown);
+            MyModel.Annotations.Add(horizontalLine);
+            MyModel.Annotations.Add(horizontalLineUp);
+            MyModel.Annotations.Add(horizontalLineDown);
         }
         public PlotModel MyModel { get; set; }
         public PlotModel MyModel2 { get; set; }
         public ComboBox myCombo { get; set; }
+        public Slider mySlider { get; set; }
     }
 }

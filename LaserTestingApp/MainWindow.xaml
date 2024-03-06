@@ -32,13 +32,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Grid Height="25" Margin="650,564,33,0" VerticalAlignment="Top">
-            <CheckBox x:Name="RadioTime" Content="Time" FontWeight="Bold" Margin="0,4,516,0" VerticalAlignment="Center"/>
-            <CheckBox x:Name="RadioAmbientTemp" Content="Ambient Temp" FontWeight="Bold" Margin="86,7,427,0" VerticalAlignment="Top"/>
-            <CheckBox x:Name="RadioUnitTemp" Content="Unit Temp&#xA;" FontWeight="Bold" Margin="218,7,298,0" VerticalAlignment="Center"/>
-            <CheckBox x:Name="RadioDivergence" Content="Divergence&#xA;" FontWeight="Bold" Margin="332,8,184,0" VerticalAlignment="Center"/>
-            <CheckBox x:Name="RadioPowerOutput" Content="Power Output&#xA;" FontWeight="Bold" Margin="447,7,69,0" VerticalAlignment="Center"/>
-        </Grid>
         <ComboBox x:Name="ComboBoxY" SelectedValuePath="Content" HorizontalAlignment="Left" Margin="487,156,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxY_SelectionChanged">
             <ComboBoxItem Content="Time"></ComboBoxItem>
             <ComboBoxItem Content="Ambient Temp"></ComboBoxItem>
@@ -53,5 +46,7 @@
             <ComboBoxItem Content="Divergence"></ComboBoxItem>
             <ComboBoxItem Content="PowerOutput"></ComboBoxItem>
         </ComboBox>
+        <Slider x:Name="DotSizeSlider" HorizontalAlignment="Left" Margin="458,510,0,0" VerticalAlignment="Top" Width="150"
+                SmallChange="3"  Value="1" Minimum="1" Maximum="50" TickFrequency="100" ValueChanged="DotSizeSlider_ValueChanged"/>
     </Grid>
 </Window>

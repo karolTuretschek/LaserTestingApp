@@ -27,6 +27,9 @@ namespace LaserTestingApp
         List<double> laserDivergence = new List<double>();
         List<double> laserPowerOutput = new List<double>();
         string yLabel ="", xLabel = "";
+        List<double> yAxie = new List<double>();
+        List<double> xAxie = new List<double>();
+        double DotSize = 1; // Later to be provided be the user
 
         public MainWindow()
         {
@@ -44,7 +47,6 @@ namespace LaserTestingApp
         }
 
         private List<laserInfo> laserInfos = new List<laserInfo>();
-
         private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
         {
             string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData.xlsx";
@@ -87,8 +89,55 @@ namespace LaserTestingApp
             }
 
             int RowsData = laserTime.Count(); // Find number of rows
+            if (ComboBoxY.SelectedValue?.ToString() != string.Empty)
+            {
+                if(ComboBoxY.SelectedValue.ToString().ToLower().Contains("time"))
+                {
+                    yAxie = laserTime;
+                }else if(ComboBoxY.SelectedValue.ToString().ToLower().Contains("ambient"))
+                {
+                    yAxie = laserAmbientTemp;
+                }
+                else if (ComboBoxY.SelectedValue.ToString().ToLower().Contains("divergence"))
+                {
+                    yAxie = laserDivergence;
+                }
+                else if (ComboBoxY.SelectedValue.ToString().ToLower().Contains("power"))
+                {
+                    yAxie = laserPowerOutput;
+                }
+                else if (ComboBoxY.SelectedValue.ToString().ToLower().Contains("unit"))
+                {
+                    yAxie = laserUnitTemp;
+                }
+            }
+            if (ComboBoxX.SelectedValue?.ToString() != string.Empty)
+            {
+                if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("time"))
+                {
+                    xAxie = laserTime;
+                }
+                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("ambient"))
+                {
+                    xAxie = laserAmbientTemp;
+                }
+                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("divergence"))
+                {
+                    xAxie = laserDivergence;
+                }
+                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("power"))
+                {
+                    xAxie = laserPowerOutput;
+                }
+                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("unit"))
+                {
+                    xAxie = laserUnitTemp;
+                }
+            }
 
-            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel ,laserTime, laserAmbientTemp, laserDivergence, RowsData);//Assign model 
+            DotSize = DotSizeSlider.Value;
+
+            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel , xAxie, yAxie, laserDivergence, RowsData, DotSize);//Assign model 
 
             ScatterChart.DataContext = mainViewModel; // Populate plot
             LineChart.DataContext = mainViewModel; // Populate plot
@@ -131,6 +180,12 @@ namespace LaserTestingApp
         private void ComboBoxX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             xLabel = ComboBoxX.SelectedValue?.ToString();
+        }
+
+        private void DotSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (ComboBoxX.SelectedValue?.ToString() != null || ComboBoxY.SelectedValue?.ToString() != null)
+                LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         }
 
         private void ComboBoxY_SelectionChanged(object sender, SelectionChangedEventArgs e)
