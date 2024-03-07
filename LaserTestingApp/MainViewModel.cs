@@ -19,7 +19,6 @@ namespace LaserTestingApp
         public MainViewModel(string yLabel, string xLabel,List<double> laserTime, List<double>laserAmbientTemp,List<double>laserDivergence, int ListLength, double DotSize)
         {
             //Points graph
-            var r = new Random(314);
             MyModel2 = new PlotModel { Title = "Points Plot" };
             var scatterSeries2 = new ScatterSeries { MarkerType = MarkerType.Circle };
             for (int i = 0; i < ListLength; i++)
@@ -34,18 +33,34 @@ namespace LaserTestingApp
             MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
             //Scatter Line
-            var lineSeries = new LineSeries { MarkerType = MarkerType.Circle }; ;
+            MyModel = new PlotModel { Title = "Line Plot" };
+            var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
             for (int i = 0; i < ListLength; i++) 
             {
                 lineSeries.Points.Add(new DataPoint(laserTime[i], laserDivergence[i]));
             }
-            MyModel = new PlotModel { Title = "Line Plot" };
+            
             MyModel.Series.Add(lineSeries);
             MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            
-            
+            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+            //Fast Line
+            MyModel3 = new PlotModel { Title = "Fast Line" };
+            var lineSeries3 = new LineSeries();
+            var lineSeries4 = new LineSeries();
+            for (int i = 0; i < ListLength; i++)
+            {
+                lineSeries3.Points.Add(new DataPoint(i, laserTime[i]));
+                lineSeries4.Points.Add(new DataPoint(i, laserDivergence[i]));
+            }
+            MyModel3.Series.Add(lineSeries3);
+            MyModel3.Series.Add(lineSeries4);
+            MyModel3.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = yLabel + " and " + xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+
             //Create line
             double horizontalLineYValue = 1.0; // At 1.0 of the divergence
             var horizontalLine = new LineAnnotation
@@ -77,6 +92,7 @@ namespace LaserTestingApp
         }
         public PlotModel MyModel { get; set; }
         public PlotModel MyModel2 { get; set; }
+        public PlotModel MyModel3 { get; set; }
         public ComboBox myCombo { get; set; }
         public Slider mySlider { get; set; }
     }

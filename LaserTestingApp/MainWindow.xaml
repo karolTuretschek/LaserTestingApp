@@ -31,6 +31,11 @@
                     <oxy:PlotView Model="{Binding MyModel2}"/>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="FastChart" Header="Fast Chart">
+                <Grid Background="#FFE5E5E5">
+                    <oxy:PlotView Model="{Binding MyModel3}"/>
+                </Grid>
+            </TabItem>
         </TabControl>
         <ComboBox x:Name="ComboBoxY" SelectedValuePath="Content" HorizontalAlignment="Left" Margin="487,156,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxY_SelectionChanged">
             <ComboBoxItem Content="Time"></ComboBoxItem>
@@ -47,6 +52,6 @@
             <ComboBoxItem Content="PowerOutput"></ComboBoxItem>
         </ComboBox>
         <Slider x:Name="DotSizeSlider" HorizontalAlignment="Left" Margin="458,510,0,0" VerticalAlignment="Top" Width="150"
-                SmallChange="3"  Value="1" Minimum="1" Maximum="50" TickFrequency="100" ValueChanged="DotSizeSlider_ValueChanged"/>
+                SmallChange="1" LargeChange="5" Value="3" Minimum="3" Maximum="30" TickFrequency="10" ValueChanged="DotSizeSlider_ValueChanged"/>
     </Grid>
 </Window>

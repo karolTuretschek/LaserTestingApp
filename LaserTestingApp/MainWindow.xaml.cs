@@ -61,7 +61,7 @@ namespace LaserTestingApp
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Licence
                     ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
                     int rowCount = worksheet.Dimension.Rows;
-                    Debug.WriteLine("Rows: {0}", rowCount);
+                    //Debug.WriteLine("Rows: {0}", rowCount);
                     var data = new List<laserInfo>();
                     for (int row = 2; row <= 21; row++)
                     {                       
@@ -139,8 +139,10 @@ namespace LaserTestingApp
 
             MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel , xAxie, yAxie, laserDivergence, RowsData, DotSize);//Assign model 
 
-            ScatterChart.DataContext = mainViewModel; // Populate plot
-            LineChart.DataContext = mainViewModel; // Populate plot
+            // Populate plots
+            ScatterChart.DataContext = mainViewModel; 
+            LineChart.DataContext = mainViewModel; 
+            FastChart.DataContext = mainViewModel; 
             
         }
         private List<laserInfo> LoadExcel(double Time, double AmbientTemp, double UnitTemp, double Divergence, double PowerOutput)
