@@ -10,20 +10,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media.Media3D;
 
 namespace LaserTestingApp
 {
     public class MainViewModel
     {
         MainWindow myWindow = new MainWindow();
-        public MainViewModel(string yLabel, string xLabel,List<double> laserTime, List<double>laserAmbientTemp,List<double>laserDivergence, int ListLength, double DotSize)
+        public MainViewModel(string yLabel, string xLabel,List<double> x, List<double>y,List<double>y2, int ListLength, double DotSize)
         {
             //Points graph
             MyModel2 = new PlotModel { Title = "Points Plot" };
             var scatterSeries2 = new ScatterSeries { MarkerType = MarkerType.Circle };
             for (int i = 0; i < ListLength; i++)
             {
-                scatterSeries2.Points.Add(new ScatterPoint(laserTime[i], laserAmbientTemp[i], DotSize, laserDivergence[i]));
+                scatterSeries2.Points.Add(new ScatterPoint(x[i], y[i], DotSize, y2[i]));
             }
             MyModel2.Series.Add(scatterSeries2);
             MyModel2.Series.Add(new ScatterSeries { MarkerType = MarkerType.Circle });
@@ -37,7 +38,7 @@ namespace LaserTestingApp
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
             for (int i = 0; i < ListLength; i++) 
             {
-                lineSeries.Points.Add(new DataPoint(laserTime[i], laserDivergence[i]));
+                lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
             }
             
             MyModel.Series.Add(lineSeries);
@@ -51,14 +52,15 @@ namespace LaserTestingApp
             var lineSeries4 = new LineSeries();
             for (int i = 0; i < ListLength; i++)
             {
-                lineSeries3.Points.Add(new DataPoint(i, laserTime[i]));
-                lineSeries4.Points.Add(new DataPoint(i, laserDivergence[i]));
+                lineSeries3.Points.Add(new DataPoint(x[i], y[i]));
+                lineSeries4.Points.Add(new DataPoint(x[i], y2[i]));
             }
-            MyModel3.Series.Add(lineSeries3);
-            MyModel3.Series.Add(lineSeries4);
-            MyModel3.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+
+            MyModel3.Series.Add(lineSeries3); // First line of data
+            MyModel3.Series.Add(lineSeries4); // Second
+            MyModel3.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200)});
             MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = yLabel + " and " + xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
 
             //Create line

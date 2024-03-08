@@ -10,6 +10,7 @@
         Title="MainWindow" Height="750" Width="1300">
     <Grid>
         <Button x:Name ="LoadDataButton" Content="Load Data" HorizontalAlignment="Left" VerticalAlignment="Top" Click="LoadDataButton_Click" Margin="128,654,0,0"/>
+        <Button x:Name ="ResetButton" Content="Reset Data" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ResetDataButton_Click" Margin="204,654,0,0"/>
         <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,10,842,331" SelectionChanged="LaserDataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
@@ -38,6 +39,13 @@
             </TabItem>
         </TabControl>
         <ComboBox x:Name="ComboBoxY" SelectedValuePath="Content" HorizontalAlignment="Left" Margin="487,156,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxY_SelectionChanged">
+            <ComboBoxItem Content="Time"></ComboBoxItem>
+            <ComboBoxItem Content="Ambient Temp"></ComboBoxItem>
+            <ComboBoxItem Content="Unit Temp"></ComboBoxItem>
+            <ComboBoxItem Content="Divergence"></ComboBoxItem>
+            <ComboBoxItem Content="PowerOutput"></ComboBoxItem>
+        </ComboBox>
+        <ComboBox x:Name="ComboBoxY2" SelectedValuePath="Content" HorizontalAlignment="Left" Margin="487,223,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxY2_SelectionChanged">
             <ComboBoxItem Content="Time"></ComboBoxItem>
             <ComboBoxItem Content="Ambient Temp"></ComboBoxItem>
             <ComboBoxItem Content="Unit Temp"></ComboBoxItem>
