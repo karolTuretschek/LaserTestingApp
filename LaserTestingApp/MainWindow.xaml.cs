@@ -64,7 +64,7 @@ namespace LaserTestingApp
                     int rowCount = worksheet.Dimension.Rows;
                     if (data.Count == 0) // Only isert data if empty
                     {
-                        for (int row = 2; row <= 21; row++)
+                        for (int row = 2; row <= rowCount; row++)
                         {
 
                             data = LoadExcel(double.Parse(worksheet.Cells[row, 1].Text),
@@ -87,7 +87,7 @@ namespace LaserTestingApp
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"An error occurred: {ex.Message}");
+                Debug.WriteLine($"An error occurred while loading data: {ex.Message}");
             }
 
             int RowsData = laserTime.Count(); // Find number of rows
