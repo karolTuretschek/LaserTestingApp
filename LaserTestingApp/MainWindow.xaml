@@ -9,6 +9,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1300">
     <Grid>
+        <Button Content="Browse" HorizontalAlignment="Left" Margin="39,431,0,0" VerticalAlignment="Top" Width="75" Click="BrowseButton_Click"/>
+        <TextBox x:Name="filePathTextBox" HorizontalAlignment="Left" Margin="128,433,0,0" VerticalAlignment="Top" Width="400" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
         <Button x:Name ="LoadDataButton" Content="Load Data" HorizontalAlignment="Left" VerticalAlignment="Top" Click="LoadDataButton_Click" Margin="128,654,0,0"/>
         <Button x:Name ="ResetButton" Content="Reset Data" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ResetDataButton_Click" Margin="204,654,0,0"/>
         <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,10,842,331" SelectionChanged="LaserDataGrid_SelectionChanged">

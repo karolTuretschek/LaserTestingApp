@@ -13,6 +13,8 @@ using OxyPlot.Axes;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using System.Linq;
+using Microsoft.Win32;
+using System.IO;
 
 namespace LaserTestingApp
 {
@@ -27,6 +29,7 @@ namespace LaserTestingApp
         List<double> laserDivergence = new List<double>();
         List<double> laserPowerOutput = new List<double>();
         string yLabel ="", xLabel = "";
+        List<double> axie = new List<double>();
         List<double> yAxie = new List<double>();
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
@@ -39,7 +42,7 @@ namespace LaserTestingApp
         }
         public class laserInfo
         {
-
+            public double Axie {  get; set; }
             public double Time { get; set; }
             public double AmbientTemp { get; set; }
             public double UnitTemp { get; set; }
@@ -91,74 +94,12 @@ namespace LaserTestingApp
             }
 
             int RowsData = laserTime.Count(); // Find number of rows
-            if (ComboBoxY.SelectedValue?.ToString() != string.Empty)
-            {
-                if(ComboBoxY.SelectedValue.ToString().ToLower().Contains("time"))
-                {
-                    yAxie = laserTime;
-                }else if(ComboBoxY.SelectedValue.ToString().ToLower().Contains("ambient"))
-                {
-                    yAxie = laserAmbientTemp;
-                }
-                else if (ComboBoxY.SelectedValue.ToString().ToLower().Contains("divergence"))
-                {
-                    yAxie = laserDivergence;
-                }
-                else if (ComboBoxY.SelectedValue.ToString().ToLower().Contains("power"))
-                {
-                    yAxie = laserPowerOutput;
-                }
-                else if (ComboBoxY.SelectedValue.ToString().ToLower().Contains("unit"))
-                {
-                    yAxie = laserUnitTemp;
-                }
-            }
-            if (ComboBoxY2.SelectedValue?.ToString() != string.Empty)
-            {
-                if (ComboBoxY2.SelectedValue.ToString().ToLower().Contains("time"))
-                {
-                    yAxie2 = laserTime;
-                }
-                else if (ComboBoxY2.SelectedValue.ToString().ToLower().Contains("ambient"))
-                {
-                    yAxie2 = laserAmbientTemp;
-                }
-                else if (ComboBoxY2.SelectedValue.ToString().ToLower().Contains("divergence"))
-                {
-                    yAxie2 = laserDivergence;
-                }
-                else if (ComboBoxY2.SelectedValue.ToString().ToLower().Contains("power"))
-                {
-                    yAxie2 = laserPowerOutput;
-                }
-                else if (ComboBoxY2.SelectedValue.ToString().ToLower().Contains("unit"))
-                {
-                    yAxie2 = laserUnitTemp;
-                }
-            }
-            if (ComboBoxX.SelectedValue?.ToString() != string.Empty)
-            {
-                if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("time"))
-                {
-                    xAxie = laserTime;
-                }
-                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("ambient"))
-                {
-                    xAxie = laserAmbientTemp;
-                }
-                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("divergence"))
-                {
-                    xAxie = laserDivergence;
-                }
-                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("power"))
-                {
-                    xAxie = laserPowerOutput;
-                }
-                else if (ComboBoxX.SelectedValue.ToString().ToLower().Contains("unit"))
-                {
-                    xAxie = laserUnitTemp;
-                }
-            }
+            SetSelectedAxisValue(ComboBoxY, ref yAxie);
+            SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
+            SetSelectedAxisValue(ComboBoxX, ref xAxie);
+            //SetAxies setAxiesY = new SetAxies(ComboBoxY, yAxie, laserTime, laserAmbientTemp,laserUnitTemp, laserDivergence, laserPowerOutput);
+            //SetAxies setAxiesY2 = new SetAxies(ComboBoxY2, yAxie2, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
+            //SetAxies setAxiesX = new SetAxies(ComboBoxX, xAxie, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
 
             DotSize = DotSizeSlider.Value;
 
@@ -169,6 +110,34 @@ namespace LaserTestingApp
             LineChart.DataContext = mainViewModel; 
             FastChart.DataContext = mainViewModel; 
             
+        }
+        private void SetSelectedAxisValue(System.Windows.Controls.ComboBox comboBox, ref List<double> axie)
+        {
+            if (comboBox.SelectedValue?.ToString() != string.Empty)
+            {
+                string selectedValue = comboBox.SelectedValue.ToString().ToLower();
+
+                if (selectedValue.Contains("time"))
+                {
+                    axie = laserTime;
+                }
+                else if (selectedValue.Contains("ambient"))
+                {
+                    axie = laserAmbientTemp;
+                }
+                else if (selectedValue.Contains("divergence"))
+                {
+                    axie = laserDivergence;
+                }
+                else if (selectedValue.Contains("power"))
+                {
+                    axie = laserPowerOutput;
+                }
+                else if (selectedValue.Contains("unit"))
+                {
+                    axie = laserUnitTemp;
+                }
+            }
         }
         private List<laserInfo> LoadExcel(double Time, double AmbientTemp, double UnitTemp, double Divergence, double PowerOutput)
         {
@@ -221,6 +190,23 @@ namespace LaserTestingApp
         }
 
         private void ComboBoxY2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "CSV Files (*.csv)|*.csv|Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string fileName = Path.GetFileName(openFileDialog.FileName); // Find file name
+                filePathTextBox.Text = fileName;
+            }
+        }
+
+        private void filePathTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
