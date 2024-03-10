@@ -21,7 +21,7 @@ namespace LaserTestingApp
 
     public partial class MainWindow : Window
     {
-        string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\DataLaserData.xlsx";
+        string filePath = "";
 
         List<double> laserTime = new List<double>();
         List<double> laserAmbientTemp = new List<double>();
@@ -54,7 +54,7 @@ namespace LaserTestingApp
         private List<laserInfo> laserInfos = new List<laserInfo>();
         private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
         {
-            string filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData.xlsx";
+            //filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData2.xlsx";
             LaserDataGrid.AutoGenerateColumns = false;
             
             try
@@ -197,12 +197,14 @@ namespace LaserTestingApp
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "CSV Files (*.csv)|*.csv|Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
+            //openFileDialog.Filter = "CSV Files (*.csv)|*.csv|Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
+            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
 
             if (openFileDialog.ShowDialog() == true)
             {
-                string fileName = Path.GetFileName(openFileDialog.FileName); // Find file name
-                filePathTextBox.Text = fileName;
+                string fileName = Path.GetFileName(openFileDialog.FileName); // get file name
+                filePathTextBox.Text = fileName; // Display to user
+                filePath =  openFileDialog.FileName; // Assign path to string
             }
         }
 
