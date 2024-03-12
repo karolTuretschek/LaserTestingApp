@@ -21,24 +21,25 @@ namespace LaserTestingApp
 
     public partial class MainWindow : Window
     {
-        string filePath = "";
+        //public string filePath = "";
 
         List<double> laserTime = new List<double>();
         List<double> laserAmbientTemp = new List<double>();
         List<double> laserUnitTemp = new List<double>();
         List<double> laserDivergence = new List<double>();
         List<double> laserPowerOutput = new List<double>();
-        string yLabel ="", xLabel = "";
+        string yLabel = "", xLabel = "";
         List<double> axie = new List<double>();
         List<double> yAxie = new List<double>();
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
         double DotSize = 1; // Later to be provided be the user
         public static List<laserInfo> data = new List<laserInfo>();
-
+        public string filePath { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+            filePath = "test";
         }
         public class laserInfo
         {
@@ -54,12 +55,32 @@ namespace LaserTestingApp
         private List<laserInfo> laserInfos = new List<laserInfo>();
         private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
         {
-            //filePath = "C:\\Users\\venqu\\OneDrive\\Dokumenty\\Honours\\Data\\LaserData2.xlsx";
-            LaserDataGrid.AutoGenerateColumns = false;
+            LoadAllData();
+
+            int RowsData = laserTime.Count(); // Find number of rows
+            SetSelectedAxisValue(ComboBoxY, ref yAxie);
+            SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
+            SetSelectedAxisValue(ComboBoxX, ref xAxie);
+            //SetAxies setAxiesY = new SetAxies(ComboBoxY, yAxie, laserTime, laserAmbientTemp,laserUnitTemp, laserDivergence, laserPowerOutput);
+            //SetAxies setAxiesY2 = new SetAxies(ComboBoxY2, yAxie2, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
+            //SetAxies setAxiesX = new SetAxies(ComboBoxX, xAxie, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
+
+            DotSize = DotSizeSlider.Value;
+
+            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel , xAxie, yAxie, yAxie2, RowsData, DotSize);//Assign model 
+
+            // Populate plots
+            ScatterChart.DataContext = mainViewModel; 
+            LineChart.DataContext = mainViewModel; 
+            FastChart.DataContext = mainViewModel; 
             
+        }
+        public void LoadAllData()
+        {
+            LaserDataGrid.AutoGenerateColumns = false;
             try
             {
-                
+
                 using (ExcelPackage package = new ExcelPackage(filePath))
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Licence
@@ -81,8 +102,6 @@ namespace LaserTestingApp
                             laserUnitTemp.Add(double.Parse(worksheet.Cells[row, 3].Text));
                             laserDivergence.Add(double.Parse(worksheet.Cells[row, 4].Text));
                             laserPowerOutput.Add(double.Parse(worksheet.Cells[row, 5].Text));
-
-
                         }
                     }
                     LaserDataGrid.ItemsSource = data;
@@ -92,24 +111,6 @@ namespace LaserTestingApp
             {
                 Debug.WriteLine($"An error occurred while loading data: {ex.Message}");
             }
-
-            int RowsData = laserTime.Count(); // Find number of rows
-            SetSelectedAxisValue(ComboBoxY, ref yAxie);
-            SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
-            SetSelectedAxisValue(ComboBoxX, ref xAxie);
-            //SetAxies setAxiesY = new SetAxies(ComboBoxY, yAxie, laserTime, laserAmbientTemp,laserUnitTemp, laserDivergence, laserPowerOutput);
-            //SetAxies setAxiesY2 = new SetAxies(ComboBoxY2, yAxie2, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
-            //SetAxies setAxiesX = new SetAxies(ComboBoxX, xAxie, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
-
-            DotSize = DotSizeSlider.Value;
-
-            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel , xAxie, yAxie, yAxie2, RowsData, DotSize);//Assign model 
-
-            // Populate plots
-            ScatterChart.DataContext = mainViewModel; 
-            LineChart.DataContext = mainViewModel; 
-            FastChart.DataContext = mainViewModel; 
-            
         }
         private void SetSelectedAxisValue(System.Windows.Controls.ComboBox comboBox, ref List<double> axie)
         {
@@ -194,18 +195,10 @@ namespace LaserTestingApp
 
         }
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private void ImportDataButton_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            //openFileDialog.Filter = "CSV Files (*.csv)|*.csv|Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
-            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string fileName = Path.GetFileName(openFileDialog.FileName); // get file name
-                filePathTextBox.Text = fileName; // Display to user
-                filePath =  openFileDialog.FileName; // Assign path to string
-            }
+            ImportWindow importWindow = new ImportWindow();
+            importWindow.Show();
         }
 
         private void filePathTextBox_TextChanged(object sender, TextChangedEventArgs e)
