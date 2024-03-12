@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LaserTestingApp
 {
@@ -32,11 +34,13 @@ namespace LaserTestingApp
                 Debug.WriteLine(fileName);               
                 _mainWindow.filePath = openFileDialog.FileName; // Assign path to string
                 Debug.WriteLine("_mainWindow.filePath" + _mainWindow.filePath);
-                _mainWindow.LoadAllData();
                 _mainWindow.Show();
+                _mainWindow.LoadingTextBlock.Visibility = Visibility.Visible;
+                _mainWindow.LoadAllData();
                 ImportWindow importWindow = new ImportWindow();
                 importWindow.Visibility = Visibility.Hidden;
-                _mainWindow.LoadDataButton.IsEnabled = true;
+                _mainWindow.LoadDataButton.IsEnabled = false;
+                _mainWindow.IsEnabled = true;
             }
         }
     }

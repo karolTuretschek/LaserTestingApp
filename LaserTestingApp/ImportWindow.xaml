@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="ImportWindow" Height="250" Width="400">
     <Grid>
-        <Button x:Name="ImportButton" Content="Import" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="74" Click="ImportButton_Click"/>
+        <Button x:Name="ImportButton" Content="Import" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="74" Click="ImportButton_Click" FontWeight="Bold" FontSize="18"/>
+        <ProgressBar HorizontalAlignment="Center" Height="20" Margin="0,154,0,0" VerticalAlignment="Top" Width="138"/>
     </Grid>
 </Window>

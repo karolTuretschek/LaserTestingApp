@@ -18,11 +18,11 @@ namespace LaserTestingApp
             base.OnStartup(e);
 
             // Create instances of both windows
-            MainWindow mainWindow = new MainWindow();
+            //MainWindow mainWindow = new MainWindow();
             ImportWindow importWindow = new ImportWindow();
 
             // Show both windows
-            mainWindow.Show();
+            //mainWindow.Show();
             importWindow.Show();
         }
 

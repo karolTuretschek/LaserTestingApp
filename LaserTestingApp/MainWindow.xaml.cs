@@ -40,6 +40,7 @@ namespace LaserTestingApp
         {
             InitializeComponent();
             filePath = "test";
+            IsEnabled = false;
         }
         public class laserInfo
         {
@@ -55,6 +56,7 @@ namespace LaserTestingApp
         private List<laserInfo> laserInfos = new List<laserInfo>();
         private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
         {
+            LoadingTextBlock.Visibility = Visibility.Hidden;
             LoadAllData();
 
             int RowsData = laserTime.Count(); // Find number of rows
@@ -174,11 +176,6 @@ namespace LaserTestingApp
 
         }
 
-        private void ComboBoxX_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            xLabel = ComboBoxX.SelectedValue?.ToString();
-        }
-
         private void DotSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (ComboBoxX.SelectedValue?.ToString() != null || ComboBoxY.SelectedValue?.ToString() != null)
@@ -188,11 +185,6 @@ namespace LaserTestingApp
         private void ResetDataButton_Click(object sender, RoutedEventArgs e)
         {
            
-        }
-
-        private void ComboBoxY2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
@@ -205,11 +197,48 @@ namespace LaserTestingApp
         {
 
         }
-
+        int nonDefaultComboBoxes = 0;
+        public void changeTextBlock()
+        {
+            if (nonDefaultComboBoxes >= 3)
+            {
+                LoadingTextBlock.Text = "Press Create Graph";
+                LoadDataButton.IsEnabled = true;
+            }
+                
+        }
+        bool yFlag, y2Flag, xFlag = false;
         private void ComboBoxY_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            yLabel = ComboBoxY.SelectedValue?.ToString();          
+            yLabel = ComboBoxY.SelectedValue?.ToString();
+
+            if(!yFlag) 
+                nonDefaultComboBoxes++;
+            yFlag = true;
+
+            changeTextBlock();
+
+
         }
+        private void ComboBoxY2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            if(!y2Flag)
+                nonDefaultComboBoxes++;
+            y2Flag = true;
+
+            changeTextBlock();
+        }
+
+        private void ComboBoxX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {           
+            if(!xFlag)
+            nonDefaultComboBoxes++;
+            xFlag = true;
+
+            changeTextBlock();
+        }
+
     }
     
 }
