@@ -9,25 +9,30 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="950" Width="1700">
     <Grid x:Name="MainGrid" Margin="0,0,0,5">
-        <Button x:Name="ImportDataButton" Content="Import" HorizontalAlignment="Left" Margin="128,723,0,0" VerticalAlignment="Top" Width="74" Click="ImportDataButton_Click"/>
-        <TextBox x:Name="filePathTextBox" HorizontalAlignment="Left" Margin="367,729,0,0" VerticalAlignment="Top" Width="400" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
+        <Button x:Name="ImportDataButton" Content="Import" HorizontalAlignment="Left" Margin="39,864,0,0" VerticalAlignment="Top" Width="74" Click="ImportDataButton_Click"/>
+        <TextBox x:Name="filePathTextBox" HorizontalAlignment="Left" Margin="135,866,0,0" VerticalAlignment="Top" Width="400" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
 
-        <Button x:Name ="ResetButton" Content="Reset Data" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ResetDataButton_Click" Margin="204,654,0,0"/>
-        <DataGrid x:Name ="LaserDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Width ="Auto" Margin="10,10,1347,314" SelectionChanged="LaserDataGrid_SelectionChanged" MinHeight="2" MaxHeight="1000">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
-                <DataGridTextColumn Header="Ambient Temp" Binding="{Binding AmbientTemp}" />
-                <DataGridTextColumn Header="Unit Temp" Binding="{Binding UnitTemp}" />
-                <DataGridTextColumn Header="Divergence" Binding="{Binding Divergence}" />
-                <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <TabControl Margin="528,10,21,182" MinHeight="2" MaxHeight="1000">
+        <Button x:Name ="ResetButton" Content="Reset Data" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ResetDataButton_Click" Margin="52,584,0,0"/>
+        <TabControl Margin="190,10,21,95" MinHeight="2" MaxHeight="1000">
+            <TabItem x:Name="Data" Header="Data Grid">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name ="DataTab" ItemsSource="{Binding}" AutoGenerateColumns="False" Width="Auto" Margin="10,10,86,10" MinHeight="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
+                            <DataGridTextColumn Header="Ambient Temp" Binding="{Binding AmbientTemp}" />
+                            <DataGridTextColumn Header="Unit Temp" Binding="{Binding UnitTemp}" />
+                            <DataGridTextColumn Header="Divergence" Binding="{Binding Divergence}" />
+                            <DataGridTextColumn Header="Power Output" Binding="{Binding PowerOutput}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="LineChart" Header="Line Chart">
                 <Grid Background="#FFE5E5E5">
                     <oxy:PlotView Model="{Binding MyModel}"/>
-                    <Frame Content="Frame" Navigated="Frame_Navigated"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ScatterChart" Header="Scatter Chart">
@@ -41,7 +46,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Orientation="Vertical" Margin="358,4,1177,437" MinHeight="2" MaxHeight="1000" >
+        <StackPanel Orientation="Vertical" Margin="10,10,1515,431" MinHeight="2" MaxHeight="1000" >
             <Label x:Name="AxiesLabel" Content="Axies" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="16"/>
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
             <Label x:Name="AxiesYLabel" Content="Y:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,5"/>
@@ -69,8 +74,8 @@
             </ComboBox>
             <Button x:Name ="LoadDataButton" Content="Create Graphs" Width="120" IsEnabled="false" Click="LoadDataButton_Click" FontSize="16" FontWeight="Bold" VerticalContentAlignment="Center" Margin="0,75,0,5"/>
         </StackPanel>
-        <Slider x:Name="DotSizeSlider" HorizontalAlignment="Left" Margin="800,729,0,0" VerticalAlignment="Top" Width="150"
+        <Slider x:Name="DotSizeSlider" HorizontalAlignment="Left" Margin="18,674,0,0" VerticalAlignment="Top" Width="150"
                 SmallChange="1" LargeChange="5" Value="3" Minimum="3" Maximum="30" TickFrequency="10" ValueChanged="DotSizeSlider_ValueChanged"/>
-        <TextBlock x:Name="LoadingTextBlock" TextAlignment="Center" Margin="528,10,0,182" TextWrapping="Wrap" IsEnabled="False" Visibility="Visible" Text="Choose Y and X axies" Width="1151" HorizontalAlignment="Left" VerticalAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="20"/>
+        <TextBlock x:Name="LoadingTextBlock" TextAlignment="Center" Margin="528,10,0,182" TextWrapping="Wrap" IsEnabled="False" Visibility="Visible" Text="Choose Y and X axies" Width="1151" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
     </Grid>
 </Window>

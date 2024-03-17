@@ -44,7 +44,7 @@ namespace LaserTestingApp
         }
         public class laserInfo
         {
-            public double Axie {  get; set; }
+            public double Axie { get; set; }
             public double Time { get; set; }
             public double AmbientTemp { get; set; }
             public double UnitTemp { get; set; }
@@ -54,7 +54,7 @@ namespace LaserTestingApp
         }
 
         private List<laserInfo> laserInfos = new List<laserInfo>();
-        private void LoadDataButton_Click(object sender, RoutedEventArgs e) 
+        private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
             LoadingTextBlock.Visibility = Visibility.Hidden;
             LoadAllData();
@@ -69,17 +69,16 @@ namespace LaserTestingApp
 
             DotSize = DotSizeSlider.Value;
 
-            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel , xAxie, yAxie, yAxie2, RowsData, DotSize);//Assign model 
+            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);//Assign model 
 
             // Populate plots
-            ScatterChart.DataContext = mainViewModel; 
-            LineChart.DataContext = mainViewModel; 
-            FastChart.DataContext = mainViewModel; 
-            
+            ScatterChart.DataContext = mainViewModel;
+            LineChart.DataContext = mainViewModel;
+            FastChart.DataContext = mainViewModel;
+
         }
         public void LoadAllData()
         {
-            LaserDataGrid.AutoGenerateColumns = false;
             try
             {
 
@@ -106,7 +105,7 @@ namespace LaserTestingApp
                             laserPowerOutput.Add(double.Parse(worksheet.Cells[row, 5].Text));
                         }
                     }
-                    LaserDataGrid.ItemsSource = data;
+                    DataTab.ItemsSource = data;
                 }
             }
             catch (Exception ex)
@@ -144,17 +143,19 @@ namespace LaserTestingApp
         }
         private List<laserInfo> LoadExcel(double Time, double AmbientTemp, double UnitTemp, double Divergence, double PowerOutput)
         {
-            
+
 
             laserInfos.Add(new laserInfo()
             {
-                Time =  Time, AmbientTemp = AmbientTemp, UnitTemp = UnitTemp, Divergence = Divergence, PowerOutput = PowerOutput
+                Time = Time,
+                AmbientTemp = AmbientTemp,
+                UnitTemp = UnitTemp,
+                Divergence = Divergence,
+                PowerOutput = PowerOutput
             });
 
             return laserInfos;
         }
-
-        //TabControl myTab = new TabControl();
 
         private void LaserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -163,7 +164,7 @@ namespace LaserTestingApp
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
-           
+
         }
 
         private void Frame_Navigated_1(object sender, NavigationEventArgs e)
@@ -184,7 +185,7 @@ namespace LaserTestingApp
 
         private void ResetDataButton_Click(object sender, RoutedEventArgs e)
         {
-           
+
         }
 
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
@@ -205,40 +206,39 @@ namespace LaserTestingApp
                 LoadingTextBlock.Text = "Press Create Graph";
                 LoadDataButton.IsEnabled = true;
             }
-                
+
         }
         bool yFlag, y2Flag, xFlag = false;
         private void ComboBoxY_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             yLabel = ComboBoxY.SelectedValue?.ToString();
 
-            if(!yFlag) 
+            if (!yFlag)
                 nonDefaultComboBoxes++;
             yFlag = true;
 
             changeTextBlock();
-
-
         }
         private void ComboBoxY2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            if(!y2Flag)
+
+            if (!y2Flag)
                 nonDefaultComboBoxes++;
             y2Flag = true;
 
             changeTextBlock();
         }
-
         private void ComboBoxX_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {           
-            if(!xFlag)
-            nonDefaultComboBoxes++;
+        {
+            if (!xFlag)
+                nonDefaultComboBoxes++;
             xFlag = true;
 
             changeTextBlock();
         }
-
+        // TODO: Build function to switch Y and X axies and allow user to trigger that function with a button
+        public void reverseAxis()
+        { }
+        // TODO: Build function to reset graphs axies and trigger by a button
     }
-    
 }
