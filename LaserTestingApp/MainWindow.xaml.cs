@@ -211,10 +211,7 @@ namespace LaserTestingApp
                 LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         }
 
-        private void ResetDataButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        private void ResetDataButton_Click(object sender, RoutedEventArgs e){}
 
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
         {

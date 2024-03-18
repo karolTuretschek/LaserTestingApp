@@ -49,7 +49,7 @@
         <StackPanel Orientation="Vertical" Margin="10,10,1515,431" MinHeight="2" MaxHeight="1000" >
             <Label x:Name="AxiesLabel" Content="Axies" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="16"/>
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
-            <Label x:Name="AxiesYLabel" Content="Y:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Image Source="C:/Users/venqu/Pictures/y.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
             <ComboBox x:Name="ComboBoxY" SelectedValuePath="Content" Width="120"  SelectionChanged="ComboBoxY_SelectionChanged">
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
@@ -64,7 +64,7 @@
                 <ComboBoxItem Content="Divergence"/>
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
-            <Label x:Name="AxiesXLabel" Content="X:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Image Source="C:/Users/venqu/Pictures/xnew.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
             <ComboBox x:Name="ComboBoxX" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxX_SelectionChanged">
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
