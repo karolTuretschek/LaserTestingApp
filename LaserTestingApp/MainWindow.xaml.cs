@@ -78,7 +78,10 @@ namespace LaserTestingApp
 
             DotSize = DotSizeSlider.Value;
 
-            MainViewModel mainViewModel = new MainViewModel(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);//Assign model 
+            MainViewModel mainViewModel = new MainViewModel();//Assign model 
+            mainViewModel.ViewModelPoints(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
 
             // Populate plots
             ScatterChart.DataContext = mainViewModel;
