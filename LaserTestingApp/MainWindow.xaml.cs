@@ -15,11 +15,21 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using System.Linq;
 using Microsoft.Win32;
 using System.IO;
+using Newtonsoft.Json;
+using static System.Net.WebRequestMethods;
+using Newtonsoft.Json.Linq;
+using static Plotly.NET.StyleParam.BackOff;
+using Plotly.NET.TraceObjects;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Reflection.Metadata;
+using System.Windows.Input;
+using static LaserTestingApp.MainWindow;
+using System.Text.Json.Nodes;
 
 namespace LaserTestingApp
 {
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         //public string filePath = "";
 
@@ -52,7 +62,6 @@ namespace LaserTestingApp
             public double PowerOutput { get; set; }
 
         }
-
         private List<laserInfo> laserInfos = new List<laserInfo>();
         private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
@@ -81,7 +90,6 @@ namespace LaserTestingApp
         {
             try
             {
-
                 using (ExcelPackage package = new ExcelPackage(filePath))
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Licence
@@ -93,10 +101,10 @@ namespace LaserTestingApp
                         {
 
                             data = LoadExcel(double.Parse(worksheet.Cells[row, 1].Text),
-                                    double.Parse((worksheet.Cells[row, 2].Text)),
-                                    double.Parse((worksheet.Cells[row, 3].Text)),
-                                    double.Parse((worksheet.Cells[row, 4].Text)),
-                                    double.Parse((worksheet.Cells[row, 5].Text))
+                                    double.Parse(worksheet.Cells[row, 2].Text),
+                                    double.Parse(worksheet.Cells[row, 3].Text),
+                                    double.Parse(worksheet.Cells[row, 4].Text),
+                                    double.Parse(worksheet.Cells[row, 5].Text)
                                     ); // Insert data from rows into DataGrid
                             laserTime.Add(double.Parse(worksheet.Cells[row, 1].Text));
                             laserAmbientTemp.Add(double.Parse(worksheet.Cells[row, 2].Text));
@@ -110,8 +118,26 @@ namespace LaserTestingApp
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"An error occurred while loading data: {ex.Message}");
+                Debug.WriteLine($"An error occurred while loading Xlsx data: {ex.Message}");
             }
+        }
+        public void LoaddAllDataJson()
+        {
+            string jsonText = System.IO.File.ReadAllText(filePath);
+            List<laserInfo> dataJson = JsonConvert.DeserializeObject<List<laserInfo>>(jsonText);
+            foreach (var item in dataJson)
+            {
+                Debug.WriteLine(item.AmbientTemp);
+                //DataTab.Items.Add(item.Time);
+                data = LoadExcel((item.Time),(item.AmbientTemp),(item.UnitTemp),
+                    (item.Divergence),(item.PowerOutput)); // Insert data from rows into DataGrid
+                laserTime.Add(item.Time);
+                laserAmbientTemp.Add(item.AmbientTemp);
+                laserUnitTemp.Add(item.UnitTemp);
+                laserDivergence.Add(item.Divergence);
+                laserPowerOutput.Add(item.PowerOutput);
+            }
+            DataTab.ItemsSource = data;
         }
         private void SetSelectedAxisValue(System.Windows.Controls.ComboBox comboBox, ref List<double> axie)
         {
@@ -156,7 +182,6 @@ namespace LaserTestingApp
 
             return laserInfos;
         }
-
         private void LaserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -172,7 +197,7 @@ namespace LaserTestingApp
 
         }
 
-        private void RadioTime_Checked(object sender, RoutedEventArgs e)
+        private void RadioTime_Checked(object setnder, RoutedEventArgs e)
         {
 
         }
