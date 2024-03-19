@@ -73,9 +73,6 @@ namespace LaserTestingApp
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
-            //SetAxies setAxiesY = new SetAxies(ComboBoxY, yAxie, laserTime, laserAmbientTemp,laserUnitTemp, laserDivergence, laserPowerOutput);
-            //SetAxies setAxiesY2 = new SetAxies(ComboBoxY2, yAxie2, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
-            //SetAxies setAxiesX = new SetAxies(ComboBoxX, xAxie, laserTime, laserAmbientTemp, laserUnitTemp, laserDivergence, laserPowerOutput);
 
             DotSize = DotSizeSlider.Value;
 
@@ -212,7 +209,39 @@ namespace LaserTestingApp
                 LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         }
 
-        private void ResetDataButton_Click(object sender, RoutedEventArgs e){}
+        private void ResetDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            int RowsData = laserTime.Count(); // Find number of rows
+            DotSize = DotSizeSlider.Value;
+
+            MainViewModel mainViewModel = new MainViewModel();//Assign model
+            int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
+            switch (currentTabIndex) // Based on open tab reverse axis
+            {
+                case 0:
+                    // Tab index is 0
+                    Debug.WriteLine("Tab index is 0, Cannot reverse axis");
+                    break;
+                case 1:
+                    mainViewModel.ViewModelLineReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    LineChart.DataContext = mainViewModel;
+                    break;
+                case 2:
+                    mainViewModel.ViewModelScatterReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    ScatterChart.DataContext = mainViewModel;
+                    break;
+                case 3:
+                    mainViewModel.ViewModelFastReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    FastChart.DataContext = mainViewModel;
+                    break;
+                default:
+                    // Handle case when index is out of range
+                    Debug.WriteLine($"Tab index is out of range. Current tab {currentTabIndex}");
+                    break;
+            }
+
+
+        }
 
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
         {
@@ -262,7 +291,6 @@ namespace LaserTestingApp
 
             changeTextBlock();
         }
-        // TODO: Build function to switch Y and X axies and allow user to trigger that function with a button
         private void ReverseAxisButton_Click(object sender, RoutedEventArgs e) {
 
             int RowsData = laserTime.Count(); // Find number of rows
@@ -277,15 +305,15 @@ namespace LaserTestingApp
                     Debug.WriteLine("Tab index is 0, Cannot reverse axis");
                     break;
                 case 1:
-                    mainViewModel.ViewModelLine(xLabel, yLabel, yAxie2, yAxie, xAxie, RowsData, DotSize);
+                    mainViewModel.ViewModelLineReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
                     LineChart.DataContext = mainViewModel;
                     break;
                 case 2:
-                    mainViewModel.ViewModelScatterReversed(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    mainViewModel.ViewModelScatterReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
                     ScatterChart.DataContext = mainViewModel;
                     break;
                 case 3:
-                    mainViewModel.ViewModelFastReversed(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    mainViewModel.ViewModelFastReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
                     FastChart.DataContext = mainViewModel;
                     break;
                 default:
@@ -294,8 +322,5 @@ namespace LaserTestingApp
                     break;
             }
         }
-        public void reverseAxis()
-        { }
-        // TODO: Build function to reset graphs axies and trigger by a button
     }
 }
