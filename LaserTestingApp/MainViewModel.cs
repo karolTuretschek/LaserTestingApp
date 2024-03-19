@@ -18,19 +18,33 @@ namespace LaserTestingApp
     public class MainViewModel
     {
         MainWindow myWindow = new MainWindow();
-        public void ViewModelPoints(string yLabel, string xLabel,List<double> x, List<double>y,List<double>y2, int ListLength, double DotSize)
+        public void ViewModelScatter(string yLabel, string xLabel , List<double> x, List<double>y , List<double>y2, int ListLength, double DotSize)
         {
-            //Points graph
-            MyModel2 = new PlotModel { Title = "Points Plot" };
-            var scatterSeries2 = new ScatterSeries { MarkerType = MarkerType.Circle, MarkerSize = 55};
+            //Scatter graph
+            MyModel2 = new PlotModel { Title = "Scatter Plot" };
+            var scatterSeries = new ScatterSeries { MarkerType = MarkerType.Circle, MarkerSize = 55};
             for (int i = 0; i < ListLength; i++)
             {
-                scatterSeries2.Points.Add(new ScatterPoint(x[i], y[i], DotSize, y2[i]));
+                scatterSeries.Points.Add(new ScatterPoint(x[i], y[i], DotSize, y2[i]));
             }
-            MyModel2.Series.Add(scatterSeries2);
+            MyModel2.Series.Add(scatterSeries);
             MyModel2.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200)});
             MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, MinimumRange = 0, MaximumRange = 100, AbsoluteMaximum = 50, AbsoluteMinimum = 0});
             MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, MinimumRange = 0, MaximumRange = 100, AbsoluteMaximum = 50, AbsoluteMinimum = 0});
+        }
+        public void ViewModelScatterReversed(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
+        {
+            //Scatter graph
+            MyModel2 = new PlotModel { Title = "Scatter Plot" };
+            var scatterSeries = new ScatterSeries { MarkerType = MarkerType.Circle, MarkerSize = 55 };
+            for (int i = 0; i < ListLength; i++)
+            {
+                scatterSeries.Points.Add(new ScatterPoint(y[i], x[i], DotSize, y2[i]));
+            }
+            MyModel2.Series.Add(scatterSeries);
+            MyModel2.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+            MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, MinimumRange = 0, MaximumRange = 100, AbsoluteMaximum = 50, AbsoluteMinimum = 0 });
+            MyModel2.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, MinimumRange = 0, MaximumRange = 100, AbsoluteMaximum = 50, AbsoluteMinimum = 0 });
         }
         public void ViewModelFast(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {           
@@ -50,7 +64,25 @@ namespace LaserTestingApp
             MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
         }
-        public void ViewModelScatter(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
+        public void ViewModelFastReversed(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
+        {
+            //Fast Line
+            MyModel3 = new PlotModel { Title = "Fast Line" };
+            var lineSeries3 = new LineSeries();
+            var lineSeries4 = new LineSeries();
+            for (int i = 0; i < ListLength; i++)
+            {
+                lineSeries3.Points.Add(new DataPoint(y[i], x[i]));
+                lineSeries4.Points.Add(new DataPoint(y2[i], x[i]));
+            }
+
+            MyModel3.Series.Add(lineSeries3); // First line of data
+            MyModel3.Series.Add(lineSeries4); // Second
+            MyModel3.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+        }
+        public void ViewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
             //Scatter Line
             MyModel = new PlotModel { Title = "Line Plot" };

@@ -63,6 +63,7 @@ namespace LaserTestingApp
 
         }
         private List<laserInfo> laserInfos = new List<laserInfo>();
+        
         private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
             LoadingTextBlock.Visibility = Visibility.Hidden;
@@ -79,13 +80,13 @@ namespace LaserTestingApp
             DotSize = DotSizeSlider.Value;
 
             MainViewModel mainViewModel = new MainViewModel();//Assign model 
-            mainViewModel.ViewModelPoints(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-
-            // Populate plots
-            ScatterChart.DataContext = mainViewModel;
+            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+           
+            // Populate plots          
             LineChart.DataContext = mainViewModel;
+            ScatterChart.DataContext = mainViewModel;
             FastChart.DataContext = mainViewModel;
 
         }
@@ -262,6 +263,37 @@ namespace LaserTestingApp
             changeTextBlock();
         }
         // TODO: Build function to switch Y and X axies and allow user to trigger that function with a button
+        private void ReverseAxisButton_Click(object sender, RoutedEventArgs e) {
+
+            int RowsData = laserTime.Count(); // Find number of rows
+            DotSize = DotSizeSlider.Value;
+
+            MainViewModel mainViewModel = new MainViewModel();//Assign model
+            int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
+            switch (currentTabIndex) // Based on open tab reverse axis
+            {
+                case 0:
+                    // Tab index is 0
+                    Debug.WriteLine("Tab index is 0, Cannot reverse axis");
+                    break;
+                case 1:
+                    mainViewModel.ViewModelLine(xLabel, yLabel, yAxie2, yAxie, xAxie, RowsData, DotSize);
+                    LineChart.DataContext = mainViewModel;
+                    break;
+                case 2:
+                    mainViewModel.ViewModelScatterReversed(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    ScatterChart.DataContext = mainViewModel;
+                    break;
+                case 3:
+                    mainViewModel.ViewModelFastReversed(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    FastChart.DataContext = mainViewModel;
+                    break;
+                default:
+                    // Handle case when index is out of range
+                    Debug.WriteLine($"Tab index is out of range. Current tab {currentTabIndex}");
+                    break;
+            }
+        }
         public void reverseAxis()
         { }
         // TODO: Build function to reset graphs axies and trigger by a button
