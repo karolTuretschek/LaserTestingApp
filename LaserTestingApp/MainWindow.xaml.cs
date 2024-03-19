@@ -45,6 +45,7 @@ namespace LaserTestingApp
         List<double> xAxie = new List<double>();
         double DotSize = 1; // Later to be provided be the user
         public static List<laserInfo> data = new List<laserInfo>();
+        bool LineChartYX, ScatterChartYX, FastChartYX;
         public string filePath { get; set; }
         public MainWindow()
         {
@@ -79,12 +80,15 @@ namespace LaserTestingApp
             MainViewModel mainViewModel = new MainViewModel();//Assign model 
             mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-           
+            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);         
             // Populate plots          
             LineChart.DataContext = mainViewModel;
             ScatterChart.DataContext = mainViewModel;
             FastChart.DataContext = mainViewModel;
+            // Assign flags
+            LineChartYX = true;
+            ScatterChartYX = true;
+            FastChartYX = true;
 
         }
         public void LoadAllData()
@@ -305,16 +309,46 @@ namespace LaserTestingApp
                     Debug.WriteLine("Tab index is 0, Cannot reverse axis");
                     break;
                 case 1:
-                    mainViewModel.ViewModelLineReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    LineChart.DataContext = mainViewModel;
+                    if (!LineChartYX)
+                    {
+                        mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        LineChart.DataContext = mainViewModel;
+                        LineChartYX = true;
+                    }
+                    else
+                    {
+                        mainViewModel.ViewModelLineReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        LineChart.DataContext = mainViewModel;
+                        LineChartYX = false;
+                    }
                     break;
                 case 2:
-                    mainViewModel.ViewModelScatterReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    ScatterChart.DataContext = mainViewModel;
+                    if (!ScatterChartYX)
+                    {
+                        mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        ScatterChart.DataContext = mainViewModel;
+                        ScatterChartYX = true;
+                    }
+                    else
+                    {
+                        mainViewModel.ViewModelScatterReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        ScatterChart.DataContext = mainViewModel;
+                        ScatterChartYX = false;
+                    }
                     break;
                 case 3:
-                    mainViewModel.ViewModelFastReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    FastChart.DataContext = mainViewModel;
+                    if (!FastChartYX)
+                    {
+                        mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        FastChart.DataContext = mainViewModel;
+                        FastChartYX = true;
+                    }
+                    else
+                    {
+                        mainViewModel.ViewModelFastReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        FastChart.DataContext = mainViewModel;
+                        FastChartYX = false;
+                    }
                     break;
                 default:
                     // Handle case when index is out of range

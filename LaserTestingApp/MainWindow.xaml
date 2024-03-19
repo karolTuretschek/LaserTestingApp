@@ -49,6 +49,14 @@
         <StackPanel Orientation="Vertical" Margin="10,10,1515,431" MinHeight="2" MaxHeight="1000" >
             <Label x:Name="AxiesLabel" Content="Axies" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="16"/>
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
+            <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\xLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
+            <ComboBox x:Name="ComboBoxX" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxX_SelectionChanged">
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
             <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\yLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
             <ComboBox x:Name="ComboBoxY" SelectedValuePath="Content" Width="120"  SelectionChanged="ComboBoxY_SelectionChanged">
                 <ComboBoxItem Content="Time"/>
@@ -64,14 +72,7 @@
                 <ComboBoxItem Content="Divergence"/>
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
-            <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\xLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
-            <ComboBox x:Name="ComboBoxX" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxX_SelectionChanged">
-                <ComboBoxItem Content="Time"/>
-                <ComboBoxItem Content="Ambient Temp"/>
-                <ComboBoxItem Content="Unit Temp"/>
-                <ComboBoxItem Content="Divergence"/>
-                <ComboBoxItem Content="PowerOutput"/>
-            </ComboBox>
+
             <Button x:Name ="LoadDataButton" Content="Load Graphs" Width="auto" IsEnabled="false" Click="LoadDataButton_Click" FontSize="16" FontWeight="Bold" VerticalContentAlignment="Center" Margin="15,25,15,5"/>
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000" >
             <Button x:Name="ReverseAxis" Click="ReverseAxisButton_Click" Width="50" Margin="0,25,0,0">
