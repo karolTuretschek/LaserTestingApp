@@ -43,7 +43,7 @@ namespace LaserTestingApp
         List<double> yAxie = new List<double>();
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
-        double DotSize = 1; // Later to be provided be the user
+        double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         bool LineChartYX, ScatterChartYX, FastChartYX;
         public string filePath { get; set; }
@@ -67,15 +67,21 @@ namespace LaserTestingApp
         
         private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadingTextBlock.Visibility = Visibility.Hidden;
+            // Show previously disabled buttons
+            ReverseAxis.IsEnabled = true;           
+            ResetButton.IsEnabled = true;            
+            DotSizeStack.IsEnabled = true;
+            DotSizeStack.Opacity = 1.0;
+            ButtonsStack.IsEnabled = true;
+            ButtonsStack.Opacity = 1.0;
+ 
+
             LoadAllData();
 
             int RowsData = laserTime.Count(); // Find number of rows
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
-
-            DotSize = DotSizeSlider.Value;
 
             MainViewModel mainViewModel = new MainViewModel();//Assign model 
             mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
@@ -207,16 +213,9 @@ namespace LaserTestingApp
 
         }
 
-        private void DotSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (ComboBoxX.SelectedValue?.ToString() != null || ComboBoxY.SelectedValue?.ToString() != null)
-                LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
-        }
-
         private void ResetDataButton_Click(object sender, RoutedEventArgs e)
         {
             int RowsData = laserTime.Count(); // Find number of rows
-            DotSize = DotSizeSlider.Value;
 
             MainViewModel mainViewModel = new MainViewModel();//Assign model
             int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
@@ -298,7 +297,6 @@ namespace LaserTestingApp
         private void ReverseAxisButton_Click(object sender, RoutedEventArgs e) {
 
             int RowsData = laserTime.Count(); // Find number of rows
-            DotSize = DotSizeSlider.Value;
 
             MainViewModel mainViewModel = new MainViewModel();//Assign model
             int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
@@ -355,6 +353,31 @@ namespace LaserTestingApp
                     Debug.WriteLine($"Tab index is out of range. Current tab {currentTabIndex}");
                     break;
             }
+        }
+        private void DefaultDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            DotSize = 3;
+            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+        }
+        private void SmallDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            DotSize = 7;
+            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+        }
+        private void MediumDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            DotSize = 12;
+            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+        }
+        private void LargeDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            DotSize = 15;
+            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+        }
+        private void VeryLargeDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            DotSize = 18;
+            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         }
     }
 }
