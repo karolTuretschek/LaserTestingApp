@@ -106,7 +106,7 @@ namespace LaserTestingApp
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             List<double> interpolatedX, interpolatedY;
-            var lineSeriesRoughAverage = new LineSeries { MarkerType = MarkerType.Triangle };
+            var lineSeriesTrend= new LineSeries { MarkerType = MarkerType.Triangle };
             List<DataPoint> dataPoints = new List<DataPoint>();
             for (int i = 0; i < ListLength; i++)
             {
@@ -118,10 +118,10 @@ namespace LaserTestingApp
             {
                 lineSeriesAverage.Points.Add(new DataPoint(interpolatedX[i], interpolatedY[i]));
             }
-            lineSeriesRoughAverage.Points.Add(new DataPoint(x[1], y2[1]));
-            lineSeriesRoughAverage.Points.Add(new DataPoint(x[ListLength - 1], y2[ListLength - 1]));
+            lineSeriesTrend.Points.Add(new DataPoint(x[1], y2[1]));
+            lineSeriesTrend.Points.Add(new DataPoint(x[ListLength - 1], y2[ListLength - 1]));
 
-            MyModel.Series.Add(lineSeriesRoughAverage);
+            MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
             MyModel.Series.Add(lineSeriesAverage);
             // Interpolation testing
@@ -133,13 +133,21 @@ namespace LaserTestingApp
             {
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
             };
+            foreach (var item in x)
+            {
+                foreach (var item2 in y2)
+                {
+                    series.Points.Add(new DataPoint(item, item2));                   
+                }
+            }
+
             MyModel.Series.Add(series);
             MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             
-            //lineSeries.InterpolationAlgorithm.CreateSpline( 1, true, 1);
-            //List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance);
+            series.InterpolationAlgorithm.CreateSpline(dataPoints, true, 1);
+            // List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance);
 
             //Create line
             double horizontalLineYValue = 1.0; // At 1.0 of the divergence
@@ -253,10 +261,11 @@ namespace LaserTestingApp
         {
             for (int i = 1; i < ListLength; i++)
             {
-                double squaredDifferenceX = Math.Pow(x[i] - x[i-1], 2);
-                double squaredDifferenceY = Math.Pow(y2[i] - y2[i-1], 2);
-                //Debug.WriteLine($" {squaredDifferenceX} + { squaredDifferenceY}");               
-                double distance = Math.Sqrt(squaredDifferenceX + squaredDifferenceY);
+                //double squaredDifferenceX = Math.Pow(x[i] - x[i-1], 2);
+                //double squaredDifferenceY = Math.Pow(y2[i] - y2[i-1], 2);
+                //Debug.WriteLine($" {squaredDifferenceX} + { squaredDifferenceY}");
+                double distance =  Math.Sqrt(Math.Pow(x[i] - x[i - 1], 2) + Math.Pow(y2[i] - y2[i - 1], 2));
+                //double distance = Math.Sqrt(squaredDifferenceX + squaredDifferenceY);
                  if (distance > distanceMax)
                     distanceMax = distance;
             }

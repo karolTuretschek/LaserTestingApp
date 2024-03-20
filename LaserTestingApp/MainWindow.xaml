@@ -131,6 +131,6 @@
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\importLabel.png"/>
             </Button>
         </StackPanel>
-        <TextBlock x:Name="LoadingTextBlock" TextAlignment="Center" Margin="528,10,0,182" TextWrapping="Wrap" IsEnabled="False" Visibility="Visible" Text="Choose Y and X axies" Width="1151" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+        <TextBlock x:Name="LoadingTextBlock" TextAlignment="Center" Margin="528,10,0,182" TextWrapping="Wrap" IsEnabled="False" Visibility="Hidden" Text="Choose Y and X axies" Width="1151" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
     </Grid>
 </Window>
