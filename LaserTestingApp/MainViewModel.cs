@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using OfficeOpenXml;
+using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -103,15 +104,42 @@ namespace LaserTestingApp
             //Scatter Line
             MyModel = new PlotModel { Title = "Line Plot" };
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
+            var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
+            List<double> interpolatedX, interpolatedY;
+            var lineSeriesRoughAverage = new LineSeries { MarkerType = MarkerType.Triangle };
+            List<DataPoint> dataPoints = new List<DataPoint>();
             for (int i = 0; i < ListLength; i++)
             {
                 lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
+                //dataPoints.Add(new DataPoint(x[i], y2[i]));
             }
+            LinearInterpolation(x, y2, out interpolatedX, out interpolatedY);
+            for (int i = 0; i < ListLength; i++)
+            {
+                lineSeriesAverage.Points.Add(new DataPoint(interpolatedX[i], interpolatedY[i]));
+            }
+            lineSeriesRoughAverage.Points.Add(new DataPoint(x[1], y2[1]));
+            lineSeriesRoughAverage.Points.Add(new DataPoint(x[ListLength - 1], y2[ListLength - 1]));
 
+            MyModel.Series.Add(lineSeriesRoughAverage);
             MyModel.Series.Add(lineSeries);
+            MyModel.Series.Add(lineSeriesAverage);
+            // Interpolation testing
+            foreach (var item in y2)
+            {
+                dataPoints.Add(new DataPoint(item, item));
+            }
+            var series = new LineSeries
+            {
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
+            };
+            MyModel.Series.Add(series);
             MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            
+            //lineSeries.InterpolationAlgorithm.CreateSpline( 1, true, 1);
+            //List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance);
 
             //Create line
             double horizontalLineYValue = 1.0; // At 1.0 of the divergence
@@ -192,6 +220,47 @@ namespace LaserTestingApp
             MyModel = new PlotModel { Title = "Line Plot" };
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
             MyModel.Series.Add(lineSeries);
+        }
+        static void LinearInterpolation(List<double> x, List<double> y, out List<double> interpolatedX, out List<double> interpolatedY)
+        {
+            interpolatedX = new List<double>();
+            interpolatedY = new List<double>();
+
+            for (int i = 0; i < x.Count - 1; i++)
+            {
+                double startX = x[i];
+                double endX = x[i + 1];
+                double startY = y[i];
+                double endY = y[i + 1];
+
+                // Calculate the slope
+                double slope = (endY - startY) / (endX - startX);
+
+                // Interpolate points between startX and endX
+                for (double j = startX; j < endX; j += 0.1) // Change the step size for smoother interpolation
+                {
+                    interpolatedX.Add(j);
+                    interpolatedY.Add(startY + slope * (j - startX));
+                }
+            }
+
+            // Add the last point
+            interpolatedX.Add(x[x.Count - 1]);
+            interpolatedY.Add(y[y.Count - 1]);
+        }
+        
+        public double CalculateDistanceBetweenPoints(List<double> x, List<double> y2, int ListLength, double distanceMax)
+        {
+            for (int i = 1; i < ListLength; i++)
+            {
+                double squaredDifferenceX = Math.Pow(x[i] - x[i-1], 2);
+                double squaredDifferenceY = Math.Pow(y2[i] - y2[i-1], 2);
+                //Debug.WriteLine($" {squaredDifferenceX} + { squaredDifferenceY}");               
+                double distance = Math.Sqrt(squaredDifferenceX + squaredDifferenceY);
+                 if (distance > distanceMax)
+                    distanceMax = distance;
+            }
+            return distanceMax;
         }
         public PlotModel MyModel { get; set; }
         public PlotModel MyModel2 { get; set; }

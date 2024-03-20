@@ -117,7 +117,7 @@
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,10,0,5"/>
             <StackPanel x:Name= "ButtonsStack" Opacity="0.3" IsEnabled="False" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
                 <Button x:Name="ReverseAxis" Click="ReverseAxisButton_Click"  Width="50" Margin="0,25,0,0">
-                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\reverseLabel.png"/>
+                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\reverseButtonLabel.png"/>
                 </Button>
                 <Button x:Name ="ResetButton" Click="ResetDataButton_Click"  Width="50" Margin="5,25,0,0">
                     <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\deleteButtonLabel.png"/>

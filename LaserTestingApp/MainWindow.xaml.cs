@@ -25,6 +25,7 @@ using System.Reflection.Metadata;
 using System.Windows.Input;
 using static LaserTestingApp.MainWindow;
 using System.Text.Json.Nodes;
+using static Plotly.NET.StyleParam.LinearAxisId;
 
 namespace LaserTestingApp
 {
@@ -43,6 +44,7 @@ namespace LaserTestingApp
         List<double> yAxie = new List<double>();
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
+        List<double> distances = new List<double>();
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         bool LineChartYX, ScatterChartYX, FastChartYX;
@@ -95,7 +97,9 @@ namespace LaserTestingApp
             LineChartYX = true;
             ScatterChartYX = true;
             FastChartYX = true;
-
+            double distanceMaxTemp = 0;
+            double distanceMax = mainViewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
+            Debug.WriteLine($" Max distance found - > {distanceMax}");
         }
         public void LoadAllData()
         {
