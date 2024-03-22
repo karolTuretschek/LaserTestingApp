@@ -107,7 +107,7 @@ namespace LaserTestingApp
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             List<double> interpolatedX, interpolatedY;
             var lineSeriesTrend= new LineSeries { MarkerType = MarkerType.Triangle };
-            List<DataPoint> dataPoints = new List<DataPoint>();
+
             for (int i = 0; i < ListLength; i++)
             {
                 lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
@@ -124,11 +124,7 @@ namespace LaserTestingApp
             MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
             MyModel.Series.Add(lineSeriesAverage);
-            // Interpolation testing
-            foreach (var item in y2)
-            {
-                dataPoints.Add(new DataPoint(item, item));
-            }
+            // Interpolation implementation
             var series = new LineSeries
             {
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
@@ -141,10 +137,7 @@ namespace LaserTestingApp
             MyModel.Series.Add(series);
             MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            
-            series.InterpolationAlgorithm.CreateSpline(dataPoints, true, 1);
-            // List<ScreenPoint> CreateSpline(IList<ScreenPoint> points, bool isClosed, double tolerance);
+            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });          
 
             //Create line
             double horizontalLineYValue = 1.0; // At 1.0 of the divergence
