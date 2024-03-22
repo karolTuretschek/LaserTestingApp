@@ -133,12 +133,9 @@ namespace LaserTestingApp
             {
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline
             };
-            foreach (var item in x)
+            for (int i = 0; i < ListLength; i++)
             {
-                foreach (var item2 in y2)
-                {
-                    series.Points.Add(new DataPoint(item, item2));                   
-                }
+                series.Points.Add(new DataPoint(x[i], y[i]));
             }
 
             MyModel.Series.Add(series);
