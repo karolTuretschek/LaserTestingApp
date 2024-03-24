@@ -257,8 +257,11 @@ namespace LaserTestingApp
                 double distance =  Math.Sqrt(Math.Pow(x[i] - x[i - 1], 2) + Math.Pow(y2[i] - y2[i - 1], 2));
                 //double distance = Math.Sqrt(squaredDifferenceX + squaredDifferenceY);
                  if (distance > distanceMax)
+                 {
                     distanceMax = distance;
+                 }
             }
+                   
             return distanceMax;
         }
         public PlotModel MyModel { get; set; }

@@ -45,6 +45,7 @@ namespace LaserTestingApp
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
         List<double> distances = new List<double>();
+        double distanceMaxX = 0;
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         bool LineChartYX, ScatterChartYX, FastChartYX;
@@ -265,7 +266,6 @@ namespace LaserTestingApp
         {
             if (nonDefaultComboBoxes >= 3)
             {
-                LoadingTextBlock.Text = "Press Create Graph";
                 LoadDataButton.IsEnabled = true;
             }
 
