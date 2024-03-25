@@ -45,7 +45,6 @@ namespace LaserTestingApp
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
         List<double> distances = new List<double>();
-        double distanceMaxX = 0;
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         bool LineChartYX, ScatterChartYX, FastChartYX;
@@ -67,7 +66,26 @@ namespace LaserTestingApp
 
         }
         private List<laserInfo> laserInfos = new List<laserInfo>();
-        
+        private void ParametersAssignButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadAllData();
+
+            int RowsData = laserTime.Count(); // Find number of rows
+            SetSelectedAxisValue(ComboBoxY, ref yAxie);
+            SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
+            SetSelectedAxisValue(ComboBoxX, ref xAxie);
+
+            MainViewModel mainViewModel = new MainViewModel();//Assign model 
+            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            // Populate plots          
+            LineChart.DataContext = mainViewModel;
+            ScatterChart.DataContext = mainViewModel;
+            FastChart.DataContext = mainViewModel;
+
+
+        }
         private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
             // Show previously disabled buttons

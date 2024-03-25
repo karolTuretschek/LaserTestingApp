@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
@@ -167,6 +168,16 @@ namespace LaserTestingApp
             MyModel.Annotations.Add(horizontalLine);
             MyModel.Annotations.Add(horizontalLineUp);
             MyModel.Annotations.Add(horizontalLineDown);
+            var rectangleAnnotation = new RectangleAnnotation
+            {
+                MinimumX = 0.0,
+                MaximumX = (double)ListLength,
+                MinimumY = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()),
+                MaximumY = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString()),
+                Fill = OxyColor.FromRgb(195, 255, 255),
+                Layer = AnnotationLayer.BelowAxes
+            };
+            MyModel.Annotations.Add(rectangleAnnotation);
         }
         public void ViewModelLineReverse(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
