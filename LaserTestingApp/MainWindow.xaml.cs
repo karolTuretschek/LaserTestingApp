@@ -26,6 +26,7 @@ using System.Windows.Input;
 using static LaserTestingApp.MainWindow;
 using System.Text.Json.Nodes;
 using static Plotly.NET.StyleParam.LinearAxisId;
+using System.Xml;
 
 namespace LaserTestingApp
 {
@@ -141,7 +142,18 @@ namespace LaserTestingApp
                                     double.Parse(worksheet.Cells[row, 5].Text)
                                     ); // Insert data from rows into DataGrid
                             laserTime.Add(double.Parse(worksheet.Cells[row, 1].Text));
-                            laserAmbientTemp.Add(double.Parse(worksheet.Cells[row, 2].Text));
+                            string cellText = worksheet.Cells[row, 2].Text;
+                            double cellValue;
+                            if (double.TryParse(cellText, out cellValue))
+                                {
+                                if (cellValue.Equals(0.0))
+                                {
+                                    laserAmbientTemp.Add(double.NaN);
+                                }
+                                else
+                                    laserAmbientTemp.Add(cellValue);
+                            }
+                            
                             laserUnitTemp.Add(double.Parse(worksheet.Cells[row, 3].Text));
                             laserDivergence.Add(double.Parse(worksheet.Cells[row, 4].Text));
                             laserPowerOutput.Add(double.Parse(worksheet.Cells[row, 5].Text));

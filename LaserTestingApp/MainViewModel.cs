@@ -111,7 +111,10 @@ namespace LaserTestingApp
 
             for (int i = 0; i < ListLength; i++)
             {
-                lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
+                if(y2[i].Equals(double.NaN))
+                    lineSeries.Points.Add(new DataPoint(x[i], double.NaN));
+                else
+                    lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
                 //dataPoints.Add(new DataPoint(x[i], y2[i]));
             }
             LinearInterpolation(x, y2, out interpolatedX, out interpolatedY);
@@ -132,9 +135,11 @@ namespace LaserTestingApp
             };
             for (int i = 0; i < ListLength; i++)
             {
-                series.Points.Add(new DataPoint(x[i], y[i]));
+                series.Points.Add(new DataPoint(x[i], y2[i]));
             }
-
+            // TODO:
+            // Consider creating either an average of the values before and after the missing value
+            // Or, create a small interpolation between these two values to fill the gap
             MyModel.Series.Add(series);
             MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
