@@ -4,10 +4,12 @@ using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,7 +102,7 @@ namespace LaserTestingApp
             MyModel3.Series.Add(lineSeries3); // First line of data
             MyModel3.Series.Add(lineSeries4); // Second
         }
-        public void ViewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
+        public void ViewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize, Dictionary<double, double> Gaps)
         {
             //Scatter Line
             MyModel = new PlotModel { Title = "Line Plot" };
@@ -108,14 +110,49 @@ namespace LaserTestingApp
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             List<double> interpolatedX, interpolatedY;
             var lineSeriesTrend= new LineSeries { MarkerType = MarkerType.Triangle };
+            
             for (int i = 1; i < ListLength; i++)
             {
                 if(y2[i].Equals(double.NaN))
+                {
                     lineSeries.Points.Add(new DataPoint(x[i], double.NaN));
+                    foreach (var item in Gaps)
+                    {
+                        if (x[i] == item.Key)
+                        {
+
+                            var gapSeries = new LineAnnotation { Text = "Predicted" };
+                            gapSeries.TextPosition = new DataPoint(item.Key, item.Value);
+                            MyModel.Annotations.Add(gapSeries);
+                            Debug.WriteLine($"Key: {x[i]}, Value: {item.Key}"); //Display the data into debug op
+                        }
+
+                    }
+                }
+                    
                 else
+                {
+                    foreach (var item in Gaps)
+                    {
+                        //Debug.WriteLine($"1: {x[i]}, 2: {item.Key}"); //Display the data into debug op
+                        if (x[i] == item.Key)
+                        {
+
+                            var gapSeries = new LineAnnotation { Text = "^", FontSize = 25};
+                            gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries.TextPosition = new DataPoint(item.Key, y2[i]);
+                            MyModel.Annotations.Add(gapSeries);
+                            //Debug.WriteLine($"Key: {x[i]}, Value: {item.Key}"); //Display the data into debug op
+                        }
+
+                    }
                     lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
-                //dataPoints.Add(new DataPoint(x[i], y2[i]));
+                }
+                    
             }
+            Debug.WriteLine(Gaps.Count());// Confirm data is being passed on from other class
+            //gapSeries.TextPosition = new DataPoint(10,10);
+            //MyModel.Annotations.Add(gapSeries);
             MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
             MyModel.Series.Add(lineSeriesAverage);
@@ -272,6 +309,7 @@ namespace LaserTestingApp
                    
             return distanceMax;
         }
+        public Dictionary<double, double> GapsDictionary { get; set; }
         public PlotModel MyModel { get; set; }
         public PlotModel MyModel2 { get; set; }
         public PlotModel MyModel3 { get; set; }

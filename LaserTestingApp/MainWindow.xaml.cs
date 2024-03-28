@@ -28,6 +28,7 @@ using System.Text.Json.Nodes;
 using static Plotly.NET.StyleParam.LinearAxisId;
 using System.Xml;
 using static Giraffe.ViewEngine.HtmlElements.XmlAttribute;
+using System.Reflection;
 
 namespace LaserTestingApp
 {
@@ -55,6 +56,7 @@ namespace LaserTestingApp
         public static List<laserInfo> data = new List<laserInfo>();
         public ScatterSeries saveSeries;
         bool LineChartYX, ScatterChartYX, FastChartYX;
+        public Dictionary<double, double> gapsDictionary { get; set; } = new Dictionary<double, double>();
         public string filePath { get; set; }
         public MainWindow()
         {
@@ -82,9 +84,9 @@ namespace LaserTestingApp
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
-
+            MainWindow window = new MainWindow();
             MainViewModel mainViewModel = new MainViewModel();//Assign model 
-            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
             mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             // Populate plots          
@@ -113,7 +115,7 @@ namespace LaserTestingApp
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
 
             MainViewModel mainViewModel = new MainViewModel();//Assign model 
-            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
             mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);         
             // Populate plots          
@@ -178,6 +180,7 @@ namespace LaserTestingApp
         }
         public void ProcessMissingAmbientTempValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row, ScatterSeries mySeries)
         {
+            MainViewModel mainView = new MainViewModel();
             double cellValue;
 
             if (double.TryParse(cellText, out cellValue))
@@ -188,7 +191,7 @@ namespace LaserTestingApp
                     double roundedTempValue = Math.Round(tempValue, 1);
                     myValue.Add(roundedTempValue);
                     mySeries.Points.Add(new ScatterPoint(row, 2, 100, 50)); // Add saved value's position
-                    //scatterSeries.Points.Add(new ScatterPoint(x[i], y[i], DotSize, y2[i]));
+                    gapsDictionary.Add(row, 2);
                 }
                 else
                 {
@@ -426,7 +429,7 @@ namespace LaserTestingApp
                 case 1:
                     if (!LineChartYX)
                     {
-                        mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
                         LineChart.DataContext = mainViewModel;
                         LineChartYX = true;
                     }
