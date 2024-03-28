@@ -108,8 +108,7 @@ namespace LaserTestingApp
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             List<double> interpolatedX, interpolatedY;
             var lineSeriesTrend= new LineSeries { MarkerType = MarkerType.Triangle };
-
-            for (int i = 0; i < ListLength; i++)
+            for (int i = 1; i < ListLength; i++)
             {
                 if(y2[i].Equals(double.NaN))
                     lineSeries.Points.Add(new DataPoint(x[i], double.NaN));
@@ -117,14 +116,6 @@ namespace LaserTestingApp
                     lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
                 //dataPoints.Add(new DataPoint(x[i], y2[i]));
             }
-            LinearInterpolation(x, y2, out interpolatedX, out interpolatedY);
-            for (int i = 0; i < ListLength; i++)
-            {
-                lineSeriesAverage.Points.Add(new DataPoint(interpolatedX[i], interpolatedY[i]));
-            }
-            lineSeriesTrend.Points.Add(new DataPoint(x[1], y2[1]));
-            lineSeriesTrend.Points.Add(new DataPoint(x[ListLength - 1], y2[ListLength - 1]));
-
             MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
             MyModel.Series.Add(lineSeriesAverage);
@@ -136,6 +127,7 @@ namespace LaserTestingApp
             for (int i = 0; i < ListLength; i++)
             {
                 series.Points.Add(new DataPoint(x[i], y2[i]));
+
             }
             // TODO:
             // Consider creating either an average of the values before and after the missing value
@@ -179,7 +171,7 @@ namespace LaserTestingApp
                 MaximumX = (double)ListLength,
                 MinimumY = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()),
                 MaximumY = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString()),
-                Fill = OxyColor.FromRgb(195, 255, 255),
+                Fill = OxyColor.FromRgb(215, 255, 255),
                 Layer = AnnotationLayer.BelowAxes
             };
             MyModel.Annotations.Add(rectangleAnnotation);
