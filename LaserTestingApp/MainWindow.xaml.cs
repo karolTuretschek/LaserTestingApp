@@ -32,20 +32,14 @@ using System.Reflection;
 
 namespace LaserTestingApp
 {
-
     public partial class MainWindow : System.Windows.Window
     {
-        //public string filePath = "";
 
         List<double> laserTime = new List<double>();
         List<double> laserAmbientTemp = new List<double>();
         List<double> laserUnitTemp = new List<double>();
         List<double> laserDivergence = new List<double>();
         List<double> laserPowerOutput = new List<double>();
-        List<double> laserAmbientTempGap = new List<double>();
-        List<double> laserUnitTempGap = new List<double>();
-        List<double> laserDivergenceGap = new List<double>();
-        List<double> laserPowerOutputGap = new List<double>();
         string yLabel = "", xLabel = "";
         List<double> axie = new List<double>();
         List<double> yAxie = new List<double>();
@@ -54,16 +48,13 @@ namespace LaserTestingApp
         List<double> distances = new List<double>();
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
-        public ScatterSeries saveSeries;
+        public ScatterSeries saveSeries = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
         bool LineChartYX, ScatterChartYX, FastChartYX;
         public Dictionary<double, double> gapsDictionary { get; set; } = new Dictionary<double, double>();
-        public string filePath { get; set; }
+        public string filePath { get; set; } = "test";
         public MainWindow()
         {
             InitializeComponent();
-            saveSeries = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
-            filePath = "test";
-            IsEnabled = false;
         }
         public class laserInfo
         {
@@ -85,14 +76,14 @@ namespace LaserTestingApp
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
             MainWindow window = new MainWindow();
-            MainViewModel mainViewModel = new MainViewModel();//Assign model 
-            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
-            mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            ViewModel viewModel = new ViewModel();//Assign model 
+            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
+            viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             // Populate plots          
-            LineChart.DataContext = mainViewModel;
-            ScatterChart.DataContext = mainViewModel;
-            FastChart.DataContext = mainViewModel;
+            LineChart.DataContext = viewModel;
+            ScatterChart.DataContext = viewModel;
+            FastChart.DataContext = viewModel;
 
 
         }
@@ -114,20 +105,20 @@ namespace LaserTestingApp
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
 
-            MainViewModel mainViewModel = new MainViewModel();//Assign model 
-            mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
-            mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);         
+            ViewModel viewModel = new ViewModel();//Assign model 
+            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
+            viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);         
             // Populate plots          
-            LineChart.DataContext = mainViewModel;
-            ScatterChart.DataContext = mainViewModel;
-            FastChart.DataContext = mainViewModel;
+            LineChart.DataContext = viewModel;
+            ScatterChart.DataContext = viewModel;
+            FastChart.DataContext = viewModel;
             // Assign flags
             LineChartYX = true;
             ScatterChartYX = true;
             FastChartYX = true;
             double distanceMaxTemp = 0;
-            double distanceMax = mainViewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
+            double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
             Debug.WriteLine($" Max distance found - > {distanceMax}");
         }
         public void LoadAllData()
@@ -180,7 +171,7 @@ namespace LaserTestingApp
         }
         public void ProcessMissingAmbientTempValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row, ScatterSeries mySeries)
         {
-            MainViewModel mainView = new MainViewModel();
+            ViewModel mainView = new ViewModel();
             double cellValue;
 
             if (double.TryParse(cellText, out cellValue))
@@ -338,7 +329,7 @@ namespace LaserTestingApp
         {
             int RowsData = laserTime.Count(); // Find number of rows
 
-            MainViewModel mainViewModel = new MainViewModel();//Assign model
+            ViewModel viewModel = new ViewModel();//Assign model
             int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
             switch (currentTabIndex) // Based on open tab reverse axis
             {
@@ -347,16 +338,16 @@ namespace LaserTestingApp
                     Debug.WriteLine("Tab index is 0, Cannot reverse axis");
                     break;
                 case 1:
-                    mainViewModel.ViewModelLineReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    LineChart.DataContext = mainViewModel;
+                    viewModel.viewModelLineReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    LineChart.DataContext = viewModel;
                     break;
                 case 2:
-                    mainViewModel.ViewModelScatterReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    ScatterChart.DataContext = mainViewModel;
+                    viewModel.viewModelScatterReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    ScatterChart.DataContext = viewModel;
                     break;
                 case 3:
-                    mainViewModel.ViewModelFastReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    FastChart.DataContext = mainViewModel;
+                    viewModel.viewModelFastReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                    FastChart.DataContext = viewModel;
                     break;
                 default:
                     // Handle case when index is out of range
@@ -366,13 +357,49 @@ namespace LaserTestingApp
 
 
         }
-
+        
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
         {
-            ImportWindow importWindow = new ImportWindow();
-            importWindow.Show();
-        }
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
+            
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MainWindow myWindow = new MainWindow();
+                string fileName = Path.GetFileName(openFileDialog.FileName); // get file name               
+                switch (Path.GetExtension(fileName).ToLower())
+                {
+                    
+                    case ".xlsx":
+                        Console.WriteLine("Xlsx file");
+                        myWindow.filePathTextBox.Text = fileName;
+                        Debug.WriteLine(fileName);
+                        myWindow.filePath = openFileDialog.FileName; // Assign path to string
+                        Debug.WriteLine("myWindow.filePath" + myWindow.filePath);                        
+                        myWindow.Show();
+                        this.Close();
+                        myWindow.LoadAllData();
+                        myWindow.LoadDataButton.IsEnabled = false;
+                        myWindow.IsEnabled = true;
+                        
+                        break;
+                    case ".json":
+                        Debug.WriteLine("Json file");
+                        myWindow.filePath = openFileDialog.FileName; // Assign path to string
+                        Debug.WriteLine("myWindow.filePath" + myWindow.filePath);
+                        myWindow.Show();
+                        myWindow.LoaddAllDataJson();
+                        myWindow.LoadDataButton.IsEnabled = false;
+                        myWindow.IsEnabled = true;
+                        break;
+                    default:
+                        Console.WriteLine("Unknown file format");
+                        System.Windows.MessageBox.Show("Unknown file format", "Wrong file format");
+                        break;
+                }
 
+            }
+        }
         private void filePathTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
@@ -418,7 +445,7 @@ namespace LaserTestingApp
 
             int RowsData = laserTime.Count(); // Find number of rows
 
-            MainViewModel mainViewModel = new MainViewModel();//Assign model
+            ViewModel viewModel = new ViewModel();//Assign model
             int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
             switch (currentTabIndex) // Based on open tab reverse axis
             {
@@ -429,42 +456,42 @@ namespace LaserTestingApp
                 case 1:
                     if (!LineChartYX)
                     {
-                        mainViewModel.ViewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
-                        LineChart.DataContext = mainViewModel;
+                        viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
+                        LineChart.DataContext = viewModel;
                         LineChartYX = true;
                     }
                     else
                     {
-                        mainViewModel.ViewModelLineReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        LineChart.DataContext = mainViewModel;
+                        viewModel.viewModelLineReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        LineChart.DataContext = viewModel;
                         LineChartYX = false;
                     }
                     break;
                 case 2:
                     if (!ScatterChartYX)
                     {
-                        mainViewModel.ViewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        ScatterChart.DataContext = mainViewModel;
+                        viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        ScatterChart.DataContext = viewModel;
                         ScatterChartYX = true;
                     }
                     else
                     {
-                        mainViewModel.ViewModelScatterReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        ScatterChart.DataContext = mainViewModel;
+                        viewModel.viewModelScatterReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        ScatterChart.DataContext = viewModel;
                         ScatterChartYX = false;
                     }
                     break;
                 case 3:
                     if (!FastChartYX)
                     {
-                        mainViewModel.ViewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        FastChart.DataContext = mainViewModel;
+                        viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        FastChart.DataContext = viewModel;
                         FastChartYX = true;
                     }
                     else
                     {
-                        mainViewModel.ViewModelFastReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        FastChart.DataContext = mainViewModel;
+                        viewModel.viewModelFastReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        FastChart.DataContext = viewModel;
                         FastChartYX = false;
                     }
                     break;

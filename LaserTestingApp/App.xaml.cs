@@ -13,18 +13,5 @@ namespace LaserTestingApp
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            // Create instances of both windows
-            //MainWindow mainWindow = new MainWindow();
-            ImportWindow importWindow = new ImportWindow();
-
-            // Show both windows
-            //mainWindow.Show();
-            importWindow.Show();
-        }
-
     }
 }
