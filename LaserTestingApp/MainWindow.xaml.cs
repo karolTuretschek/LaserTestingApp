@@ -69,7 +69,9 @@ namespace LaserTestingApp
         private List<laserInfo> laserInfos = new List<laserInfo>();
         private void ParametersAssignButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadAllData();
+            DataGenerator myGenerator = new DataGenerator();
+            myGenerator.Show();
+           /* LoadAllData();
 
             int RowsData = laserTime.Count(); // Find number of rows
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
@@ -83,7 +85,7 @@ namespace LaserTestingApp
             // Populate plots          
             LineChart.DataContext = viewModel;
             ScatterChart.DataContext = viewModel;
-            FastChart.DataContext = viewModel;
+            FastChart.DataContext = viewModel;*/
 
 
         }
@@ -501,6 +503,12 @@ namespace LaserTestingApp
                     break;
             }
         }
+
+        private void UnitDivergenceTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
         private void DefaultDotButton_Click(object sender, RoutedEventArgs e)
         {
             DotSize = 3;
