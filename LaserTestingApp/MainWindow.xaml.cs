@@ -46,6 +46,7 @@ namespace LaserTestingApp
         List<double> yAxie2 = new List<double>();
         List<double> xAxie = new List<double>();
         List<double> distances = new List<double>();
+        string RootPath = "test";
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         public ScatterSeries saveSeries = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
@@ -71,23 +72,18 @@ namespace LaserTestingApp
         {
             DataGenerator myGenerator = new DataGenerator();
             myGenerator.Show();
-           /* LoadAllData();
+        }
+        public string FindDataFile()
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
 
-            int RowsData = laserTime.Count(); // Find number of rows
-            SetSelectedAxisValue(ComboBoxY, ref yAxie);
-            SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
-            SetSelectedAxisValue(ComboBoxX, ref xAxie);
-            MainWindow window = new MainWindow();
-            ViewModel viewModel = new ViewModel();//Assign model 
-            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
-            viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            // Populate plots          
-            LineChart.DataContext = viewModel;
-            ScatterChart.DataContext = viewModel;
-            FastChart.DataContext = viewModel;*/
-
-
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string fullPath = openFileDialog.FileName; // get file name
+                return fullPath;  
+            }
+            return null;          
         }
         private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {

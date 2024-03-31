@@ -20,6 +20,9 @@ using Plotly.NET.TraceObjects;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection.Metadata;
 using System.IO;
+using System.Windows.Forms;
+using Microsoft.Win32;
+using System.IO.Packaging;
 
 namespace LaserTestingApp
 {
@@ -37,69 +40,83 @@ namespace LaserTestingApp
         int Duration;
         double FirstNumber;
         double tempRandom;
+        MainWindow myWindow = new MainWindow();
+        string myRootPath = "test2";
+
         private void GenerateDataButton_Click(object sender, RoutedEventArgs e)
         {
-
+            myRootPath = myWindow.FindDataFile();
             MinTemp = double.Parse(AmbientTempMinGeneratorTextBox.Text.ToString());
             MaxTemp = double.Parse(AmbientTempMaxGeneratorTextBox.Text.ToString());
             Duration = int.Parse(TimeGeneratorTextBox.Text.ToString());
-            UnitTemp = 15;  
+            UnitTemp = 15;
             Random random = new Random();
             double Temp = 15;
-
             try
             {
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Licence
-                using (ExcelPackage package = new ExcelPackage())
-                {                   
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DataSheet");
-                    worksheet.Cells.Clear(); // Delete previous data
-                    // HEADERS
-                    worksheet.Cells[1, 1].Value = "Time";
-                    worksheet.Cells[1, 2].Value = "Ambient Temp";
-                    worksheet.Cells[1, 3].Value = "Unit Temp";
-                    worksheet.Cells[1, 4].Value = "Divergence";
-                    worksheet.Cells[1, 5].Value = "Power Output";
-                    for (int i = 1; i < Duration; i++)
+                ExcelPackage package;
+                FileInfo file = new FileInfo(myRootPath);
+                if (file.Exists)
+                {
+                    // If the file exists, load it
+                    package = new ExcelPackage(file);
+                }
+                else
+                {
+                    // If the file doesn't exist, create a new package
+                    package = new ExcelPackage();
+                }
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (worksheet == null)
+                {
+                    worksheet = package.Workbook.Worksheets[0];
+                }
+                else
+                {
+                    // Clear previous data if the worksheet already exists
+                    worksheet.Cells.Clear();
+                }
+
+                package.Save();
+                // HEADERS
+                worksheet.Cells[1, 1].Value = "Time";
+                worksheet.Cells[1, 2].Value = "Ambient Temp";
+                worksheet.Cells[1, 3].Value = "Unit Temp";
+                worksheet.Cells[1, 4].Value = "Divergence";
+                worksheet.Cells[1, 5].Value = "Power Output";
+                for (int i = 1; i < Duration; i++)
+                {
+                    int TempRandom = random.Next(10);
+                    if (TempRandom >= 5)
                     {
-                        int TempRandom = random.Next(10);
-                        if (TempRandom >= 5)
+                        if (Temp >= MaxTemp * 1.1)
                         {
-                            if (Temp >= MaxTemp * 1.1)
+                            for (int j = 0; j < 5; j++)
                             {
-                                for (int j = 0; j < 5; j++)
-                                {
-                                    Temp = Temp - (TempRandom * 0.1);
-                                    //Debug.WriteLine($"{Math.Round(Temp, 1)} DOWN");
-                                    worksheet.Cells[i + 1, 1].Value = i;
-                                    worksheet.Cells[i + 1, 2].Value = Temp;
-                                    worksheet.Cells[i + 1, 3].Value = Temp * 1.2;
-                                }
-                            }
-                            else
-                            {
-                                Temp = Temp + (TempRandom * 0.1);
+                                Temp = Temp - (TempRandom * 0.1);
                                 worksheet.Cells[i + 1, 1].Value = i;
                                 worksheet.Cells[i + 1, 2].Value = Temp;
-                                worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
+                                worksheet.Cells[i + 1, 3].Value = Temp * 1.2;
                             }
                         }
                         else
                         {
-                            Temp = Temp - (TempRandom * 0.1);
+                            Temp = Temp + (TempRandom * 0.1);
                             worksheet.Cells[i + 1, 1].Value = i;
                             worksheet.Cells[i + 1, 2].Value = Temp;
                             worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
                         }
                     }
-                    string filePath = @"C:/Users/venqu/OneDrive/Dokumenty/Honours/Data/GeneratedData.xlsx";
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                    else
                     {
-                        package.SaveAs(fileStream);
+                        Temp = Temp - (TempRandom * 0.1);
+                        worksheet.Cells[i + 1, 1].Value = i;
+                        worksheet.Cells[i + 1, 2].Value = Temp;
+                        worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
                     }
-
-                    Debug.WriteLine("Excel file created successfully.");
                 }
+                package.Save();
             }
             catch (Exception ex)
             {
@@ -107,4 +124,5 @@ namespace LaserTestingApp
             }
         }
     }
+
 }
