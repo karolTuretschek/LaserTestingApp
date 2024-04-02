@@ -94,14 +94,102 @@ namespace LaserTestingApp
             MyModel3.Series.Add(lineSeries3); // First line of data
             MyModel3.Series.Add(lineSeries4); // Second
         }
-        public void viewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize, Dictionary<double, double> GapsY, Dictionary<double, double> GapsY2)
+        public void viewModelLineY4(List<double> x, List<double> y4, int ListLength, Dictionary<double, double> GapsY4)
+        {
+            var lineSeries4 = new LineSeries { MarkerType = MarkerType.Circle };
+            // y4
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y4[i].Equals(double.NaN))
+                {
+                    lineSeries4.Points.Add(new DataPoint(x[i], double.NaN));
+                }
+
+                else
+                {
+                    foreach (var item in GapsY4)
+                    {
+                        if (x[i] == item.Key)
+                        {
+                            var gapSeries4 = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries4.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries4.TextPosition = new DataPoint(item.Key, y4[i]);
+                            MyModel.Annotations.Add(gapSeries4);
+                        }
+
+                    }
+                    lineSeries4.Points.Add(new DataPoint(x[i], y4[i]));
+                }
+
+            }
+            MyModel.Series.Add(lineSeries4);
+        }
+        public void viewModelLineY3(List<double> x, List<double> y3, int ListLength, Dictionary<double, double> GapsY3)
+        {
+            var lineSeries3 = new LineSeries { MarkerType = MarkerType.Circle };
+            // y3
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y3[i].Equals(double.NaN))
+                {
+                    lineSeries3.Points.Add(new DataPoint(x[i], double.NaN));
+                }
+
+                else
+                {
+                    foreach (var item in GapsY3)
+                    {
+                        if (x[i] == item.Key)
+                        {
+                            var gapSeries3 = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries3.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries3.TextPosition = new DataPoint(item.Key, y3[i]);
+                            MyModel.Annotations.Add(gapSeries3);
+                        }
+
+                    }
+                    lineSeries3.Points.Add(new DataPoint(x[i], y3[i]));
+                }
+
+            }
+            MyModel.Series.Add(lineSeries3);
+        }
+        public void viewModelLineY2(List<double> x, List<double> y2, int ListLength, Dictionary<double, double> GapsY2)
+        {
+            var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle };
+            // y2
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y2[i].Equals(double.NaN))
+                {
+                    lineSeries2.Points.Add(new DataPoint(x[i], double.NaN));
+                }
+
+                else
+                {
+                    foreach (var item in GapsY2)
+                    {
+                        if (x[i] == item.Key)
+                        {
+                            var gapSeries2 = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries2.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries2.TextPosition = new DataPoint(item.Key, y2[i]);
+                            MyModel.Annotations.Add(gapSeries2);
+                        }
+
+                    }
+                    lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
+                }
+
+            }
+            MyModel.Series.Add(lineSeries2);
+        }
+        public void viewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
         {
             //Scatter Line
-            MyModel = new PlotModel { Title = "Line Plot" };
+
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
-            var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle };
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
-            List<double> interpolatedX, interpolatedY;
             var lineSeriesTrend = new LineSeries { MarkerType = MarkerType.Triangle };
 
             // y
@@ -129,36 +217,9 @@ namespace LaserTestingApp
                 }
 
             }
-            // y2
-            for (int i = 2; i < ListLength; i++)
-            {
-                if (y2[i].Equals(double.NaN))
-                {
-                    lineSeries2.Points.Add(new DataPoint(x[i], double.NaN));
-                }
 
-                else
-                {
-                    foreach (var item in GapsY2)
-                    {
-                        if (x[i] == item.Key)
-                        {
-                            var gapSeries2 = new LineAnnotation { Text = "^", FontSize = 25 };
-                            gapSeries2.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-                            gapSeries2.TextPosition = new DataPoint(item.Key, y2[i]);
-                            MyModel.Annotations.Add(gapSeries2);
-                        }
-
-                    }
-                    lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
-                }
-
-            }
-
-            Debug.WriteLine(GapsY.Count()+ " and " +GapsY2.Count());// Confirm data is being passed on from other class
             MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
-            MyModel.Series.Add(lineSeries2);
             MyModel.Series.Add(lineSeriesAverage);
             // Interpolation implementation
             var series = new LineSeries
@@ -167,55 +228,52 @@ namespace LaserTestingApp
             };
             for (int i = 0; i < ListLength; i++)
             {
-                series.Points.Add(new DataPoint(x[i], y2[i]));
+                series.Points.Add(new DataPoint(x[i], y[i]));
 
             }
             // TODO:
             // Consider creating either an average of the values before and after the missing value
             // Or, create a small interpolation between these two values to fill the gap
             MyModel.Series.Add(series);
-            MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = yLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-
             //Create line
-            double horizontalLineYValue = 1.0; // At 1.0 of the divergence
-            var horizontalLine = new LineAnnotation
-            {
-                Type = LineAnnotationType.Horizontal,
-                Y = horizontalLineYValue,
-                Color = OxyColors.LightSalmon,
-                StrokeThickness = 1.5
-            };
-            double horizontalLineYValueLimitUp = 1.02;   // Upper limit       
-            var horizontalLineUp = new LineAnnotation
-            {
-                Type = LineAnnotationType.Horizontal,
-                Y = horizontalLineYValueLimitUp,
-                Color = OxyColors.Red,
-                StrokeThickness = 1.5
-            };
-            double horizontalLineYValueLimitDown = 0.98; // Lower limit
-            var horizontalLineDown = new LineAnnotation
-            {
-                Type = LineAnnotationType.Horizontal,
-                Y = horizontalLineYValueLimitDown,
-                Color = OxyColors.Red,
-                StrokeThickness = 1.5
-            };
-            MyModel.Annotations.Add(horizontalLine);
-            MyModel.Annotations.Add(horizontalLineUp);
-            MyModel.Annotations.Add(horizontalLineDown);
-            var rectangleAnnotation = new RectangleAnnotation
-            {
-                MinimumX = 0.0,
-                MaximumX = (double)ListLength,
-                MinimumY = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()),
-                MaximumY = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString()),
-                Fill = OxyColor.FromRgb(215, 255, 255),
-                Layer = AnnotationLayer.BelowAxes
-            };
-            MyModel.Annotations.Add(rectangleAnnotation);
+            /*            double horizontalLineYValue = 1.0; // At 1.0 of the divergence
+                        var horizontalLine = new LineAnnotation
+                        {
+                            Type = LineAnnotationType.Horizontal,
+                            Y = horizontalLineYValue,
+                            Color = OxyColors.LightSalmon,
+                            StrokeThickness = 1.5
+                        };
+                        double horizontalLineYValueLimitUp = 1.02;   // Upper limit       
+                        var horizontalLineUp = new LineAnnotation
+                        {
+                            Type = LineAnnotationType.Horizontal,
+                            Y = horizontalLineYValueLimitUp,
+                            Color = OxyColors.Red,
+                            StrokeThickness = 1.5
+                        };
+                        double horizontalLineYValueLimitDown = 0.98; // Lower limit
+                        var horizontalLineDown = new LineAnnotation
+                        {
+                            Type = LineAnnotationType.Horizontal,
+                            Y = horizontalLineYValueLimitDown,
+                            Color = OxyColors.Red,
+                            StrokeThickness = 1.5
+                        };
+                        MyModel.Annotations.Add(horizontalLine);
+                        MyModel.Annotations.Add(horizontalLineUp);
+                        MyModel.Annotations.Add(horizontalLineDown);
+                        var rectangleAnnotation = new RectangleAnnotation
+                        {
+                            MinimumX = 0.0,
+                            MaximumX = (double)ListLength,
+                            MinimumY = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()),
+                            MaximumY = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString()),
+                            Fill = OxyColor.FromRgb(215, 255, 255),
+                            Layer = AnnotationLayer.BelowAxes
+                        };
+                        MyModel.Annotations.Add(rectangleAnnotation);*/
+           
         }
         public void viewModelLineReverse(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
@@ -295,7 +353,6 @@ namespace LaserTestingApp
             interpolatedX.Add(x[x.Count - 1]);
             interpolatedY.Add(y[y.Count - 1]);
         }
-
         public double CalculateDistanceBetweenPoints(List<double> x, List<double> y2, int ListLength, double distanceMax)
         {
             for (int i = 1; i < ListLength; i++)

@@ -29,10 +29,14 @@ using static Plotly.NET.StyleParam.LinearAxisId;
 using System.Xml;
 using static Giraffe.ViewEngine.HtmlElements.XmlAttribute;
 using System.Reflection;
+using System.Collections.ObjectModel;
 
 namespace LaserTestingApp
 {
-    public partial class MainWindow : System.Windows.Window
+    public partial class 
+        
+        
+        MainWindow : System.Windows.Window
     {
 
         List<double> laserTime = new List<double>();
@@ -44,6 +48,8 @@ namespace LaserTestingApp
         List<double> axie = new List<double>();
         List<double> yAxie = new List<double>();
         List<double> yAxie2 = new List<double>();
+        List<double> yAxie3 = new List<double>();
+        List<double> yAxie4 = new List<double>();
         List<double> xAxie = new List<double>();
         List<double> distances = new List<double>();
         string RootPath = "test";
@@ -54,6 +60,8 @@ namespace LaserTestingApp
         bool LineChartYX, ScatterChartYX, FastChartYX;
         public Dictionary<double, double> gapsDictionaryY { get; set; } = new Dictionary<double, double>();
         public Dictionary<double, double> gapsDictionaryY2 { get; set; } = new Dictionary<double, double>();
+        public Dictionary<double, double> gapsDictionaryY3 { get; set; } = new Dictionary<double, double>();
+        public Dictionary<double, double> gapsDictionaryY4 { get; set; } = new Dictionary<double, double>();
         public string filePath { get; set; } = "test";
         public MainWindow()
         {
@@ -104,14 +112,30 @@ namespace LaserTestingApp
             Debug.WriteLine($"Rows data: {RowsData}");
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
+            SetSelectedAxisValue(ComboBoxY3, ref yAxie3);
+            SetSelectedAxisValue(ComboBoxY4, ref yAxie4);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
 
             ViewModel viewModel = new ViewModel();//Assign model 
-            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionaryY, gapsDictionaryY2);
+            viewModel.MyModel = new PlotModel { Title = "Line Plot" };
+            viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left,
+                Title = ComboBoxY.SelectedValue.ToString() + ", " +
+                ComboBoxY2.SelectedValue.ToString() + ", " +
+                ComboBoxY3.SelectedValue.ToString() + ", " +
+                ComboBoxY4.SelectedValue.ToString()
+                ,MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            // Add each axis
+            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, RowsData, gapsDictionaryY);
+            viewModel.viewModelLineY2(xAxie, yAxie2, RowsData, gapsDictionaryY2);
+            viewModel.viewModelLineY3(xAxie, yAxie3, RowsData, gapsDictionaryY3);
+            viewModel.viewModelLineY4(xAxie, yAxie4, RowsData, gapsDictionaryY4);
+            LineChart.DataContext = viewModel; // Plot it up
             viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);         
+            viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+
             // Populate plots          
-            LineChart.DataContext = viewModel;
             ScatterChart.DataContext = viewModel;
             FastChart.DataContext = viewModel;
             // Assign flags
@@ -121,6 +145,7 @@ namespace LaserTestingApp
             double distanceMaxTemp = 0;
             double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
             Debug.WriteLine($" Max distance found - > {distanceMax}");
+
         }
         public void LoadAllData()
         {
@@ -418,7 +443,7 @@ namespace LaserTestingApp
             }
 
         }
-        bool yFlag, y2Flag, xFlag = false;
+        bool yFlag, y2Flag, y3Flag, y4Flag, xFlag = false;
         private void ComboBoxY_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             yLabel = ComboBoxY.SelectedValue?.ToString();
@@ -438,6 +463,24 @@ namespace LaserTestingApp
 
             changeTextBlock();
         }
+        private void ComboBoxY3_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (!y3Flag)
+                nonDefaultComboBoxes++;
+            y3Flag = true;
+
+            changeTextBlock();
+        }
+        private void ComboBoxY4_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (!y4Flag)
+                nonDefaultComboBoxes++;
+            y4Flag = true;
+
+            changeTextBlock();
+        }
         private void ComboBoxX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!xFlag)
@@ -445,7 +488,7 @@ namespace LaserTestingApp
             xFlag = true;
 
             changeTextBlock();
-        }
+        }     
         private void ReverseAxisButton_Click(object sender, RoutedEventArgs e) {
 
             int RowsData = laserTime.Count(); // Find number of rows
@@ -461,7 +504,7 @@ namespace LaserTestingApp
                 case 1:
                     if (!LineChartYX)
                     {
-                        viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionaryY, gapsDictionaryY2);
+                        viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, RowsData, gapsDictionaryY);
                         LineChart.DataContext = viewModel;
                         LineChartYX = true;
                     }

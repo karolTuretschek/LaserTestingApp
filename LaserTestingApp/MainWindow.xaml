@@ -75,6 +75,20 @@
                 <ComboBoxItem Content="Divergence"/>
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
+            <ComboBox x:Name="ComboBoxY3" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY3_SelectionChanged">
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
+            <ComboBox x:Name="ComboBoxY4" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY4_SelectionChanged">
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
             <Button x:Name ="LoadDataButton" Content="Load" Width="130" Click="LoadDataButton_Click" FontSize="16" FontWeight="Bold" VerticalContentAlignment="Center" Margin="15,25,15,5"/>
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
             <Label x:Name="DotButtonsLabel" Content="Dots size:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12"/>
