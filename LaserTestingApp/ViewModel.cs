@@ -94,42 +94,71 @@ namespace LaserTestingApp
             MyModel3.Series.Add(lineSeries3); // First line of data
             MyModel3.Series.Add(lineSeries4); // Second
         }
-        public void viewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize, Dictionary<double, double> Gaps)
+        public void viewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize, Dictionary<double, double> GapsY, Dictionary<double, double> GapsY2)
         {
             //Scatter Line
             MyModel = new PlotModel { Title = "Line Plot" };
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
+            var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle };
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             List<double> interpolatedX, interpolatedY;
             var lineSeriesTrend = new LineSeries { MarkerType = MarkerType.Triangle };
 
-            for (int i = 1; i < ListLength; i++)
+            // y
+            for (int i = 2; i < ListLength; i++)
             {
-                if (y2[i].Equals(double.NaN))
+                if (y[i].Equals(double.NaN))
                 {
                     lineSeries.Points.Add(new DataPoint(x[i], double.NaN));
                 }
 
                 else
                 {
-                    foreach (var item in Gaps)
+                    foreach (var item in GapsY)
                     {
                         if (x[i] == item.Key)
                         {
                             var gapSeries = new LineAnnotation { Text = "^", FontSize = 25 };
                             gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-                            gapSeries.TextPosition = new DataPoint(item.Key, y2[i]);
+                            gapSeries.TextPosition = new DataPoint(item.Key, y[i]);
                             MyModel.Annotations.Add(gapSeries);
                         }
 
                     }
-                    lineSeries.Points.Add(new DataPoint(x[i], y2[i]));
+                    lineSeries.Points.Add(new DataPoint(x[i], y[i]));
                 }
 
             }
-            Debug.WriteLine(Gaps.Count());// Confirm data is being passed on from other class
+            // y2
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y2[i].Equals(double.NaN))
+                {
+                    lineSeries2.Points.Add(new DataPoint(x[i], double.NaN));
+                }
+
+                else
+                {
+                    foreach (var item in GapsY2)
+                    {
+                        if (x[i] == item.Key)
+                        {
+                            var gapSeries2 = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries2.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries2.TextPosition = new DataPoint(item.Key, y2[i]);
+                            MyModel.Annotations.Add(gapSeries2);
+                        }
+
+                    }
+                    lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
+                }
+
+            }
+
+            Debug.WriteLine(GapsY.Count()+ " and " +GapsY2.Count());// Confirm data is being passed on from other class
             MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
+            MyModel.Series.Add(lineSeries2);
             MyModel.Series.Add(lineSeriesAverage);
             // Interpolation implementation
             var series = new LineSeries

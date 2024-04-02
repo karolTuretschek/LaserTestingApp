@@ -50,8 +50,10 @@ namespace LaserTestingApp
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         public ScatterSeries saveSeries = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
+        public ScatterSeries saveSeries2 = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
         bool LineChartYX, ScatterChartYX, FastChartYX;
-        public Dictionary<double, double> gapsDictionary { get; set; } = new Dictionary<double, double>();
+        public Dictionary<double, double> gapsDictionaryY { get; set; } = new Dictionary<double, double>();
+        public Dictionary<double, double> gapsDictionaryY2 { get; set; } = new Dictionary<double, double>();
         public string filePath { get; set; } = "test";
         public MainWindow()
         {
@@ -98,13 +100,14 @@ namespace LaserTestingApp
 
             LoadAllData();
 
-            int RowsData = laserTime.Count()-1; // Find number of rows
+            int RowsData = laserTime.Count()-3; // Find number of rows
+            Debug.WriteLine($"Rows data: {RowsData}");
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
 
             ViewModel viewModel = new ViewModel();//Assign model 
-            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
+            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionaryY, gapsDictionaryY2);
             viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);         
             // Populate plots          
@@ -131,25 +134,19 @@ namespace LaserTestingApp
                     int rowCount = worksheet.Dimension.Rows;
                     if (data.Count == 0) // Only isert data if empty
                     {
-                        for (int row = 2; row < rowCount; row++)
+                        for (int row = 2; row <= rowCount; row++)
                         {
                             laserTime.Add(double.Parse(worksheet.Cells[row, 1].Text));
-                            string cellText = worksheet.Cells[row, 2].Text;
-                            double cellValue;
                             // If data missing calculate it based on one before and after
                             // Otherwise just take it from file
+                            string cellText = worksheet.Cells[row, 2].Text;
                             ProcessMissingAmbientTempValue(cellText, tempValue, laserAmbientTemp, worksheet, row, saveSeries);
-                            //cellText = worksheet.Cells[row, 3].Text;                            
-                            ProcessMissingUnitTempValue(cellText, tempValue, laserUnitTemp, worksheet, row);
+                            cellText = worksheet.Cells[row, 3].Text;                            
+                            ProcessMissingUnitTempValue(cellText, tempValue, laserUnitTemp, worksheet, row, saveSeries2);
                             cellText = worksheet.Cells[row, 4].Text;
-                            //saveSeries.Points.Add(new DataPoint(row, 4)); // Add saved value's position
                             ProcessMissingDivergenceValue(cellText, tempValue, laserDivergence, worksheet, row);
                             cellText = worksheet.Cells[row, 5].Text;
-                            //saveSeries.Points.Add(new DataPoint(row, 5)); // Add saved value's position
                             ProcessMissingPowerOutputValue(cellText, tempValue, laserPowerOutput, worksheet, row);
-                            //laserUnitTemp.Add(double.Parse(worksheet.Cells[row, 3].Text));
-                            //laserDivergence.Add(double.Parse(worksheet.Cells[row, 4].Text));
-                            //laserPowerOutput.Add(double.Parse(worksheet.Cells[row, 5].Text));
 
                             data = LoadExcel(laserTime.Last(),
                             laserAmbientTemp.Last(),
@@ -174,31 +171,41 @@ namespace LaserTestingApp
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0)) // Finding if value is 0.0/empty
+                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
                 {
                     tempValue = ((double.Parse(worksheet.Cells[row - 1, 2].Text) + double.Parse(worksheet.Cells[row + 1, 2].Text)) / 2);
                     double roundedTempValue = Math.Round(tempValue, 1);
                     myValue.Add(roundedTempValue);
                     mySeries.Points.Add(new ScatterPoint(row, 2, 100, 50)); // Add saved value's position
-                    gapsDictionary.Add(row, 2);
+                    gapsDictionaryY.Add(row, 2);
                 }
                 else
                 {
                     myValue.Add(cellValue);
                 }
             }
+            else // Not a number
+            {
+                tempValue = ((double.Parse(worksheet.Cells[row - 1, 2].Text) + double.Parse(worksheet.Cells[row + 1, 2].Text)) / 2);
+                double roundedTempValue = Math.Round(tempValue, 1);
+                myValue.Add(roundedTempValue);
+                mySeries.Points.Add(new ScatterPoint(row, 2, 100, 50)); // Add saved value's position
+                gapsDictionaryY.Add(row, 2);
+            }
         }
-        public void ProcessMissingUnitTempValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row)
+        public void ProcessMissingUnitTempValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row, ScatterSeries mySeries2)
         {
             double cellValue;
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0)) // Finding if value is 0.0/empty
+                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
                 {
                     tempValue = ((double.Parse(worksheet.Cells[row - 1, 3].Text) + double.Parse(worksheet.Cells[row + 1, 3].Text)) / 2);
                     double roundedTempValue = Math.Round(tempValue, 1);
                     myValue.Add(roundedTempValue);
+                    mySeries2.Points.Add(new ScatterPoint(row, 3, 100, 50)); // Add saved value's position
+                    gapsDictionaryY2.Add(row, 3);
                 }
                 else
                 {
@@ -454,7 +461,7 @@ namespace LaserTestingApp
                 case 1:
                     if (!LineChartYX)
                     {
-                        viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionary);
+                        viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize, gapsDictionaryY, gapsDictionaryY2);
                         LineChart.DataContext = viewModel;
                         LineChartYX = true;
                     }

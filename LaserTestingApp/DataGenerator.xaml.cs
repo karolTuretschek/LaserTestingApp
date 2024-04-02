@@ -36,7 +36,7 @@ namespace LaserTestingApp
             InitializeComponent();
         }
 
-        double MinTemp, MaxTemp, Divergence, UnitTemp;
+        double MinTemp, MaxTemp, Divergence, UnitTemp, PowerOutput;
         int Duration;
         double FirstNumber;
         double tempRandom;
@@ -49,6 +49,8 @@ namespace LaserTestingApp
             MinTemp = double.Parse(AmbientTempMinGeneratorTextBox.Text.ToString());
             MaxTemp = double.Parse(AmbientTempMaxGeneratorTextBox.Text.ToString());
             Duration = int.Parse(TimeGeneratorTextBox.Text.ToString());
+            PowerOutput = double.Parse(PowerOutputGeneratorTextBox.Text.ToString());
+            Divergence = double.Parse(DivergenceGeneratorTextBox.Text.ToString());
             UnitTemp = 15;
             Random random = new Random();
             double Temp = 15;
@@ -98,6 +100,8 @@ namespace LaserTestingApp
                                 worksheet.Cells[i + 1, 1].Value = i;
                                 worksheet.Cells[i + 1, 2].Value = Temp;
                                 worksheet.Cells[i + 1, 3].Value = Temp * 1.2;
+                                worksheet.Cells[i + 1, 4].Value = Divergence;
+                                worksheet.Cells[i + 1, 5].Value = PowerOutput;
                             }
                         }
                         else
@@ -106,6 +110,8 @@ namespace LaserTestingApp
                             worksheet.Cells[i + 1, 1].Value = i;
                             worksheet.Cells[i + 1, 2].Value = Temp;
                             worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
+                            worksheet.Cells[i + 1, 4].Value = Divergence;
+                            worksheet.Cells[i + 1, 5].Value = PowerOutput;
                         }
                     }
                     else
@@ -114,6 +120,8 @@ namespace LaserTestingApp
                         worksheet.Cells[i + 1, 1].Value = i;
                         worksheet.Cells[i + 1, 2].Value = Temp;
                         worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
+                        worksheet.Cells[i + 1, 4].Value = Divergence;
+                        worksheet.Cells[i + 1, 5].Value = PowerOutput;
                     }
                 }
                 package.Save();
