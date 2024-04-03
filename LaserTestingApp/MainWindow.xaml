@@ -151,6 +151,10 @@
             </Button>
         </StackPanel>
         <StackPanel Margin="10,195,1510,0" Grid.Row="2" HorizontalAlignment="Left">
+            <ComboBox x:Name="LaserCombBox" SelectedValuePath="Content" DisplayMemberPath="Content" IsEnabled="True" Width="120" SelectionChanged="LaserComboBox_SelectionChanged">
+                <ComboBoxItem Content="Unit 1"/>
+                <ComboBoxItem Content="Unit 2"/>
+            </ComboBox>
             <StackPanel Margin="0,0,0,0">
                 <Label x:Name ="UnitUnderTestInormationLabel" HorizontalContentAlignment="Center" Content="Unit Under Test Inormation" FontWeight="Bold" Width="160" Margin="0,0,0,0" FontSize="11" HorizontalAlignment="Left"/>
             </StackPanel>
@@ -163,7 +167,11 @@
                 <TextBox x:Name="UnitPowerOutputTextBox" Text="70mJ" Width="80" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" />
             </StackPanel>
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
-                <Label x:Name ="UnitOperatingTemperatureLabel" HorizontalContentAlignment="Center" Width="190" Content="Temperature:" Margin="0,0,0,0" FontSize="11"/>
+                <Label x:Name ="UnitDivergenceLabel" Width="80" Content="Divergence:" Margin="0,0,0,0" FontSize="11"/>
+                <TextBox x:Name ="UnitDivergenceTextBox" HorizontalContentAlignment="Center" VerticalAlignment="Center" Text="&lt;300" Width="80" Margin="0,0,0,0"/>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Label x:Name ="UnitOperatingTemperatureLabel" HorizontalContentAlignment="Center" Width="190" Content="Temperature:" Margin="0,0,0,0" FontWeight="Bold" FontSize="12"/>
             </StackPanel>
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                 <Label x:Name ="UnitMinOperatingTemperatureLabel"  VerticalAlignment="Center" Width="40" Content="Min:" Margin="0,0,0,0" FontSize="11"/>
@@ -171,12 +179,9 @@
                 <Label x:Name ="UnitMaxOperatingTemperatureLabel" Width="40" Content="Max:" Margin="0,0,0,0" FontSize="10"/>
                 <TextBox x:Name="UnitMaxOperatingTemperatureTextBox" HorizontalContentAlignment="Center" VerticalAlignment="Center" Text="50" Width="40" HorizontalAlignment="Center" Margin="0,0,0,0"/>
             </StackPanel>
-            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
-                <Label x:Name ="UnitDivergenceLabel" Width="80" Content="Divergence:" Margin="0,0,0,0" FontSize="11"/>
-                <TextBox x:Name ="UnitDivergenceTextBox" HorizontalContentAlignment="Center" VerticalAlignment="Center" Text="&lt;300" Width="80" Margin="0,0,0,0"/>
-            </StackPanel>
-            <Button x:Name="ParametersAssignButton" Click="ParametersAssignButton_Click" Width="50" Margin="5,10,0,0" HorizontalAlignment="Center">
-                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\ParametersLabel.png" HorizontalAlignment="Left"/>
+
+            <Button x:Name="GenerateDataButton" Click="GenerateDataButton_Click" Width="50" Margin="5,10,0,0" HorizontalAlignment="Center">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\GenerateDataLabel.png" HorizontalAlignment="Left"/>
             </Button>
         </StackPanel>
         <StackPanel Margin="650,395,0,10" Grid.Row="2" Orientation="Horizontal" Width="1040" HorizontalAlignment="Left">

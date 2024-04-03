@@ -5,36 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LaserTestingApp"
         mc:Ignorable="d"
-        Title="DataGenerator" Height="450" Width="800">
+        Title="DataGenerator" Height="400" Width="250">
     <Grid>
-        <StackPanel Margin="10,10,10,0" Grid.Row="2" Width="200" HorizontalAlignment="Left">
-            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label x:Name="TimeGeneratorLabel" Margin="0,0,0,0" Width="100" Content="Time duration:"  VerticalAlignment="Top" FontWeight="Bold" FontSize="12"/>
+        <StackPanel Margin="0,10,0,10" Width="180" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="170" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label x:Name="TimeGeneratorLabel" Margin="0,0,0,0" Width="120" Content="Time duration (s):"  VerticalAlignment="Top" FontWeight="Bold" FontSize="12"/>
                 <TextBox x:Name="TimeGeneratorTextBox" Width="50" IsReadOnly="False"/>
             </StackPanel>
             <StackPanel Margin="0,10,0,0">
-                <Label x:Name ="UnitUnderTestInormationLabel" HorizontalContentAlignment="Center" Content="Unit Under Test Inormation" FontWeight="Bold" Width="230" FontSize="11"/>
+                <Label x:Name ="UnitUnderTestInormationLabel" HorizontalContentAlignment="Center" Content="Unit Under Test Inormation" FontWeight="Bold" Width="195" FontSize="11"/>
             </StackPanel>
-
+            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label x:Name="NameGeneratorLabel" Content="Unit Name:" Width="80" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="11"/>
+                <TextBox x:Name="NameOGeneratorTextBox"  Width="80" IsReadOnly="False"/>
+            </StackPanel>
+            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label x:Name="PowerOutputGeneratorLabel" Content="Power Output:" Width="80" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="11"/>
+                <TextBox x:Name="PowerOutputGeneratorTextBox"  Width="80" IsReadOnly="False"/>
+            </StackPanel>
+            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label x:Name="DivergenceGeneratorLabel" Content="Divergence:" Width="80" VerticalAlignment="Top"  Margin="0,0,0,0" FontSize="11"/>
+                <TextBox x:Name="DivergenceGeneratorTextBox" Width="80" IsReadOnly="False"/>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Label x:Name ="UnitOperatingTemperatureLabel" HorizontalContentAlignment="Center" Width="190" Content="Temperature:" Margin="0,0,0,0" FontWeight="Bold" FontSize="12"/>
+            </StackPanel>
             <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Left">
                 <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="100" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Label x:Name="AmbientTempMinGeneratorLabel" Content="Min:" VerticalAlignment="Top" Width="50" FontWeight="Bold" Margin="0,0,0,0" FontSize="12"/>
+                    <Label x:Name="AmbientTempMinGeneratorLabel" Content="Min:" VerticalAlignment="Top" Width="50"  Margin="0,0,0,0" FontSize="11"/>
                     <TextBox x:Name="AmbientTempMinGeneratorTextBox" Width="40" IsReadOnly="False"/>
                 </StackPanel>
                 <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="100" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Label x:Name="AmbientTempMaxGeneratorLabel" Content="Max:" Width="40" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12"/>
+                    <Label x:Name="AmbientTempMaxGeneratorLabel" Content="Max:" Width="40" VerticalAlignment="Top"  Margin="0,0,0,0" FontSize="11"/>
                     <TextBox x:Name="AmbientTempMaxGeneratorTextBox" Width="40" IsReadOnly="False"/>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Label x:Name="PowerOutputGeneratorLabel" Content="Power Output:" Width="90" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12"/>
-                <TextBox x:Name="PowerOutputGeneratorTextBox"  Width="40" IsReadOnly="False"/>
-            </StackPanel>
-            <StackPanel Margin="0,10,0,0" Grid.Row="2" Width="200" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Label x:Name="DivergenceGeneratorLabel" Content="Divergence:" Width="90" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12"/>
-                <TextBox x:Name="DivergenceGeneratorTextBox" Width="40" IsReadOnly="False"/>
-            </StackPanel>
-            <Button x:Name="GenerateDataButton" Content="OK" Click="GenerateDataButton_Click" Width="50" Height="50" Margin="5,10,0,0" IsEnabled="True">
+
+
+            <Button x:Name="GenerateDataButton" Content="OK" Click="GenerateDataButton_Click" Width="80" Height="40" Margin="0,10,0,0" FontWeight="DemiBold" FontSize="12" IsEnabled="True">
             </Button>
         </StackPanel>
 

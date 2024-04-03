@@ -43,6 +43,7 @@ namespace LaserTestingApp
         MainWindow myWindow = new MainWindow();
         string myRootPath = "test2";
 
+        
         private void GenerateDataButton_Click(object sender, RoutedEventArgs e)
         {
             myRootPath = myWindow.FindDataFile();
@@ -125,12 +126,16 @@ namespace LaserTestingApp
                     }
                 }
                 package.Save();
+                
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"An error occurred while loading Xlsx data: {ex.Message}");
             }
+            this.Close();
         }
+
+
     }
 
 }

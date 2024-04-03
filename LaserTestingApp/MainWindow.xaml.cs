@@ -38,7 +38,6 @@ namespace LaserTestingApp
         
         MainWindow : System.Windows.Window
     {
-
         List<double> laserTime = new List<double>();
         List<double> laserAmbientTemp = new List<double>();
         List<double> laserUnitTemp = new List<double>();
@@ -62,7 +61,17 @@ namespace LaserTestingApp
         public Dictionary<double, double> gapsDictionaryY2 { get; set; } = new Dictionary<double, double>();
         public Dictionary<double, double> gapsDictionaryY3 { get; set; } = new Dictionary<double, double>();
         public Dictionary<double, double> gapsDictionaryY4 { get; set; } = new Dictionary<double, double>();
+        public Dictionary<string, ItemData> unit1 { get; set; } = new Dictionary<string, ItemData>();
+        public Dictionary<string, ItemData> unit2 { get; set; } = new Dictionary<string, ItemData>();
+        public class ItemData
+        {
+            public double PowerOutput { get; set; }
+            public double Divergence { get; set; }
+            public double MinTemp { get; set; }
+            public double MaxTemp { get; set; }
+        }
         public string filePath { get; set; } = "test";
+        ComboBoxItem newItem = new ComboBoxItem();
         public MainWindow()
         {
             InitializeComponent();
@@ -78,7 +87,7 @@ namespace LaserTestingApp
 
         }
         private List<laserInfo> laserInfos = new List<laserInfo>();
-        private void ParametersAssignButton_Click(object sender, RoutedEventArgs e)
+        private void GenerateDataButton_Click(object sender, RoutedEventArgs e)
         {
             DataGenerator myGenerator = new DataGenerator();
             myGenerator.Show();
@@ -120,17 +129,16 @@ namespace LaserTestingApp
             viewModel.MyModel = new PlotModel { Title = "Line Plot" };
             viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
             viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left,
-                Title = ComboBoxY.SelectedValue.ToString() + ", " +
-                ComboBoxY2.SelectedValue.ToString() + ", " +
-                ComboBoxY3.SelectedValue.ToString() + ", " +
-                ComboBoxY4.SelectedValue.ToString()
+                Title = yLabel
                 ,MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             // Add each axis
             viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, RowsData, gapsDictionaryY);
             viewModel.viewModelLineY2(xAxie, yAxie2, RowsData, gapsDictionaryY2);
-            viewModel.viewModelLineY3(xAxie, yAxie3, RowsData, gapsDictionaryY3);
-            viewModel.viewModelLineY4(xAxie, yAxie4, RowsData, gapsDictionaryY4);
+            if(ComboBoxY3.SelectedIndex != -1)
+                viewModel.viewModelLineY3(xAxie, yAxie3, RowsData, gapsDictionaryY3);
+            if (ComboBoxY4.SelectedIndex != -1)
+                viewModel.viewModelLineY4(xAxie, yAxie4, RowsData, gapsDictionaryY4);
             LineChart.DataContext = viewModel; // Plot it up
             viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
@@ -294,7 +302,7 @@ namespace LaserTestingApp
         }
         private void SetSelectedAxisValue(System.Windows.Controls.ComboBox comboBox, ref List<double> axie)
         {
-            if (comboBox.SelectedValue?.ToString() != string.Empty)
+            if (comboBox.SelectedValue?.ToString() != string.Empty && comboBox.SelectedIndex != -1)
             {
                 string selectedValue = comboBox.SelectedValue.ToString().ToLower();
 
@@ -488,7 +496,28 @@ namespace LaserTestingApp
             xFlag = true;
 
             changeTextBlock();
-        }     
+        }
+        private void LaserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (LaserCombBox.SelectedValue.ToString().Contains("1"))
+            {
+                UnitNameTextBox.Text = "Starlight R2";
+                UnitPowerOutputTextBox.Text = "1mW";
+                UnitMinOperatingTemperatureTextBox.Text = "-10";
+                UnitMaxOperatingTemperatureTextBox.Text = "40";
+                UnitDivergenceTextBox.Text = "700";
+
+            }
+            if (LaserCombBox.SelectedValue.ToString().Contains("2"))
+            {
+                UnitNameTextBox.Text = "163 LTD";
+                UnitPowerOutputTextBox.Text = "70mJ";
+                UnitMinOperatingTemperatureTextBox.Text = "-30";
+                UnitMaxOperatingTemperatureTextBox.Text = "50";
+                UnitDivergenceTextBox.Text = "300";
+            }
+        }
         private void ReverseAxisButton_Click(object sender, RoutedEventArgs e) {
 
             int RowsData = laserTime.Count(); // Find number of rows
@@ -549,12 +578,10 @@ namespace LaserTestingApp
                     break;
             }
         }
-
         private void UnitDivergenceTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
-
         private void DefaultDotButton_Click(object sender, RoutedEventArgs e)
         {
             DotSize = 3;
