@@ -54,6 +54,7 @@
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
             <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\xLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
             <ComboBox x:Name="ComboBoxX" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxX_SelectionChanged">
+                <ComboBoxItem Content=""/>
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
                 <ComboBoxItem Content="Unit Temp"/>
@@ -62,6 +63,7 @@
             </ComboBox>
             <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\yLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
             <ComboBox x:Name="ComboBoxY" SelectedValuePath="Content" Width="120"  SelectionChanged="ComboBoxY_SelectionChanged">
+                <ComboBoxItem Content=""/>
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
                 <ComboBoxItem Content="Unit Temp"/>
@@ -69,6 +71,7 @@
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
             <ComboBox x:Name="ComboBoxY2" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY2_SelectionChanged">
+                <ComboBoxItem Content=""/>
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
                 <ComboBoxItem Content="Unit Temp"/>
@@ -76,6 +79,7 @@
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
             <ComboBox x:Name="ComboBoxY3" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY3_SelectionChanged">
+                <ComboBoxItem Content=""/>
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
                 <ComboBoxItem Content="Unit Temp"/>
@@ -83,6 +87,7 @@
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
             <ComboBox x:Name="ComboBoxY4" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY4_SelectionChanged">
+                <ComboBoxItem Content=""/>
                 <ComboBoxItem Content="Time"/>
                 <ComboBoxItem Content="Ambient Temp"/>
                 <ComboBoxItem Content="Unit Temp"/>
@@ -184,9 +189,24 @@
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\GenerateDataLabel.png" HorizontalAlignment="Left"/>
             </Button>
         </StackPanel>
-        <StackPanel Margin="650,395,0,10" Grid.Row="2" Orientation="Horizontal" Width="1040" HorizontalAlignment="Left">
-            <Label x:Name ="MarkerLabel" Width="25" Height="25" Content="^" FontSize="18" FontWeight="Bold" />
-            <Label x:Name ="GapMarkerLabel" Width="115" Height="25" Content="Auto filled data point" Margin="0,0,0,0" FontSize="11"/>
+        <StackPanel x:Name="Legend" Margin="650,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Width="1040" HorizontalAlignment="Left">
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Label x:Name ="MarkerLabel" Width="25" Height="25" Content="^" FontSize="18" FontWeight="Bold" />
+                <Label x:Name ="GapMarkerLabel" Width="115" Height="25" Content="Auto filled data point" Margin="0,0,0,0" FontSize="11"/>
+                <CheckBox x:Name="DisplayGapMarkerCheckBox" IsChecked="False" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\UpperLimMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="UpperLimitLabel" Width="110" Height="25" Content="Unit Max Temp" Margin="0,0,0,0" FontSize="11"/>
+                <CheckBox x:Name="DisplayUpperLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\LowerLimitMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="LowerLimitLabel" Width="110" Height="25" Content="Unit Min Temp" Margin="0,0,0,0" FontSize="11"/>
+                <CheckBox x:Name="DisplayLowerLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
+            </StackPanel> 
         </StackPanel>
     </Grid>
 </Window>

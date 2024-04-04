@@ -187,11 +187,9 @@ namespace LaserTestingApp
         public void viewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
         {
             //Scatter Line
-
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             var lineSeriesTrend = new LineSeries { MarkerType = MarkerType.Triangle };
-
             // y
             for (int i = 2; i < ListLength; i++)
             {
@@ -199,25 +197,11 @@ namespace LaserTestingApp
                 {
                     lineSeries.Points.Add(new DataPoint(x[i], double.NaN));
                 }
-
                 else
                 {
-                    foreach (var item in GapsY)
-                    {
-                        if (x[i] == item.Key)
-                        {
-                            var gapSeries = new LineAnnotation { Text = "^", FontSize = 25 };
-                            gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-                            gapSeries.TextPosition = new DataPoint(item.Key, y[i]);
-                            MyModel.Annotations.Add(gapSeries);
-                        }
-
-                    }
                     lineSeries.Points.Add(new DataPoint(x[i], y[i]));
                 }
-
             }
-
             MyModel.Series.Add(lineSeriesTrend);
             MyModel.Series.Add(lineSeries);
             MyModel.Series.Add(lineSeriesAverage);
@@ -229,51 +213,67 @@ namespace LaserTestingApp
             for (int i = 0; i < ListLength; i++)
             {
                 series.Points.Add(new DataPoint(x[i], y[i]));
-
             }
-            // TODO:
-            // Consider creating either an average of the values before and after the missing value
-            // Or, create a small interpolation between these two values to fill the gap
             MyModel.Series.Add(series);
-            //Create line
-            /*            double horizontalLineYValue = 1.0; // At 1.0 of the divergence
-                        var horizontalLine = new LineAnnotation
+        }
+        public void viewModelLineGaps(List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
+        {
+            //Scatter Line
+            // y
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y[i].Equals(double.NaN))
+                {
+                    continue;
+                }
+                else
+                {
+                    foreach (var item in GapsY)
+                    {
+                        if (x[i] == item.Key)
                         {
-                            Type = LineAnnotationType.Horizontal,
-                            Y = horizontalLineYValue,
-                            Color = OxyColors.LightSalmon,
-                            StrokeThickness = 1.5
-                        };
-                        double horizontalLineYValueLimitUp = 1.02;   // Upper limit       
-                        var horizontalLineUp = new LineAnnotation
-                        {
-                            Type = LineAnnotationType.Horizontal,
-                            Y = horizontalLineYValueLimitUp,
-                            Color = OxyColors.Red,
-                            StrokeThickness = 1.5
-                        };
-                        double horizontalLineYValueLimitDown = 0.98; // Lower limit
-                        var horizontalLineDown = new LineAnnotation
-                        {
-                            Type = LineAnnotationType.Horizontal,
-                            Y = horizontalLineYValueLimitDown,
-                            Color = OxyColors.Red,
-                            StrokeThickness = 1.5
-                        };
-                        MyModel.Annotations.Add(horizontalLine);
-                        MyModel.Annotations.Add(horizontalLineUp);
-                        MyModel.Annotations.Add(horizontalLineDown);
-                        var rectangleAnnotation = new RectangleAnnotation
-                        {
-                            MinimumX = 0.0,
-                            MaximumX = (double)ListLength,
-                            MinimumY = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()),
-                            MaximumY = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString()),
-                            Fill = OxyColor.FromRgb(215, 255, 255),
-                            Layer = AnnotationLayer.BelowAxes
-                        };
-                        MyModel.Annotations.Add(rectangleAnnotation);*/
-           
+                            var gapSeries = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries.TextPosition = new DataPoint(item.Key, y[i]);
+                            MyModel.Annotations.Add(gapSeries);
+                        }
+                    }
+                }
+            }
+        }
+        public void createUpperLimit(int ListLength)
+        {
+            double horizontalLineYValueLimitUp = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString());   // Upper limit       
+            var horizontalLineUp = new LineAnnotation
+            {
+                Type = LineAnnotationType.Horizontal,
+                Y = horizontalLineYValueLimitUp,
+                Text = "Max Temp",
+                TextHorizontalAlignment = HorizontalAlignment.Right,
+                TextVerticalAlignment = VerticalAlignment.Top,
+                Color = OxyColors.OrangeRed,
+                StrokeThickness = 1.0,
+                MinimumX = 0,
+                MaximumX = ListLength
+            };
+            MyModel.Annotations.Add(horizontalLineUp);
+        }
+        public void createLowerLimit(int ListLength)
+        {
+            double horizontalLineYValueLimitDown = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()); // Lower limit
+            var horizontalLineDown = new LineAnnotation
+            {
+                Type = LineAnnotationType.Horizontal,
+                Text = "Min Temp",
+                TextHorizontalAlignment = HorizontalAlignment.Right,
+                TextVerticalAlignment = VerticalAlignment.Top,
+                Y = horizontalLineYValueLimitDown,
+                Color = OxyColors.Aqua,
+                StrokeThickness = 1.0,
+                MinimumX = 0,
+                MaximumX = ListLength
+            };
+            MyModel.Annotations.Add(horizontalLineDown);
         }
         public void viewModelLineReverse(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {

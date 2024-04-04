@@ -114,7 +114,6 @@ namespace LaserTestingApp
             ButtonsStack.IsEnabled = true;
             ButtonsStack.Opacity = 1.0;
  
-
             LoadAllData();
 
             int RowsData = laserTime.Count()-3; // Find number of rows
@@ -135,10 +134,16 @@ namespace LaserTestingApp
             // Add each axis
             viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, RowsData, gapsDictionaryY);
             viewModel.viewModelLineY2(xAxie, yAxie2, RowsData, gapsDictionaryY2);
-            if(ComboBoxY3.SelectedIndex != -1)
+            if(ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
                 viewModel.viewModelLineY3(xAxie, yAxie3, RowsData, gapsDictionaryY3);
-            if (ComboBoxY4.SelectedIndex != -1)
+            if(ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
                 viewModel.viewModelLineY4(xAxie, yAxie4, RowsData, gapsDictionaryY4);
+            if(DisplayUpperLimitCheckBox.IsChecked == true)
+                viewModel.createUpperLimit(RowsData);
+            if(DisplayLowerLimitCheckBox.IsChecked == true)
+                viewModel.createLowerLimit(RowsData);
+            if (DisplayGapMarkerCheckBox.IsChecked == true)
+                viewModel.viewModelLineGaps(xAxie, yAxie, RowsData, gapsDictionaryY);
             LineChart.DataContext = viewModel; // Plot it up
             viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
@@ -150,9 +155,9 @@ namespace LaserTestingApp
             LineChartYX = true;
             ScatterChartYX = true;
             FastChartYX = true;
-            double distanceMaxTemp = 0;
-            double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
-            Debug.WriteLine($" Max distance found - > {distanceMax}");
+            //double distanceMaxTemp = 0;
+            //double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
+            //Debug.WriteLine($" Max distance found - > {distanceMax}");
 
         }
         public void LoadAllData()
@@ -174,7 +179,8 @@ namespace LaserTestingApp
                             // Otherwise just take it from file
                             string cellText = worksheet.Cells[row, 2].Text;
                             ProcessMissingAmbientTempValue(cellText, tempValue, laserAmbientTemp, worksheet, row, saveSeries);
-                            cellText = worksheet.Cells[row, 3].Text;                            
+                            cellText = worksheet.Cells[row, 3].Text; 
+                            Debug.WriteLine("Gaps? " + cellText);
                             ProcessMissingUnitTempValue(cellText, tempValue, laserUnitTemp, worksheet, row, saveSeries2);
                             cellText = worksheet.Cells[row, 4].Text;
                             ProcessMissingDivergenceValue(cellText, tempValue, laserDivergence, worksheet, row);
@@ -452,6 +458,7 @@ namespace LaserTestingApp
 
         }
         bool yFlag, y2Flag, y3Flag, y4Flag, xFlag = false;
+
         private void ComboBoxY_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             yLabel = ComboBoxY.SelectedValue?.ToString();
