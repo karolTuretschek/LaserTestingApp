@@ -33,10 +33,7 @@ using System.Collections.ObjectModel;
 
 namespace LaserTestingApp
 {
-    public partial class 
-        
-        
-        MainWindow : System.Windows.Window
+    public partial class MainWindow : System.Windows.Window
     {
         List<double> laserTime = new List<double>();
         List<double> laserAmbientTemp = new List<double>();
@@ -51,11 +48,14 @@ namespace LaserTestingApp
         List<double> yAxie4 = new List<double>();
         List<double> xAxie = new List<double>();
         List<double> distances = new List<double>();
+        double UpperLimit, LowerLimit;
         string RootPath = "test";
         double DotSize = 3;
         public static List<laserInfo> data = new List<laserInfo>();
         public ScatterSeries saveSeries = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
         public ScatterSeries saveSeries2 = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
+        public ScatterSeries saveSeries3 = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
+        public ScatterSeries saveSeries4 = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
         bool LineChartYX, ScatterChartYX, FastChartYX;
         public Dictionary<double, double> gapsDictionaryY { get; set; } = new Dictionary<double, double>();
         public Dictionary<double, double> gapsDictionaryY2 { get; set; } = new Dictionary<double, double>();
@@ -132,18 +132,28 @@ namespace LaserTestingApp
                 ,MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             // Add each axis
-            viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, RowsData, gapsDictionaryY);
+            viewModel.viewModelLine(xAxie, yAxie, RowsData, gapsDictionaryY);
             viewModel.viewModelLineY2(xAxie, yAxie2, RowsData, gapsDictionaryY2);
             if(ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
                 viewModel.viewModelLineY3(xAxie, yAxie3, RowsData, gapsDictionaryY3);
             if(ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
                 viewModel.viewModelLineY4(xAxie, yAxie4, RowsData, gapsDictionaryY4);
-            if(DisplayUpperLimitCheckBox.IsChecked == true)
-                viewModel.createUpperLimit(RowsData);
-            if(DisplayLowerLimitCheckBox.IsChecked == true)
-                viewModel.createLowerLimit(RowsData);
+            UpperLimit = double.Parse(UnitMaxOperatingTemperatureTextBox.Text.ToString());
+            if (DisplayUpperLimitCheckBox.IsChecked == true)
+                viewModel.createUpperLimit(RowsData, UpperLimit);
+
+            LowerLimit = double.Parse(UnitMinOperatingTemperatureTextBox.Text.ToString());
+            if (DisplayLowerLimitCheckBox.IsChecked == true)
+                viewModel.createLowerLimit(RowsData, LowerLimit);
+
             if (DisplayGapMarkerCheckBox.IsChecked == true)
+            {
                 viewModel.viewModelLineGaps(xAxie, yAxie, RowsData, gapsDictionaryY);
+                viewModel.viewModelLineY2Gaps(xAxie, yAxie2, RowsData, gapsDictionaryY2);
+                viewModel.viewModelLineY3Gaps(xAxie, yAxie3, RowsData, gapsDictionaryY3);
+                viewModel.viewModelLineY4Gaps(xAxie, yAxie4, RowsData, gapsDictionaryY4);
+            }
+                
             LineChart.DataContext = viewModel; // Plot it up
             viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
             viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
@@ -158,7 +168,6 @@ namespace LaserTestingApp
             //double distanceMaxTemp = 0;
             //double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
             //Debug.WriteLine($" Max distance found - > {distanceMax}");
-
         }
         public void LoadAllData()
         {
@@ -183,9 +192,9 @@ namespace LaserTestingApp
                             Debug.WriteLine("Gaps? " + cellText);
                             ProcessMissingUnitTempValue(cellText, tempValue, laserUnitTemp, worksheet, row, saveSeries2);
                             cellText = worksheet.Cells[row, 4].Text;
-                            ProcessMissingDivergenceValue(cellText, tempValue, laserDivergence, worksheet, row);
+                            ProcessMissingDivergenceValue(cellText, tempValue, laserDivergence, worksheet, row, saveSeries3);
                             cellText = worksheet.Cells[row, 5].Text;
-                            ProcessMissingPowerOutputValue(cellText, tempValue, laserPowerOutput, worksheet, row);
+                            ProcessMissingPowerOutputValue(cellText, tempValue, laserPowerOutput, worksheet, row, saveSeries4);
 
                             data = LoadExcel(laserTime.Last(),
                             laserAmbientTemp.Last(),
@@ -251,41 +260,70 @@ namespace LaserTestingApp
                     myValue.Add(cellValue);
                 }
             }
+            else // Not a number
+            {
+                tempValue = ((double.Parse(worksheet.Cells[row - 1, 3].Text) + double.Parse(worksheet.Cells[row + 1, 3].Text)) / 2);
+                double roundedTempValue = Math.Round(tempValue, 1);
+                myValue.Add(roundedTempValue);
+                mySeries2.Points.Add(new ScatterPoint(row, 3, 100, 50)); // Add saved value's position
+                gapsDictionaryY2.Add(row, 3);
+            }
+
         }
-        public void ProcessMissingDivergenceValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row)
+        public void ProcessMissingDivergenceValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row, ScatterSeries mySeries3)
         {
             double cellValue;
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0)) // Finding if value is 0.0/empty
+                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
                 {
                     tempValue = ((double.Parse(worksheet.Cells[row - 1, 4].Text) + double.Parse(worksheet.Cells[row + 1, 4].Text)) / 2);
-                    double roundedTempValue = Math.Round(tempValue, 2);
+                    double roundedTempValue = Math.Round(tempValue, 1);
                     myValue.Add(roundedTempValue);
+                    mySeries3.Points.Add(new ScatterPoint(row, 4, 100, 50)); // Add saved value's position
+                    gapsDictionaryY3.Add(row, 4);
                 }
                 else
                 {
                     myValue.Add(cellValue);
                 }
             }
+            else // Not a number
+            {
+                tempValue = ((double.Parse(worksheet.Cells[row - 1, 4].Text) + double.Parse(worksheet.Cells[row + 1, 4].Text)) / 2);
+                double roundedTempValue = Math.Round(tempValue, 1);
+                myValue.Add(roundedTempValue);
+                mySeries3.Points.Add(new ScatterPoint(row, 4, 100, 50)); // Add saved value's position
+                gapsDictionaryY3.Add(row, 4);
+            }
         }
-        public void ProcessMissingPowerOutputValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row)
+        public void ProcessMissingPowerOutputValue(string cellText, double tempValue, List<double> myValue, ExcelWorksheet worksheet, int row, ScatterSeries mySeries4)
         {
             double cellValue;
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0)) // Finding if value is 0.0/empty
+                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
                 {
                     tempValue = ((double.Parse(worksheet.Cells[row - 1, 5].Text) + double.Parse(worksheet.Cells[row + 1, 5].Text)) / 2);
-                    double roundedTempValue = Math.Round(tempValue, 2);
+                    double roundedTempValue = Math.Round(tempValue, 1);
                     myValue.Add(roundedTempValue);
+                    mySeries4.Points.Add(new ScatterPoint(row, 5, 100, 50)); // Add saved value's position
+                    gapsDictionaryY4.Add(row, 5);
                 }
                 else
                 {
                     myValue.Add(cellValue);
                 }
+            }
+            else // Not a number
+            {
+                tempValue = ((double.Parse(worksheet.Cells[row - 1, 5].Text) + double.Parse(worksheet.Cells[row + 1, 5].Text)) / 2);
+                double roundedTempValue = Math.Round(tempValue, 1);
+                myValue.Add(roundedTempValue);
+                mySeries4.Points.Add(new ScatterPoint(row, 5, 100, 50)); // Add saved value's position
+                gapsDictionaryY4.Add(row, 5);
             }
         }
         public void LoaddAllDataJson()
@@ -540,7 +578,7 @@ namespace LaserTestingApp
                 case 1:
                     if (!LineChartYX)
                     {
-                        viewModel.viewModelLine(yLabel, xLabel, xAxie, yAxie, RowsData, gapsDictionaryY);
+                        viewModel.viewModelLine(xAxie, yAxie, RowsData, gapsDictionaryY);
                         LineChart.DataContext = viewModel;
                         LineChartYX = true;
                     }

@@ -189,22 +189,22 @@
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\GenerateDataLabel.png" HorizontalAlignment="Left"/>
             </Button>
         </StackPanel>
-        <StackPanel x:Name="Legend" Margin="650,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Width="1040" HorizontalAlignment="Left">
+        <StackPanel x:Name="Legend" Margin="650,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                 <Label x:Name ="MarkerLabel" Width="25" Height="25" Content="^" FontSize="18" FontWeight="Bold" />
-                <Label x:Name ="GapMarkerLabel" Width="115" Height="25" Content="Auto filled data point" Margin="0,0,0,0" FontSize="11"/>
+                <Label x:Name ="GapMarkerLabel" Width="125" Height="25" Content="Auto filled data points:" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayGapMarkerCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\UpperLimMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
-                <Label x:Name ="UpperLimitLabel" Width="110" Height="25" Content="Unit Max Temp" Margin="0,0,0,0" FontSize="11"/>
+                <Label x:Name ="UpperLimitLabel" Width="120" Height="25" Content="Unit Max Temp" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayUpperLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel>
             
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\LowerLimitMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
-                <Label x:Name ="LowerLimitLabel" Width="110" Height="25" Content="Unit Min Temp" Margin="0,0,0,0" FontSize="11"/>
+                <Label x:Name ="LowerLimitLabel" Width="120" Height="25" Content="Unit Min Temp" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayLowerLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel> 
         </StackPanel>

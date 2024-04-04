@@ -96,7 +96,7 @@ namespace LaserTestingApp
         }
         public void viewModelLineY4(List<double> x, List<double> y4, int ListLength, Dictionary<double, double> GapsY4)
         {
-            var lineSeries4 = new LineSeries { MarkerType = MarkerType.Circle };
+            var lineSeries4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Green };
             // y4
             for (int i = 2; i < ListLength; i++)
             {
@@ -104,29 +104,40 @@ namespace LaserTestingApp
                 {
                     lineSeries4.Points.Add(new DataPoint(x[i], double.NaN));
                 }
-
+                else
+                {
+                    lineSeries4.Points.Add(new DataPoint(x[i], y4[i]));
+                }
+            }
+            MyModel.Series.Add(lineSeries4);
+        }
+        public void viewModelLineY4Gaps(List<double> x, List<double> y4, int ListLength, Dictionary<double, double> GapsY4)
+        {
+            // y4
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y4[i].Equals(double.NaN))
+                {
+                    continue;
+                }
                 else
                 {
                     foreach (var item in GapsY4)
                     {
                         if (x[i] == item.Key)
                         {
-                            var gapSeries4 = new LineAnnotation { Text = "^", FontSize = 25 };
-                            gapSeries4.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-                            gapSeries4.TextPosition = new DataPoint(item.Key, y4[i]);
-                            MyModel.Annotations.Add(gapSeries4);
+                            var gapSeries = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries.TextPosition = new DataPoint(item.Key, y4[i]);
+                            MyModel.Annotations.Add(gapSeries);
                         }
-
                     }
-                    lineSeries4.Points.Add(new DataPoint(x[i], y4[i]));
                 }
-
             }
-            MyModel.Series.Add(lineSeries4);
         }
         public void viewModelLineY3(List<double> x, List<double> y3, int ListLength, Dictionary<double, double> GapsY3)
         {
-            var lineSeries3 = new LineSeries { MarkerType = MarkerType.Circle };
+            var lineSeries3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
             // y3
             for (int i = 2; i < ListLength; i++)
             {
@@ -134,29 +145,40 @@ namespace LaserTestingApp
                 {
                     lineSeries3.Points.Add(new DataPoint(x[i], double.NaN));
                 }
-
+                else
+                {
+                    lineSeries3.Points.Add(new DataPoint(x[i], y3[i]));
+                }
+            }
+            MyModel.Series.Add(lineSeries3);
+        }
+        public void viewModelLineY3Gaps(List<double> x, List<double> y3, int ListLength, Dictionary<double, double> GapsY3)
+        {
+            // y3
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y3[i].Equals(double.NaN))
+                {
+                    continue;
+                }
                 else
                 {
                     foreach (var item in GapsY3)
                     {
                         if (x[i] == item.Key)
                         {
-                            var gapSeries3 = new LineAnnotation { Text = "^", FontSize = 25 };
-                            gapSeries3.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-                            gapSeries3.TextPosition = new DataPoint(item.Key, y3[i]);
-                            MyModel.Annotations.Add(gapSeries3);
+                            var gapSeries = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries.TextPosition = new DataPoint(item.Key, y3[i]);
+                            MyModel.Annotations.Add(gapSeries);
                         }
-
                     }
-                    lineSeries3.Points.Add(new DataPoint(x[i], y3[i]));
                 }
-
             }
-            MyModel.Series.Add(lineSeries3);
         }
         public void viewModelLineY2(List<double> x, List<double> y2, int ListLength, Dictionary<double, double> GapsY2)
         {
-            var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle };
+            var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
             // y2
             for (int i = 2; i < ListLength; i++)
             {
@@ -164,30 +186,41 @@ namespace LaserTestingApp
                 {
                     lineSeries2.Points.Add(new DataPoint(x[i], double.NaN));
                 }
-
+                else
+                {
+                    lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
+                }
+            }
+            MyModel.Series.Add(lineSeries2);
+        }
+        public void viewModelLineY2Gaps(List<double> x, List<double> y2, int ListLength, Dictionary<double, double> GapsY2)
+        {
+            // y2
+            for (int i = 2; i < ListLength; i++)
+            {
+                if (y2[i].Equals(double.NaN))
+                {
+                    continue;
+                }
                 else
                 {
                     foreach (var item in GapsY2)
                     {
                         if (x[i] == item.Key)
                         {
-                            var gapSeries2 = new LineAnnotation { Text = "^", FontSize = 25 };
-                            gapSeries2.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-                            gapSeries2.TextPosition = new DataPoint(item.Key, y2[i]);
-                            MyModel.Annotations.Add(gapSeries2);
+                            var gapSeries = new LineAnnotation { Text = "^", FontSize = 25 };
+                            gapSeries.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+                            gapSeries.TextPosition = new DataPoint(item.Key, y2[i]);
+                            MyModel.Annotations.Add(gapSeries);
                         }
-
                     }
-                    lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
                 }
-
             }
-            MyModel.Series.Add(lineSeries2);
         }
-        public void viewModelLine(string yLabel, string xLabel, List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
+        public void viewModelLine(List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
         {
             //Scatter Line
-            var lineSeries = new LineSeries { MarkerType = MarkerType.Circle };
+            var lineSeries = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red};
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             var lineSeriesTrend = new LineSeries { MarkerType = MarkerType.Triangle };
             // y
@@ -218,7 +251,6 @@ namespace LaserTestingApp
         }
         public void viewModelLineGaps(List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
         {
-            //Scatter Line
             // y
             for (int i = 2; i < ListLength; i++)
             {
@@ -241,13 +273,13 @@ namespace LaserTestingApp
                 }
             }
         }
-        public void createUpperLimit(int ListLength)
+        public void createUpperLimit(int ListLength, double UpperLimit)
         {
-            double horizontalLineYValueLimitUp = double.Parse(myWindow.UnitMaxOperatingTemperatureTextBox.Text.ToString());   // Upper limit       
+            // Upper limit       
             var horizontalLineUp = new LineAnnotation
             {
                 Type = LineAnnotationType.Horizontal,
-                Y = horizontalLineYValueLimitUp,
+                Y = UpperLimit,
                 Text = "Max Temp",
                 TextHorizontalAlignment = HorizontalAlignment.Right,
                 TextVerticalAlignment = VerticalAlignment.Top,
@@ -258,16 +290,16 @@ namespace LaserTestingApp
             };
             MyModel.Annotations.Add(horizontalLineUp);
         }
-        public void createLowerLimit(int ListLength)
+        public void createLowerLimit(int ListLength, double LowerLimit)
         {
-            double horizontalLineYValueLimitDown = double.Parse(myWindow.UnitMinOperatingTemperatureTextBox.Text.ToString()); // Lower limit
+            // Lower limit
             var horizontalLineDown = new LineAnnotation
             {
                 Type = LineAnnotationType.Horizontal,
                 Text = "Min Temp",
                 TextHorizontalAlignment = HorizontalAlignment.Right,
                 TextVerticalAlignment = VerticalAlignment.Top,
-                Y = horizontalLineYValueLimitDown,
+                Y = LowerLimit,
                 Color = OxyColors.Aqua,
                 StrokeThickness = 1.0,
                 MinimumX = 0,
