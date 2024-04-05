@@ -52,7 +52,7 @@ namespace LaserTestingApp
         public void viewModelFast(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
             //Fast Line
-            MyModel3 = new PlotModel { Title = "Fast Line" };
+/*            MyModel3 = new PlotModel { Title = "Fast Line" };
             var lineSeries3 = new LineSeries();
             var lineSeries4 = new LineSeries();
             for (int i = 0; i < ListLength; i++)
@@ -65,7 +65,7 @@ namespace LaserTestingApp
             MyModel3.Series.Add(lineSeries4); // Second
             MyModel3.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
             MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });*/
         }
         public void viewModelFastReverse(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
@@ -94,11 +94,11 @@ namespace LaserTestingApp
             MyModel3.Series.Add(lineSeries3); // First line of data
             MyModel3.Series.Add(lineSeries4); // Second
         }
-        public void viewModelLineY4(List<double> x, List<double> y4, int ListLength, Dictionary<double, double> GapsY4)
+        public void viewModelLineY4(List<double> x, List<double> y4, int ListLength)
         {
             var lineSeries4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Green };
             // y4
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i <= ListLength; i++)
             {
                 if (y4[i].Equals(double.NaN))
                 {
@@ -135,11 +135,11 @@ namespace LaserTestingApp
                 }
             }
         }
-        public void viewModelLineY3(List<double> x, List<double> y3, int ListLength, Dictionary<double, double> GapsY3)
+        public void viewModelLineY3(List<double> x, List<double> y3, int ListLength)
         {
             var lineSeries3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
             // y3
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i <= ListLength; i++)
             {
                 if (y3[i].Equals(double.NaN))
                 {
@@ -176,11 +176,11 @@ namespace LaserTestingApp
                 }
             }
         }
-        public void viewModelLineY2(List<double> x, List<double> y2, int ListLength, Dictionary<double, double> GapsY2)
+        public void viewModelLineY2(List<double> x, List<double> y2, int ListLength)
         {
             var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
             // y2
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i <= ListLength; i++)
             {
                 if (y2[i].Equals(double.NaN))
                 {
@@ -203,7 +203,7 @@ namespace LaserTestingApp
                     continue;
                 }
                 else
-                {
+                {                   
                     foreach (var item in GapsY2)
                     {
                         if (x[i] == item.Key)
@@ -217,14 +217,14 @@ namespace LaserTestingApp
                 }
             }
         }
-        public void viewModelLine(List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
+        public void viewModelLine(List<double> x, List<double> y, int ListLength)
         {
             //Scatter Line
             var lineSeries = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red};
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             var lineSeriesTrend = new LineSeries { MarkerType = MarkerType.Triangle };
             // y
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i <= ListLength; i++)
             {
                 if (y[i].Equals(double.NaN))
                 {
@@ -248,6 +248,13 @@ namespace LaserTestingApp
                 series.Points.Add(new DataPoint(x[i], y[i]));
             }
             MyModel.Series.Add(series);
+        }
+        private double CalculateStandardDeviation(List<double> values, double mean)
+        {
+            double sumOfSquaredDifferences = values.Sum(value => Math.Pow(value - mean, 2));
+            double variance = sumOfSquaredDifferences / values.Count;
+            double standardDeviation = Math.Sqrt(variance);
+            return standardDeviation;
         }
         public void viewModelLineGaps(List<double> x, List<double> y, int ListLength, Dictionary<double, double> GapsY)
         {
