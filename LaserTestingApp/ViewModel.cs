@@ -54,7 +54,6 @@ namespace LaserTestingApp
         }
         public void viewModelFast(List<double> x, List<double> y, List<double> y2, List<double> y3, List<double> y4, int ListLength)
         {
-            MyModel3a = new PlotModel { Title = "y" };
             var sub1 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Green };
             for (int i = 0; i < ListLength; i++)
             {
@@ -62,7 +61,6 @@ namespace LaserTestingApp
             }
             MyModel3a.Series.Add(sub1);
 
-            MyModel3b = new PlotModel { Title = "y2" };
             var sub2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
             for (int i = 0; i < ListLength; i++)
             {
@@ -70,7 +68,6 @@ namespace LaserTestingApp
             }
             MyModel3b.Series.Add(sub2);
 
-            MyModel3c = new PlotModel { Title = "y3" };
             var sub3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
             for (int i = 0; i < ListLength; i++)
             {
@@ -78,13 +75,13 @@ namespace LaserTestingApp
             }
             MyModel3c.Series.Add(sub3);
 
-            MyModel3d = new PlotModel { Title = "y4" };
             var sub4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red };
             for (int i = 0; i < ListLength; i++)
             {
                 sub4.Points.Add(new DataPoint(x[i], y4[i]));
             }
             MyModel3d.Series.Add(sub4);
+
         }
         public void viewModelFastReverse(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {

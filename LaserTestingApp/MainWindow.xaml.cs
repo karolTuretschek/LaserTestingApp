@@ -31,6 +31,8 @@ using static Giraffe.ViewEngine.HtmlElements.XmlAttribute;
 using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Metrics;
+using System.Windows.Media.Media3D;
+using System.Windows.Documents;
 
 namespace LaserTestingApp
 {
@@ -136,11 +138,23 @@ namespace LaserTestingApp
             ViewModel viewModel = new ViewModel();//Assign model 
             viewModel.MyModel = new PlotModel { Title = "Line Plot" };
             viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left,
-                Title = yLabel
-                ,MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            // Add each axis
+            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+            viewModel.MyModel3a = new PlotModel { };
+            viewModel.MyModel3b = new PlotModel { };
+            viewModel.MyModel3c = new PlotModel { };
+            viewModel.MyModel3d = new PlotModel { };
+            // Assign Bottom title for subplots
+            viewModel.MyModel3a.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel3b.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel3c.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel3d.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            // Assign Left title for subplots 
+            viewModel.MyModel3a.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel3b.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY2.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel3c.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY3.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            viewModel.MyModel3d.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY4.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             viewModel.viewModelLine(xAxie, yAxie, RowsData);
             viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
             if(ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
