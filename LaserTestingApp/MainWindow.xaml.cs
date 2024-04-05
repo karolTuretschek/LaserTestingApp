@@ -33,6 +33,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Metrics;
 using System.Windows.Media.Media3D;
 using System.Windows.Documents;
+using OxyPlot.Wpf;
 
 namespace LaserTestingApp
 {
@@ -116,13 +117,70 @@ namespace LaserTestingApp
             }
             return null;          
         }
+        private void LoadDataButtonFast_Click(object sender, RoutedEventArgs e)
+        {
+            SetSelectedAxisValue(ComboBoxYFast, ref yAxie);
+            SetSelectedAxisValue(ComboBoxY2Fast, ref yAxie2);
+            SetSelectedAxisValue(ComboBoxY3Fast, ref yAxie3);
+            SetSelectedAxisValue(ComboBoxY4Fast, ref yAxie4);
+            SetSelectedAxisValue(ComboBoxXFast, ref xAxie);
+
+            LoadAllData();
+
+            int RowsData = laserTime.Count() - 3; // Find number of rows
+
+            ViewModel viewModel = new ViewModel();//Assign model 
+
+            viewModel.MyModel3a = new PlotModel { };
+            viewModel.MyModel3b = new PlotModel { };
+            viewModel.MyModel3c = new PlotModel { };
+            viewModel.MyModel3d = new PlotModel { };
+            // Assign Bottom title for subplots
+            if (ComboBoxYFast.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+            {
+                viewModel.MyModel3a.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxXFast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel3a.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxYFast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                //viewModel.viewModelLine(xAxie, yAxie, RowsData);
+            }
+
+            if (ComboBoxY2Fast.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+            {
+                viewModel.MyModel3b.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxXFast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel3b.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY2Fast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                //viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+            }
+
+            if (ComboBoxY3Fast.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+            {
+                viewModel.MyModel3c.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY3Fast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel3c.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxXFast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                //viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
+            }
+
+
+            if (ComboBoxY4Fast.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+            {
+                viewModel.MyModel3d.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY4Fast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel3d.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxXFast.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                //viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
+            }
+            // View Fast Model only if 4 sub plots are chosen
+            if (ComboBoxYFast.SelectedIndex != -1 && ComboBoxYFast.SelectedValue != ""
+                && ComboBoxY2Fast.SelectedIndex != -1 && ComboBoxY2Fast.SelectedValue != "" &&
+                ComboBoxY3Fast.SelectedIndex != -1 && ComboBoxY3Fast.SelectedValue != "" &&
+                ComboBoxY4Fast.SelectedIndex != -1 && ComboBoxY4Fast.SelectedValue != "")
+                viewModel.viewModelFast(xAxie, yAxie, yAxie2, yAxie3, yAxie4, RowsData);
+
+            FastChart.DataContext = viewModel;
+            // Assign flags
+            LineChartYX = true;
+            ScatterChartYX = true;
+            FastChartYX = true;
+        }
         private void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
-            // Show previously disabled buttons
-            ReverseAxis.IsEnabled = true;           
+            // Show previously disabled buttons          
             ResetButton.IsEnabled = true;            
-            DotSizeStack.IsEnabled = true;
-            DotSizeStack.Opacity = 1.0;
             ButtonsStack.IsEnabled = true;
             ButtonsStack.Opacity = 1.0;
  
@@ -141,26 +199,30 @@ namespace LaserTestingApp
             viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
-            viewModel.MyModel3a = new PlotModel { };
-            viewModel.MyModel3b = new PlotModel { };
-            viewModel.MyModel3c = new PlotModel { };
-            viewModel.MyModel3d = new PlotModel { };
             // Assign Bottom title for subplots
-            viewModel.MyModel3a.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel3b.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel3c.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel3d.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            // Assign Left title for subplots 
-            viewModel.MyModel3a.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel3b.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY2.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel3c.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY3.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel3d.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ComboBoxY4.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.viewModelLine(xAxie, yAxie, RowsData);
-            viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
-            if(ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+
+
+            if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+            {
+                viewModel.viewModelLine(xAxie, yAxie, RowsData);
+            }
+            
+            if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+            {
+                viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+            }
+
+            if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+            {
                 viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
+            }
+                
+                
             if(ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+            {               
                 viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
+            }
+                
             UpperLimit = double.Parse(UnitMaxOperatingTemperatureTextBox.Text.ToString());
             if (DisplayUpperLimitCheckBox.IsChecked == true)
                 viewModel.createUpperLimit(RowsData, UpperLimit);
@@ -186,20 +248,25 @@ namespace LaserTestingApp
                     viewModel.viewModelLineY4Gaps(xAxie, yAxie4, laserTime.Count(), gapsDictionaryY4Json);
                 }
                
-            LineChart.DataContext = viewModel; // Plot it up
-            viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            viewModel.viewModelFast(xAxie, yAxie, yAxie2, yAxie3, yAxie4, RowsData);
-
-            // Populate plots          
-            ScatterChart.DataContext = viewModel;
-            FastChart.DataContext = viewModel;
+            LineChart.DataContext = viewModel; // Plot it up       
             // Assign flags
             LineChartYX = true;
-            ScatterChartYX = true;
-            FastChartYX = true;
             //double distanceMaxTemp = 0;
             //double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
             //Debug.WriteLine($" Max distance found - > {distanceMax}");
+        }
+        private void MainTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FastChart.IsSelected)
+            {
+                FastStackPanel.Visibility = Visibility.Visible;
+                LineStackPanel.Visibility = Visibility.Hidden;
+            }
+            else if (LineChart.IsSelected)
+            {
+                FastStackPanel.Visibility = Visibility.Hidden;
+                LineStackPanel.Visibility = Visibility.Visible;
+            }
         }
         public void LoadAllData()
         {
@@ -585,10 +652,6 @@ namespace LaserTestingApp
                     LineChart.DataContext = viewModel;
                     break;
                 case 2:
-                    viewModel.viewModelScatterReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                    ScatterChart.DataContext = viewModel;
-                    break;
-                case 3:
                     viewModel.viewModelFastReset(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
                     FastChart.DataContext = viewModel;
                     break;
@@ -722,66 +785,6 @@ namespace LaserTestingApp
                 UnitMinOperatingTemperatureTextBox.Text = "-30";
                 UnitMaxOperatingTemperatureTextBox.Text = "50";
                 UnitDivergenceTextBox.Text = "300";
-            }
-        }
-        private void ReverseAxisButton_Click(object sender, RoutedEventArgs e) {
-
-            int RowsData = laserTime.Count(); // Find number of rows
-
-            ViewModel viewModel = new ViewModel();//Assign model
-            int currentTabIndex = MainTab.SelectedIndex; // Find current tab open
-            switch (currentTabIndex) // Based on open tab reverse axis
-            {
-                case 0:
-                    // Tab index is 0
-                    Debug.WriteLine("Tab index is 0, Cannot reverse axis");
-                    break;
-                case 1:
-                    if (!LineChartYX)
-                    {
-                        viewModel.viewModelLine(xAxie, yAxie, RowsData);
-                        LineChart.DataContext = viewModel;
-                        LineChartYX = true;
-                    }
-                    else
-                    {
-                        viewModel.viewModelLineReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        LineChart.DataContext = viewModel;
-                        LineChartYX = false;
-                    }
-                    break;
-                case 2:
-                    if (!ScatterChartYX)
-                    {
-                        viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        ScatterChart.DataContext = viewModel;
-                        ScatterChartYX = true;
-                    }
-                    else
-                    {
-                        viewModel.viewModelScatterReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        ScatterChart.DataContext = viewModel;
-                        ScatterChartYX = false;
-                    }
-                    break;
-                case 3:
-                    if (!FastChartYX)
-                    {
-                        viewModel.viewModelFast(xAxie, yAxie, yAxie2, yAxie3, yAxie4, RowsData);
-                        FastChart.DataContext = viewModel;
-                        FastChartYX = true;
-                    }
-                    else
-                    {
-                        viewModel.viewModelFastReverse(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-                        FastChart.DataContext = viewModel;
-                        FastChartYX = false;
-                    }
-                    break;
-                default:
-                    // Handle case when index is out of range
-                    Debug.WriteLine($"Tab index is out of range. Current tab {currentTabIndex}");
-                    break;
             }
         }
         private void UnitDivergenceTextBox_TextChanged(object sender, TextChangedEventArgs e)

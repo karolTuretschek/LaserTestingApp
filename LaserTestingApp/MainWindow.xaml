@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
 
-        <TabControl x:Name ="MainTab"  Margin="195,10,21,95" MinHeight="2" MaxHeight="1000" Grid.RowSpan="3">
+        <TabControl x:Name ="MainTab"  Margin="195,10,21,95" MinHeight="2" MaxHeight="1000" Grid.RowSpan="3" SelectionChanged="MainTab_SelectionChanged">
             <TabItem x:Name="Data" Header="Data Grid">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
@@ -38,37 +38,74 @@
                     <oxy:PlotView Model="{Binding MyModel}"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ScatterChart" Header="Scatter Chart">
-                <Grid Background="#FFE5E5E5">
-                    <oxy:PlotView Model="{Binding MyModel2}"/>
-                </Grid>
-            </TabItem>
             <TabItem x:Name="FastChart" Header="Fast Chart">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#FFE5E5E5" x:Name="FastChartGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <!-- Column definitions -->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <!-- First PlotView in the first row and first column -->
                     <oxy:PlotView Grid.Row="0" Grid.Column="0" Model="{Binding MyModel3a}"/>
-
-                    <!-- Second PlotView in the first row and second column -->
                     <oxy:PlotView Grid.Row="0" Grid.Column="1" Model="{Binding MyModel3b}"/>
-
-                    <!-- Third PlotView in the second row and first column -->
                     <oxy:PlotView Grid.Row="1" Grid.Column="0" Model="{Binding MyModel3c}"/>
-
-                    <!-- Fourth PlotView in the second row and second column -->
                     <oxy:PlotView Grid.Row="1" Grid.Column="1" Model="{Binding MyModel3d}"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Margin="10,10,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" >
+
+        <StackPanel x:Name="FastStackPanel" Margin="10,10,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" Visibility="Hidden" >
+            <Label x:Name="AxiesLabelFast" Content="Axies Fast" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="16"/>
+            <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
+            <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\xLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
+            <ComboBox x:Name="ComboBoxXFast" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxX_SelectionChanged">
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
+            <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\yLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
+            <ComboBox x:Name="ComboBoxYFast" SelectedValuePath="Content" Width="120"  SelectionChanged="ComboBoxY_SelectionChanged">
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
+            <ComboBox x:Name="ComboBoxY2Fast" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY2_SelectionChanged">
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
+            <ComboBox x:Name="ComboBoxY3Fast" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY3_SelectionChanged">
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
+            <ComboBox x:Name="ComboBoxY4Fast" SelectedValuePath="Content" Width="120" SelectionChanged="ComboBoxY4_SelectionChanged">
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="Time"/>
+                <ComboBoxItem Content="Ambient Temp"/>
+                <ComboBoxItem Content="Unit Temp"/>
+                <ComboBoxItem Content="Divergence"/>
+                <ComboBoxItem Content="PowerOutput"/>
+            </ComboBox>
+            <Button x:Name ="LoadDataButtonFast" Content="Load" Width="130" Click="LoadDataButtonFast_Click" FontSize="16" FontWeight="Bold" VerticalContentAlignment="Center" Margin="15,25,15,5"/>
+            <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,10,0,5"/>
+        </StackPanel>
+
+        <StackPanel x:Name="LineStackPanel" Margin="10,10,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" >
             <Label x:Name="AxiesLabel" Content="Axies" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="16"/>
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
             <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\xLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
@@ -114,66 +151,34 @@
                 <ComboBoxItem Content="PowerOutput"/>
             </ComboBox>
             <Button x:Name ="LoadDataButton" Content="Load" Width="130" Click="LoadDataButton_Click" FontSize="16" FontWeight="Bold" VerticalContentAlignment="Center" Margin="15,25,15,5"/>
-            <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
-            <Label x:Name="DotButtonsLabel" Content="Dots size:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12"/>
-            <StackPanel x:Name= "DotSizeStack" Opacity="0.3" IsEnabled="False" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0" MinHeight="10" MaxHeight="1000">
-                <Button x:Name="DefaultDotButton" Background="Transparent" Foreground="Transparent" BorderThickness="0" Click="DefaultDotButton_Click"  Height="30" Width="30" Margin="0,0,0,0">
-                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\refreshDotLabel.png" Height="18" Width="18" />
-                </Button>
-                <Button x:Name="SmallDotButton" Background="Transparent" Foreground="Transparent" BorderThickness="0" Click="SmallDotButton_Click"  Height="30" Width="30" Margin="0,0,0,0">
-                    <Label HorizontalAlignment="Center" Background="OrangeRed" Height="10" Width="10">
-                        <Label.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="25"/>
-                            </Style>
-                        </Label.Resources>
-                    </Label>
-                </Button>
-                <Button x:Name="MediumDotButton" Background="Transparent" Foreground="Transparent" BorderThickness="0" Click="MediumDotButton_Click"  Height="30" Width="30" Margin="0,0,0,0">
-                    <Label Background="OrangeRed" Height="15" Width="15">
-                        <Label.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="25"/>
-                            </Style>
-                        </Label.Resources>
-                    </Label>
-                </Button>
-                <Button x:Name="LargeDotButton" Background="Transparent" Foreground="Transparent" BorderThickness="0" Click="LargeDotButton_Click"  Height="30" Width="30" Margin="0,0,0,0">
-                    <Label Background="OrangeRed" Height="20" Width="20">
-                        <Label.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="25"/>
-                            </Style>
-                        </Label.Resources>
-                    </Label>
-                </Button>
-                <Button x:Name="VeryLargeDotButton" Background="Transparent" Foreground="Transparent" BorderThickness="0" Click="VeryLargeDotButton_Click"  Height="30" Width="30" Margin="0,0,0,0">
-                    <Label Background="OrangeRed" Height="25" Width="25">
-                        <Label.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="25"/>
-                            </Style>
-                        </Label.Resources>
-                    </Label>
-                </Button>
-            </StackPanel>
+
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,10,0,5"/>
-            <StackPanel x:Name= "ButtonsStack" Opacity="0.3" IsEnabled="False" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
-                <Button x:Name="ReverseAxis" Click="ReverseAxisButton_Click"  Width="50" Margin="0,25,0,0">
-                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\reverseButtonLabel.png"/>
-                </Button>
-                <Button x:Name ="ResetButton" Click="ResetDataButton_Click"  Width="50" Margin="5,25,0,0">
-                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\deleteButtonLabel.png"/>
-                </Button>
-            </StackPanel>
-            <Separator HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,5"/>
-            <Label Content="File Name:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12">
-            </Label>
-            <TextBox x:Name="filePathTextBox" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="150" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
-            <Button x:Name="ImportDataButton" Click="ImportDataButton_Click" Width="50" Margin="5,10,0,0" IsEnabled="True">
+
+
+        </StackPanel>
+
+
+        <StackPanel x:Name="ButtonsStackPanel" Margin="10,400,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" >
+            <StackPanel x:Name = "LabelsStack" Opacity="1" IsEnabled="True" Width="140" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
+            <Label x:Name = "ResetDataLabel" Content="Reset Data:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="10"></Label>
+            <Label x:Name = "UploadDataLabel" Content="Upload Data:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="10"></Label>
+        </StackPanel>
+
+
+        <StackPanel x:Name = "ButtonsStack" Opacity="1" IsEnabled="True" Width="120" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
+            <Button x:Name ="ResetButton" Click="ResetDataButton_Click" Height="50" Width="50" Margin="5,0,0,0">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\deleteButtonLabel.png"/>
+            </Button>
+            <Button x:Name="ImportDataButton" Click="ImportDataButton_Click" Height="50" Width="50" Margin="5,0,0,0" IsEnabled="True">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\importLabel.png"/>
             </Button>
         </StackPanel>
+        <Label Content="File Name:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12">
+        </Label>
+        <TextBox x:Name="filePathTextBox" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="150" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
+        </StackPanel>
+
+
         <StackPanel Margin="10,195,1510,0" Grid.Row="2" HorizontalAlignment="Left">
             <ComboBox x:Name="LaserCombBox" SelectedValuePath="Content" DisplayMemberPath="Content" IsEnabled="True" Width="120" SelectionChanged="LaserComboBox_SelectionChanged">
                 <ComboBoxItem Content="Unit 1"/>
@@ -225,7 +230,28 @@
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\LowerLimitMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
                 <Label x:Name ="LowerLimitLabel" Width="120" Height="25" Content="Unit Min Temp" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayLowerLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
-            </StackPanel> 
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel x:Name="Legend2" Margin="850,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\GreenLineLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="GreenLineLabel" Width="120" Height="25" Content="Ambient Temperature" Margin="0,0,0,0" FontSize="11"/>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\OrangeLineLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="OrangeLineLabel" Width="120" Height="25" Content="Unit Temperature" Margin="0,0,0,0" FontSize="11"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel x:Name="Legend3" Margin="1050,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\BlueLineLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="BlueLineLabel" Width="120" Height="25" Content="Divergence" Margin="0,0,0,0" FontSize="11"/>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\RedLineFinalLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="RedLineLabel" Width="120" Height="25" Content="Power Output" Margin="0,0,0,0" FontSize="11"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
