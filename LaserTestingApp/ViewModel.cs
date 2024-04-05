@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Plotly.NET;
+using System.Windows.Controls;
 
 namespace LaserTestingApp
 {
@@ -49,23 +52,39 @@ namespace LaserTestingApp
             var scatterSeries = new ScatterSeries { MarkerType = MarkerType.Circle, MarkerSize = 55 };
             MyModel2.Series.Add(scatterSeries);
         }
-        public void viewModelFast(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
+        public void viewModelFast(List<double> x, List<double> y, List<double> y2, List<double> y3, List<double> y4, int ListLength)
         {
-            //Fast Line
-/*            MyModel3 = new PlotModel { Title = "Fast Line" };
-            var lineSeries3 = new LineSeries();
-            var lineSeries4 = new LineSeries();
+            MyModel3a = new PlotModel { Title = "y" };
+            var sub1 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Green };
             for (int i = 0; i < ListLength; i++)
             {
-                lineSeries3.Points.Add(new DataPoint(x[i], y[i]));
-                lineSeries4.Points.Add(new DataPoint(x[i], y2[i]));
+                sub1.Points.Add(new DataPoint(x[i], y[i]));
             }
+            MyModel3a.Series.Add(sub1);
 
-            MyModel3.Series.Add(lineSeries3); // First line of data
-            MyModel3.Series.Add(lineSeries4); // Second
-            MyModel3.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            MyModel3.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xLabel, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });*/
+            MyModel3b = new PlotModel { Title = "y2" };
+            var sub2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
+            for (int i = 0; i < ListLength; i++)
+            {
+                sub2.Points.Add(new DataPoint(x[i], y2[i]));
+            }
+            MyModel3b.Series.Add(sub2);
+
+            MyModel3c = new PlotModel { Title = "y3" };
+            var sub3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
+            for (int i = 0; i < ListLength; i++)
+            {
+                sub3.Points.Add(new DataPoint(x[i], y3[i]));
+            }
+            MyModel3c.Series.Add(sub3);
+
+            MyModel3d = new PlotModel { Title = "y4" };
+            var sub4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red };
+            for (int i = 0; i < ListLength; i++)
+            {
+                sub4.Points.Add(new DataPoint(x[i], y4[i]));
+            }
+            MyModel3d.Series.Add(sub4);
         }
         public void viewModelFastReverse(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
@@ -288,8 +307,8 @@ namespace LaserTestingApp
                 Type = LineAnnotationType.Horizontal,
                 Y = UpperLimit,
                 Text = "Max Temp",
-                TextHorizontalAlignment = HorizontalAlignment.Right,
-                TextVerticalAlignment = VerticalAlignment.Top,
+                TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
+                TextVerticalAlignment = OxyPlot.VerticalAlignment.Top,
                 Color = OxyColors.OrangeRed,
                 StrokeThickness = 1.0,
                 MinimumX = 0,
@@ -304,8 +323,8 @@ namespace LaserTestingApp
             {
                 Type = LineAnnotationType.Horizontal,
                 Text = "Min Temp",
-                TextHorizontalAlignment = HorizontalAlignment.Right,
-                TextVerticalAlignment = VerticalAlignment.Top,
+                TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
+                TextVerticalAlignment = OxyPlot.VerticalAlignment.Top,
                 Y = LowerLimit,
                 Color = OxyColors.Aqua,
                 StrokeThickness = 1.0,
@@ -413,5 +432,9 @@ namespace LaserTestingApp
         public PlotModel MyModel { get; set; }
         public PlotModel MyModel2 { get; set; }
         public PlotModel MyModel3 { get; set; }
+        public PlotModel MyModel3a { get; set; }
+        public PlotModel MyModel3b { get; set; }
+        public PlotModel MyModel3c { get; set; }
+        public PlotModel MyModel3d { get; set; }
     }
 }

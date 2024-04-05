@@ -174,7 +174,7 @@ namespace LaserTestingApp
                
             LineChart.DataContext = viewModel; // Plot it up
             viewModel.viewModelScatter(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
-            viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+            viewModel.viewModelFast(xAxie, yAxie, yAxie2, yAxie3, yAxie4, RowsData);
 
             // Populate plots          
             ScatterChart.DataContext = viewModel;
@@ -753,7 +753,7 @@ namespace LaserTestingApp
                 case 3:
                     if (!FastChartYX)
                     {
-                        viewModel.viewModelFast(yLabel, xLabel, xAxie, yAxie, yAxie2, RowsData, DotSize);
+                        viewModel.viewModelFast(xAxie, yAxie, yAxie2, yAxie3, yAxie4, RowsData);
                         FastChart.DataContext = viewModel;
                         FastChartYX = true;
                     }
