@@ -18,36 +18,43 @@ namespace LaserTestingApp
     class ViewModel
     {
         MainWindow myWindow = new MainWindow();
-        public void viewModelFast(List<double> x, List<double> y, List<double> y2, List<double> y3, List<double> y4, int ListLength)
+        public void viewModelFast(List<double> x, List<double> y, int ListLength, OxyColor color)
         {
-            var sub1 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Green };
+            var sub1 = new LineSeries { MarkerType = MarkerType.Circle, Color = color };
             for (int i = 0; i < ListLength; i++)
             {
                 sub1.Points.Add(new DataPoint(x[i], y[i]));
             }
             MyModel3a.Series.Add(sub1);
+        }
+        public void viewModelFast2(List<double> x, List<double> y2, int ListLength, OxyColor color2)
+        {
 
-            var sub2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
+            var sub2 = new LineSeries { MarkerType = MarkerType.Circle, Color = color2 };
             for (int i = 0; i < ListLength; i++)
             {
                 sub2.Points.Add(new DataPoint(x[i], y2[i]));
             }
             MyModel3b.Series.Add(sub2);
 
-            var sub3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
+        }
+        public void viewModelFast3(List<double> x, List<double> y3, int ListLength, OxyColor color3)
+        {
+            var sub3 = new LineSeries { MarkerType = MarkerType.Circle, Color = color3 };
             for (int i = 0; i < ListLength; i++)
             {
                 sub3.Points.Add(new DataPoint(x[i], y3[i]));
             }
             MyModel3c.Series.Add(sub3);
-
-            var sub4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red };
+        }
+        public void viewModelFast4(List<double> x, List<double> y4, int ListLength, OxyColor color4)
+        {
+            var sub4 = new LineSeries { MarkerType = MarkerType.Circle, Color = color4 };
             for (int i = 0; i < ListLength; i++)
             {
                 sub4.Points.Add(new DataPoint(x[i], y4[i]));
             }
             MyModel3d.Series.Add(sub4);
-
         }
         public void viewModelFastReset(string yLabel, string xLabel, List<double> x, List<double> y, List<double> y2, int ListLength, double DotSize)
         {
@@ -82,11 +89,12 @@ namespace LaserTestingApp
             }
             MyModel.Series.Add(lineSeries4);
         }
-        public void viewModelLineY4Outliers(List<double> x, List<double> y4, int ListLength, List<double> myOutliers)
+        public void viewModelLineY4Outliers(List<double> x, List<double> y4, int ListLength, List<double> myOutliers, List<double> myInterpolation)
         {
             var lineSeries4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red };
             // y4
             bool HasOutliers = false;
+            double temp;
             foreach (var item in myOutliers)
             {
                 for (int i = 0; i <= ListLength; i++)
@@ -94,18 +102,24 @@ namespace LaserTestingApp
                     if (y4[i].Equals(double.NaN))
                     {
                         lineSeries4.Points.Add(new DataPoint(x[i], double.NaN));
+                        myInterpolation.Add(y4[i]);
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
                         lineSeries4.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                        temp = ((y4[i - 1] + y4[i + 1]) / 2.0);
+                        myInterpolation.Add(temp);
                         HasOutliers = true;
                     }
                     else
                     {
                         lineSeries4.Points.Add(new DataPoint(x[i], y4[i]));
+                        myInterpolation.Add(y4[i]);
                     }
+
                 }
-                //MyModel.Series.Add(lineSeries4);
+                //MyModel.Series.Add(lineSeries);
+
             }
             if (!HasOutliers)
             {
@@ -120,15 +134,16 @@ namespace LaserTestingApp
                         lineSeries4.Points.Add(new DataPoint(x[i], y4[i]));
                     }
                 }
-                //MyModel.Series.Add(lineSeries4);
+
             }
             MyModel.Series.Add(lineSeries4);
         }
-        public void viewModelLineY3Outliers(List<double> x, List<double> y3, int ListLength, List<double> myOutliers)
+        public void viewModelLineY3Outliers(List<double> x, List<double> y3, int ListLength, List<double> myOutliers, List<double> myInterpolation)
         {
             var lineSeries3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
             // y3
             bool HasOutliers = false;
+            double temp;
             foreach (var item in myOutliers)
             {
                 for (int i = 0; i <= ListLength; i++)
@@ -136,18 +151,24 @@ namespace LaserTestingApp
                     if (y3[i].Equals(double.NaN))
                     {
                         lineSeries3.Points.Add(new DataPoint(x[i], double.NaN));
+                        myInterpolation.Add(y3[i]);
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
                         lineSeries3.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                        temp = ((y3[i - 1] + y3[i + 1]) / 2.0);
+                        myInterpolation.Add(temp);
                         HasOutliers = true;
                     }
                     else
                     {
                         lineSeries3.Points.Add(new DataPoint(x[i], y3[i]));
+                        myInterpolation.Add(y3[i]);
                     }
+
                 }
-                //MyModel.Series.Add(lineSeries3);
+                //MyModel.Series.Add(lineSeries);
+
             }
             if (!HasOutliers)
             {
@@ -162,15 +183,16 @@ namespace LaserTestingApp
                         lineSeries3.Points.Add(new DataPoint(x[i], y3[i]));
                     }
                 }
-                //MyModel.Series.Add(lineSeries3);
+
             }
             MyModel.Series.Add(lineSeries3);
         }
-        public void viewModelLineY2Outliers(List<double> x, List<double> y2, int ListLength, List<double> myOutliers)
+        public void viewModelLineY2Outliers(List<double> x, List<double> y2, int ListLength, List<double> myOutliers, List<double> myInterpolation)
         {
             var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
             // y2
             bool HasOutliers = false;
+            double temp;
             foreach (var item in myOutliers)
             {
                 for (int i = 0; i <= ListLength; i++)
@@ -178,17 +200,24 @@ namespace LaserTestingApp
                     if (y2[i].Equals(double.NaN))
                     {
                         lineSeries2.Points.Add(new DataPoint(x[i], double.NaN));
+                        myInterpolation.Add(y2[i]);
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
                         lineSeries2.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                        temp = ((y2[i - 1] + y2[i + 1]) / 2.0);
+                        myInterpolation.Add(temp);
+                        HasOutliers = true;
                     }
                     else
                     {
                         lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
+                        myInterpolation.Add(y2[i]);
                     }
+
                 }
-                //MyModel.Series.Add(lineSeries2);
+                //MyModel.Series.Add(lineSeries);
+
             }
             if (!HasOutliers)
             {
@@ -203,7 +232,7 @@ namespace LaserTestingApp
                         lineSeries2.Points.Add(new DataPoint(x[i], y2[i]));
                     }
                 }
-                //MyModel.Series.Add(lineSeries2);
+
             }
             MyModel.Series.Add(lineSeries2);
         }
@@ -385,13 +414,13 @@ namespace LaserTestingApp
             MyModel.Series.Add(lineSeriesAverage);
 
         }
-        public void createInterpolation(List<double> x, List<double> y, int ListLength)
+        public void createInterpolation(List<double> x, List<double> y, int ListLength, OxyColor color)
         {
             // Interpolation implementation
             var series = new LineSeries
             {
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
-                Color = OxyColors.Cyan,
+                Color = color,
                 LineStyle = LineStyle.DashDashDot
             };
             for (int i = 0; i <= ListLength; i++)
