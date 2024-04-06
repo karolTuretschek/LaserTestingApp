@@ -34,6 +34,7 @@ using System.Diagnostics.Metrics;
 using System.Windows.Media.Media3D;
 using System.Windows.Documents;
 using OxyPlot.Wpf;
+using System.Windows.Media;
 
 namespace LaserTestingApp
 {
@@ -65,6 +66,12 @@ namespace LaserTestingApp
         public ScatterSeries saveSeries2Json = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
         public ScatterSeries saveSeries3Json = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
         public ScatterSeries saveSeries4Json = new ScatterSeries { MarkerType = MarkerType.Cross, MarkerSize = 100 };
+        List<double> outliersY = new List<double>();
+        List<double> outliersY2 = new List<double>();
+        List<double> outliersY3 = new List<double>();
+        List<double> outliersY4 = new List<double>();
+        List<double> InterpolationYValues = new List<double>();
+        bool RemovedOutliers = false, NotRemovedOutliers = false;
         bool LineChartYX, ScatterChartYX, FastChartYX;
         public Dictionary<double, double> gapsDictionaryY { get; set; } = new Dictionary<double, double>();
         public Dictionary<double, double> gapsDictionaryY2 { get; set; } = new Dictionary<double, double>();
@@ -194,44 +201,86 @@ namespace LaserTestingApp
             SetSelectedAxisValue(ComboBoxX, ref xAxie);
 
             ViewModel viewModel = new ViewModel();//Assign model 
-            viewModel.MyModel = new PlotModel { Title = "Line Plot" };
-            viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
-            // Assign Bottom title for subplots
-
-
-            if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+            if (DisplayOutliersCheckBox.IsChecked == true)            // Data with remved Outliers
             {
-                viewModel.viewModelLine(xAxie, yAxie, RowsData);
-            }
-            
-            if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+                if(!RemovedOutliers)
+                {
+                    outliersY = viewModel.FindOutliers(yAxie, outliersY);
+                    outliersY2 = viewModel.FindOutliers(yAxie2, outliersY2);
+                    outliersY3 = viewModel.FindOutliers(yAxie3, outliersY3);
+                    outliersY4 = viewModel.FindOutliers(yAxie4, outliersY4);
+                }
+
+                if (Xlsx) //Display Xlsx data
+                {
+                    viewModel.MyModel = new PlotModel { Title = "Line Plot Without Outliers" , EdgeRenderingMode = OxyPlot.Hardware};
+                    viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200)});
+                    viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                    viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+                    if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+                        viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                    if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+                        viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2);
+                    if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+                        viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3);
+                    if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+                        viewModel.viewModelLineY4Outliers(xAxie, yAxie4, RowsData, outliersY4);
+
+                    if(DisplaySplineCheckBox.IsChecked == true)// Show spline if ticked
+                        viewModel.createInterpolation(xAxie, InterpolationYValues, RowsData);
+
+                    LineChart.DataContext = viewModel; // Plot it up   
+                }
+                else
+                {
+                    viewModel.MyModel = new PlotModel { Title = "Line Plot Without Outliers" };
+                    viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+                    viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                    viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+                    if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+                        viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                    if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+                        viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2);
+                    if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+                        viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3);
+                    if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+                        viewModel.viewModelLineY4Outliers(xAxie, yAxie4, RowsData, outliersY4);
+                    LineChart.DataContext = viewModel; // Plot it up 
+                }
+
+                RemovedOutliers = true;
+            } else // Normal data
             {
-                viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+                viewModel.MyModel = new PlotModel { Title = "Line Plot" };
+                viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+                viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                
+                // Assign Bottom title for subplots
+                if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+                    viewModel.viewModelLine(xAxie, yAxie, RowsData);
+                if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+                    viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+                if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+                    viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
+                if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+                    viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
+                LineChart.DataContext = viewModel; // Plot it up    
+                NotRemovedOutliers = true;
             }
 
-            if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
-            {
-                viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
-            }
-                
-                
-            if(ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
-            {               
-                viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
-            }
-                
-            UpperLimit = double.Parse(UnitMaxOperatingTemperatureTextBox.Text.ToString());
+            UpperLimit = double.Parse(UnitMaxOperatingTemperatureTextBox.Text.ToString()); // Upper limit display
             if (DisplayUpperLimitCheckBox.IsChecked == true)
                 viewModel.createUpperLimit(RowsData, UpperLimit);
 
-            LowerLimit = double.Parse(UnitMinOperatingTemperatureTextBox.Text.ToString());
+            LowerLimit = double.Parse(UnitMinOperatingTemperatureTextBox.Text.ToString()); // Lower limit display
             if (DisplayLowerLimitCheckBox.IsChecked == true)
                 viewModel.createLowerLimit(RowsData, LowerLimit);
-            
-            if (DisplayGapMarkerCheckBox.IsChecked == true)
+
+            if (DisplayGapMarkerCheckBox.IsChecked == true) // Display where gaps in data was present
                 // check if Xlsx or Json file is being used
                 if (Xlsx) //Display Xlsx data
                 {
@@ -246,14 +295,10 @@ namespace LaserTestingApp
                     viewModel.viewModelLineY2Gaps(xAxie, yAxie2, laserTime.Count(), gapsDictionaryY2Json);
                     viewModel.viewModelLineY3Gaps(xAxie, yAxie3, laserTime.Count(), gapsDictionaryY3Json);
                     viewModel.viewModelLineY4Gaps(xAxie, yAxie4, laserTime.Count(), gapsDictionaryY4Json);
-                }
-               
-            LineChart.DataContext = viewModel; // Plot it up       
+                }  
             // Assign flags
             LineChartYX = true;
-            //double distanceMaxTemp = 0;
-            //double distanceMax = viewModel.CalculateDistanceBetweenPoints(xAxie, yAxie2, RowsData, distanceMaxTemp);
-            //Debug.WriteLine($" Max distance found - > {distanceMax}");
+            //LineChart.DataContext = viewModel;
         }
         private void MainTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -619,22 +664,18 @@ namespace LaserTestingApp
         {
 
         }
-
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
 
         }
-
         private void Frame_Navigated_1(object sender, NavigationEventArgs e)
         {
 
         }
-
         private void RadioTime_Checked(object setnder, RoutedEventArgs e)
         {
 
         }
-
         private void ResetDataButton_Click(object sender, RoutedEventArgs e)
         {
             int RowsData = laserTime.Count(); // Find number of rows
@@ -662,8 +703,7 @@ namespace LaserTestingApp
             }
 
 
-        }
-        
+        }       
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -790,31 +830,6 @@ namespace LaserTestingApp
         private void UnitDivergenceTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-        }
-        private void DefaultDotButton_Click(object sender, RoutedEventArgs e)
-        {
-            DotSize = 3;
-            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
-        }
-        private void SmallDotButton_Click(object sender, RoutedEventArgs e)
-        {
-            DotSize = 7;
-            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
-        }
-        private void MediumDotButton_Click(object sender, RoutedEventArgs e)
-        {
-            DotSize = 12;
-            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
-        }
-        private void LargeDotButton_Click(object sender, RoutedEventArgs e)
-        {
-            DotSize = 15;
-            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
-        }
-        private void VeryLargeDotButton_Click(object sender, RoutedEventArgs e)
-        {
-            DotSize = 18;
-            LoadDataButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         }
     }
 }

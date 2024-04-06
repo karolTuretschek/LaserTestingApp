@@ -160,22 +160,22 @@
 
         <StackPanel x:Name="ButtonsStackPanel" Margin="10,400,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" >
             <StackPanel x:Name = "LabelsStack" Opacity="1" IsEnabled="True" Width="140" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
-            <Label x:Name = "ResetDataLabel" Content="Reset Data:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="10"></Label>
-            <Label x:Name = "UploadDataLabel" Content="Upload Data:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="10"></Label>
-        </StackPanel>
+                <Label x:Name = "ResetDataLabel" Content="Reset Data:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="10"></Label>
+                <Label x:Name = "UploadDataLabel" Content="Upload Data:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="10"></Label>
+            </StackPanel>
 
 
-        <StackPanel x:Name = "ButtonsStack" Opacity="1" IsEnabled="True" Width="120" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
-            <Button x:Name ="ResetButton" Click="ResetDataButton_Click" Height="50" Width="50" Margin="5,0,0,0">
-                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\deleteButtonLabel.png"/>
-            </Button>
-            <Button x:Name="ImportDataButton" Click="ImportDataButton_Click" Height="50" Width="50" Margin="5,0,0,0" IsEnabled="True">
-                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\importLabel.png"/>
-            </Button>
-        </StackPanel>
-        <Label Content="File Name:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12">
-        </Label>
-        <TextBox x:Name="filePathTextBox" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="150" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
+            <StackPanel x:Name = "ButtonsStack" Opacity="1" IsEnabled="True" Width="120" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
+                <Button x:Name ="ResetButton" Click="ResetDataButton_Click" Height="50" Width="50" Margin="5,0,0,0">
+                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\deleteButtonLabel.png"/>
+                </Button>
+                <Button x:Name="ImportDataButton" Click="ImportDataButton_Click" Height="50" Width="50" Margin="5,0,0,0" IsEnabled="True">
+                    <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\importLabel.png"/>
+                </Button>
+            </StackPanel>
+            <Label Content="File Name:" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="12">
+            </Label>
+            <TextBox x:Name="filePathTextBox" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="150" IsReadOnly="True" TextChanged="filePathTextBox_TextChanged"/>
         </StackPanel>
 
 
@@ -213,27 +213,45 @@
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\GenerateDataLabel.png" HorizontalAlignment="Left"/>
             </Button>
         </StackPanel>
-        <StackPanel x:Name="Legend" Margin="650,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
+
+        <StackPanel x:Name="LegendBoxes" Margin="250,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1165" HorizontalAlignment="Left">
+        <StackPanel Margin="0,05,0,0" Orientation="Horizontal">
+            <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\OutlierLabel.png" Width="30" HorizontalAlignment="Left"/>
+            <Label x:Name ="OutlierMarkerLabel" Width="120" Height="25" Content="Remove Outliers" Margin="0,0,0,0" FontSize="11"/>
+            <CheckBox x:Name="DisplayOutliersCheckBox" IsChecked="False" VerticalAlignment="Center"/>
+        </StackPanel>
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\DashDashDotLabel.png" Width="30" HorizontalAlignment="Left"/>
+                <Label x:Name ="InterpolationLabel" Width="120" Height="25" Content="Show Interpolation" Margin="0,0,0,0" FontSize="11"/>
+                <CheckBox x:Name="DisplaySplineCheckBox" IsChecked="False" VerticalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel x:Name="LegendBoxData" Margin="450,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1165" HorizontalAlignment="Left">
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                 <Label x:Name ="MarkerLabel" Width="25" Height="25" Content="^" FontSize="18" FontWeight="Bold" />
-                <Label x:Name ="GapMarkerLabel" Width="125" Height="25" Content="Auto filled data points:" Margin="0,0,0,0" FontSize="11"/>
+                <Label x:Name ="GapMarkerLabel" Width="125" Height="25" Content="Show Recovered Data" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayGapMarkerCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel>
+   
 
-            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+ 
+        </StackPanel>
+        <StackPanel x:Name="Legend2" Margin="650,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1165" HorizontalAlignment="Left">
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\UpperLimMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
                 <Label x:Name ="UpperLimitLabel" Width="120" Height="25" Content="Unit Max Temp" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayUpperLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel>
-            
-            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\LowerLimitMarkerLabel.png" Width="30" HorizontalAlignment="Left"/>
                 <Label x:Name ="LowerLimitLabel" Width="120" Height="25" Content="Unit Min Temp" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayLowerLimitCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel>
 
         </StackPanel>
-        <StackPanel x:Name="Legend2" Margin="850,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
+        <StackPanel x:Name="Legend3" Margin="850,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\GreenLineLabel.png" Width="30" HorizontalAlignment="Left"/>
                 <Label x:Name ="GreenLineLabel" Width="120" Height="25" Content="Ambient Temperature" Margin="0,0,0,0" FontSize="11"/>
@@ -243,7 +261,7 @@
                 <Label x:Name ="OrangeLineLabel" Width="120" Height="25" Content="Unit Temperature" Margin="0,0,0,0" FontSize="11"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel x:Name="Legend3" Margin="1050,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
+        <StackPanel x:Name="Legend4" Margin="1050,395,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1040" HorizontalAlignment="Left">
             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                 <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\BlueLineLabel.png" Width="30" HorizontalAlignment="Left"/>
                 <Label x:Name ="BlueLineLabel" Width="120" Height="25" Content="Divergence" Margin="0,0,0,0" FontSize="11"/>
