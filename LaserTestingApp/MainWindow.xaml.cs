@@ -42,6 +42,7 @@ namespace LaserTestingApp
 {
     public partial class MainWindow : System.Windows.Window
     {
+        int WindowCounter = 0;
         bool Xlsx;
         List<double> laserTime = new List<double>();
         List<double> laserAmbientTemp = new List<double>();
@@ -991,6 +992,7 @@ namespace LaserTestingApp
         }       
         private void ImportDataButton_Click(object sender, RoutedEventArgs e)
         {
+
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
             openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|JSON Files (*.json)|*.json|All Files|*.*";
             
@@ -1008,11 +1010,12 @@ namespace LaserTestingApp
                         myWindow.filePath = openFileDialog.FileName; // Assign path to string
                         Debug.WriteLine("myWindow.filePath" + myWindow.filePath);                        
                         myWindow.Show();
+                        data.Clear();
                         this.Close();
                         myWindow.LoadAllData();
                         myWindow.LoadDataButton.IsEnabled = false;
                         myWindow.IsEnabled = true;
-                        
+                        myWindow.LoadAllData();
                         break;
                     case ".json":
                         Debug.WriteLine("Json file");
@@ -1029,8 +1032,7 @@ namespace LaserTestingApp
                         System.Windows.MessageBox.Show("Unknown file format", "Wrong file format");
                         break;
                 }
-
-            }
+            }           
         }
         private void filePathTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

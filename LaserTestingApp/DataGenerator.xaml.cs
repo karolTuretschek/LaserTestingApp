@@ -195,40 +195,46 @@ namespace LaserTestingApp
                         {
                             for (int j = 0; j < 5; j++)
                             {
-                                Temp = Temp = (TempRandom * 0.1);
+                                Temp = Temp - (TempRandom * 0.03);
+                                Divergence = Divergence - (TempRandom * 0.01);
+                                PowerOutput = PowerOutput - (TempRandom * 0.023);
                                 worksheet.Cells[i + 1, 1].Value = i;
                                 worksheet.Cells[i + 1, 2].Value = Temp ;
                                 worksheet.Cells[i + 1, 3].Value = Temp * 1.2;
-                                worksheet.Cells[i + 1, 4].Value = Temp * 1.2;
-                                worksheet.Cells[i + 1, 5].Value = Temp * 1.1;
+                                worksheet.Cells[i + 1, 4].Value = Divergence * 1.02;
+                                worksheet.Cells[i + 1, 5].Value = PowerOutput * 1.1;
                             }
                         }
                         else
                         {
-                            Temp = Temp + (TempRandom * 0.1);
+                            Temp = Temp + (TempRandom * 0.03);
+                            Divergence = Divergence + (TempRandom * 0.033);
+                            PowerOutput = PowerOutput + (TempRandom * 0.023);
                             worksheet.Cells[i + 1, 1].Value = i;
                             worksheet.Cells[i + 1, 2].Value = Temp;
                             worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
-                            worksheet.Cells[i + 1, 4].Value = Temp * 0.7;
-                            worksheet.Cells[i + 1, 5].Value = Temp * 0.9;
+                            worksheet.Cells[i + 1, 4].Value = Divergence * 0.8;
+                            worksheet.Cells[i + 1, 5].Value = PowerOutput * 0.9;
                         }
                     }
                     else
                     {
-                        Temp = Temp - (TempRandom * 0.1);
-                        if(Temp < MinTemp) 
+                        Temp = Temp - (TempRandom * 0.03);
+                        Divergence = Divergence - (TempRandom * 0.033);
+                        PowerOutput = PowerOutput - (TempRandom * 0.023);
+                        if (Temp < MinTemp) 
                         {
                             worksheet.Cells[i + 1, 1].Value = i;
                             worksheet.Cells[i + 1, 2].Value = Temp;
                             worksheet.Cells[i + 1, 3].Value = Temp * 0.7;
-                            worksheet.Cells[i + 1, 4].Value = Divergence;
-                            worksheet.Cells[i + 1, 5].Value = PowerOutput;
+                            worksheet.Cells[i + 1, 4].Value = Divergence * 1.02;
+                            worksheet.Cells[i + 1, 5].Value = PowerOutput * 1.05;
                         }
                         worksheet.Cells[i + 1, 1].Value = i;
                         worksheet.Cells[i + 1, 2].Value = Temp;
                         worksheet.Cells[i + 1, 3].Value = Temp * 0.9;
-                        worksheet.Cells[i + 1, 4].Value = Divergence;
-                        worksheet.Cells[i + 1, 5].Value = PowerOutput;
+                        worksheet.Cells[i + 1, 4].Value = Divergence * 0.999;
+                        worksheet.Cells[i + 1, 5].Value = PowerOutput * 0.97;
                     }
                 }
                 package.Save();
