@@ -516,7 +516,7 @@ namespace LaserTestingApp
             double average = y.Average();
             double standardDev = StandardDeviation(y);
 
-            double threshold = 3 * standardDev;
+            double threshold = 2 * standardDev;
 
             var outliers = y.Select((value, index) => new { Value = value, Index = index })
                       .Where(item => Math.Abs(item.Value - average) > threshold);

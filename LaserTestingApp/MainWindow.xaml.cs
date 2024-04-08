@@ -1011,7 +1011,7 @@ namespace LaserTestingApp
                         Debug.WriteLine("myWindow.filePath" + myWindow.filePath);                        
                         myWindow.Show();
                         data.Clear();
-                        this.Close();
+                        ClosePreviousWindow();
                         myWindow.LoadAllData();
                         myWindow.LoadDataButton.IsEnabled = false;
                         myWindow.IsEnabled = true;
@@ -1033,6 +1033,21 @@ namespace LaserTestingApp
                         break;
                 }
             }           
+        }
+        private void ClosePreviousWindow()
+        {
+            string message = "Do you want to close previous window?";
+            string title = "Close Window";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = System.Windows.Forms.MessageBox.Show(message, title, buttons);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+            {
+                // Do something
+            }
         }
         private void filePathTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
