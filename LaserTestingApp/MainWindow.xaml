@@ -229,7 +229,7 @@
 
         <StackPanel x:Name="LegendBoxData" Margin="450,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Vertical" Height="70" Width="1165" HorizontalAlignment="Left">
             <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                <Label x:Name ="MarkerLabel" Width="25" Height="40" Content="^" FontSize="25" FontWeight="Bold" />
+                <Label x:Name ="MarkerLabel" Width="25" Height="40" Content="^" FontSize="22" FontWeight="Bold" />
                 <Label x:Name ="GapMarkerLabel" Width="125" Height="25" Content="Show Recovered Data" Margin="0,0,0,0" FontSize="11"/>
                 <CheckBox x:Name="DisplayGapMarkerCheckBox" IsChecked="False" VerticalAlignment="Center"/>
             </StackPanel>

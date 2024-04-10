@@ -260,7 +260,7 @@ namespace LaserTestingApp
         {
             if (outliersY.Count == 0 && outliersY2.Count == 0 && outliersY3.Count == 0 && outliersY4.Count == 0)
             {
-                System.Windows.MessageBox.Show("No Outliers found!","User feedback");
+                System.Windows.MessageBox.Show("No Outliers found!","Wrong action");
             }
             else
             {
@@ -396,119 +396,128 @@ namespace LaserTestingApp
         }
         private void LoadDataAsIs(ViewModel viewModel, int RowsData)
         {
-            viewModel.MyModel = new PlotModel { Title = "Line Plot" };
-            viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            if (data.Count == 0)
+            {
+                System.Windows.MessageBox.Show("No data found!", "Wrong file format");
+            }
+            else
+            {
 
-            // Assign Bottom title for subplots
-            if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
-            {
-                switch (ComboBoxY.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLine(xAxie, yAxie, RowsData);
-                        color = OxyColors.Green;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2(xAxie, yAxie, RowsData);
-                        color2 = OxyColors.Green;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3(xAxie, yAxie, RowsData);
-                        color3 = OxyColors.Green;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4(xAxie, yAxie, RowsData);
-                        color4 = OxyColors.Green;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
-            }
-            //viewModel.viewModelLine(xAxie, yAxie, RowsData);
-            if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
-            {
-                switch (ComboBoxY2.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLine(xAxie, yAxie2, RowsData);
-                        color = OxyColors.Orange;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
-                        color2 = OxyColors.Orange;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3(xAxie, yAxie2, RowsData);
-                        color3 = OxyColors.Orange;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4(xAxie, yAxie2, RowsData);
-                        color4 = OxyColors.Orange;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
-            }
-            //viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
-            if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
-            {
-                switch (ComboBoxY3.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLine(xAxie, yAxie3, RowsData);
-                        color = OxyColors.Blue;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2(xAxie, yAxie3, RowsData);
-                        color2 = OxyColors.Blue;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
-                        color3 = OxyColors.Blue;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4(xAxie, yAxie3, RowsData);
-                        color4 = OxyColors.Blue;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
-            }
-            //viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
-            if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
-            {
-                switch (ComboBoxY4.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLine(xAxie, yAxie4, RowsData);
-                        color = OxyColors.Red;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2(xAxie, yAxie4, RowsData);
-                        color2 = OxyColors.Red;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3(xAxie, yAxie4, RowsData);
-                        color3 = OxyColors.Red;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
-                        color4 = OxyColors.Red;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
-            }
-            //viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
 
-            LoadDataLimits(viewModel, RowsData);
-            LoadGapMarker(viewModel, RowsData);
+                viewModel.MyModel = new PlotModel { Title = "Line Plot" };
+                viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+                viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+                // Assign Bottom title for subplots
+                if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+                {
+                    switch (ComboBoxY.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLine(xAxie, yAxie, RowsData);
+                            color = OxyColors.Green;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2(xAxie, yAxie, RowsData);
+                            color2 = OxyColors.Green;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3(xAxie, yAxie, RowsData);
+                            color3 = OxyColors.Green;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4(xAxie, yAxie, RowsData);
+                            color4 = OxyColors.Green;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                //viewModel.viewModelLine(xAxie, yAxie, RowsData);
+                if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+                {
+                    switch (ComboBoxY2.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLine(xAxie, yAxie2, RowsData);
+                            color = OxyColors.Orange;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+                            color2 = OxyColors.Orange;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3(xAxie, yAxie2, RowsData);
+                            color3 = OxyColors.Orange;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4(xAxie, yAxie2, RowsData);
+                            color4 = OxyColors.Orange;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                //viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+                if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+                {
+                    switch (ComboBoxY3.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLine(xAxie, yAxie3, RowsData);
+                            color = OxyColors.Blue;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2(xAxie, yAxie3, RowsData);
+                            color2 = OxyColors.Blue;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
+                            color3 = OxyColors.Blue;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4(xAxie, yAxie3, RowsData);
+                            color4 = OxyColors.Blue;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                //viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
+                if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+                {
+                    switch (ComboBoxY4.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLine(xAxie, yAxie4, RowsData);
+                            color = OxyColors.Red;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2(xAxie, yAxie4, RowsData);
+                            color2 = OxyColors.Red;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3(xAxie, yAxie4, RowsData);
+                            color3 = OxyColors.Red;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
+                            color4 = OxyColors.Red;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                //viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
+
+                LoadDataLimits(viewModel, RowsData);
+                LoadGapMarker(viewModel, RowsData);
+            }
         }
         private void LoadGapMarker(ViewModel viewModel, int RowsData)
         {
@@ -606,11 +615,31 @@ namespace LaserTestingApp
             {
                 FastStackPanel.Visibility = Visibility.Visible;
                 LineStackPanel.Visibility = Visibility.Hidden;
+                LegendBoxes.Visibility = Visibility.Hidden;
+                Legend2.Visibility = Visibility.Hidden;
+                LegendBoxData.Visibility = Visibility.Hidden;
+                Legend3.Visibility = Visibility.Visible;
+                Legend4.Visibility = Visibility.Visible;
+                LoadDataButtonFast_Click(sender, e);
             }
             else if (LineChart.IsSelected)
             {
                 FastStackPanel.Visibility = Visibility.Hidden;
                 LineStackPanel.Visibility = Visibility.Visible;
+                LegendBoxes.Visibility = Visibility.Visible;
+                Legend2.Visibility = Visibility.Visible;
+                LegendBoxData.Visibility = Visibility.Visible;
+                Legend3.Visibility = Visibility.Visible;
+                Legend4.Visibility = Visibility.Visible;
+
+            }else if(Data.IsSelected)
+            {
+                FastStackPanel.Visibility = Visibility.Hidden;
+                LegendBoxes.Visibility = Visibility.Hidden;
+                Legend2.Visibility = Visibility.Hidden;
+                LegendBoxData.Visibility = Visibility.Hidden;
+                Legend3.Visibility = Visibility.Hidden;
+                Legend4.Visibility = Visibility.Hidden;
             }
         }
         public void LoadAllData()
