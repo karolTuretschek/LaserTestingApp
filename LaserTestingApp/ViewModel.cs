@@ -76,7 +76,7 @@ namespace LaserTestingApp
         {
             var lineSeries4 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Red };
             // y4
-            for (int i = 0; i <= ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y4[i].Equals(double.NaN))
                 {
@@ -97,7 +97,7 @@ namespace LaserTestingApp
             double temp;
             foreach (var item in myOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y4[i].Equals(double.NaN))
                     {
@@ -106,10 +106,13 @@ namespace LaserTestingApp
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
-                        lineSeries4.Points.Add(new DataPoint(x[i] - 1, double.NaN));
-                        temp = ((y4[i - 1] + y4[i + 1]) / 2.0);
-                        myInterpolation.Add(temp);
-                        HasOutliers = true;
+                        if(y4[i]! >= ListLength)
+                        {
+                            lineSeries4.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                            temp = ((y4[i - 1] + y4[i + 1]) / 2.0);
+                            myInterpolation.Add(temp);
+                            HasOutliers = true;
+                        }
                     }
                     else
                     {
@@ -123,7 +126,7 @@ namespace LaserTestingApp
             }
             if (!HasOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y4[i].Equals(double.NaN))
                     {
@@ -146,7 +149,7 @@ namespace LaserTestingApp
             double temp;
             foreach (var item in myOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y3[i].Equals(double.NaN))
                     {
@@ -155,10 +158,14 @@ namespace LaserTestingApp
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
-                        lineSeries3.Points.Add(new DataPoint(x[i] - 1, double.NaN));
-                        temp = ((y3[i - 1] + y3[i + 1]) / 2.0);
-                        myInterpolation.Add(temp);
-                        HasOutliers = true;
+                        if (y3[i]! >= ListLength)
+                        {
+                            lineSeries3.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                            temp = ((y3[i - 1] + y3[i + 1]) / 2.0);
+                            myInterpolation.Add(temp);
+                            HasOutliers = true;
+                        }
+
                     }
                     else
                     {
@@ -172,7 +179,7 @@ namespace LaserTestingApp
             }
             if (!HasOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y3[i].Equals(double.NaN))
                     {
@@ -195,7 +202,7 @@ namespace LaserTestingApp
             double temp;
             foreach (var item in myOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y2[i].Equals(double.NaN))
                     {
@@ -204,10 +211,14 @@ namespace LaserTestingApp
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
-                        lineSeries2.Points.Add(new DataPoint(x[i] - 1, double.NaN));
-                        temp = ((y2[i - 1] + y2[i + 1]) / 2.0);
-                        myInterpolation.Add(temp);
-                        HasOutliers = true;
+                        if(y2[i] !>= ListLength)
+                        {
+                            lineSeries2.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                            temp = ((y2[i - 1] + y2[i + 1]) / 2.0);
+                            myInterpolation.Add(temp);
+                            HasOutliers = true;
+                        }
+
                     }
                     else
                     {
@@ -221,7 +232,7 @@ namespace LaserTestingApp
             }
             if (!HasOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y2[i].Equals(double.NaN))
                     {
@@ -244,7 +255,7 @@ namespace LaserTestingApp
             double temp;
             foreach (var item in myOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y[i].Equals(double.NaN))
                     {
@@ -253,10 +264,13 @@ namespace LaserTestingApp
                     }
                     else if (item == x[i]) // add empty points if outlier found
                     {
-                        lineSeries.Points.Add(new DataPoint(x[i] - 1, double.NaN));
-                        temp = ((y[i-1] + y[i + 1]) / 2.0);
-                        myInterpolation.Add(temp);
-                        HasOutliers = true;
+                        if(y[i]! >= ListLength)
+                        {
+                            lineSeries.Points.Add(new DataPoint(x[i] - 1, double.NaN));
+                            temp = ((y[i - 1] + y[i + 1]) / 2.0);
+                            myInterpolation.Add(temp);
+                            HasOutliers = true;
+                        }
                     }
                     else
                     {
@@ -270,7 +284,7 @@ namespace LaserTestingApp
             }
             if (!HasOutliers)
             {
-                for (int i = 0; i <= ListLength; i++)
+                for (int i = 0; i < ListLength; i++)
                 {
                     if (y[i].Equals(double.NaN))
                     {
@@ -288,7 +302,7 @@ namespace LaserTestingApp
         public void viewModelLineY4Gaps(List<double> x, List<double> y4, int ListLength, Dictionary<double, double> GapsY4)
         {
             // y4
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y4[i].Equals(double.NaN))
                 {
@@ -313,7 +327,7 @@ namespace LaserTestingApp
         {
             var lineSeries3 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Blue };
             // y3
-            for (int i = 0; i <= ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y3[i].Equals(double.NaN))
                 {
@@ -329,7 +343,7 @@ namespace LaserTestingApp
         public void viewModelLineY3Gaps(List<double> x, List<double> y3, int ListLength, Dictionary<double, double> GapsY3)
         {
             // y3
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y3[i].Equals(double.NaN))
                 {
@@ -354,7 +368,7 @@ namespace LaserTestingApp
         {
             var lineSeries2 = new LineSeries { MarkerType = MarkerType.Circle, Color = OxyColors.Orange };
             // y2
-            for (int i = 0; i <= ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y2[i].Equals(double.NaN))
                 {
@@ -370,7 +384,7 @@ namespace LaserTestingApp
         public void viewModelLineY2Gaps(List<double> x, List<double> y2, int ListLength, Dictionary<double, double> GapsY2)
         {
             // y2
-            for (int i = 2; i < ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y2[i].Equals(double.NaN))
                 {
@@ -398,7 +412,7 @@ namespace LaserTestingApp
             var lineSeriesAverage = new LineSeries { MarkerType = MarkerType.Triangle };
             var lineSeriesTrend = new LineSeries { MarkerType = MarkerType.Triangle };
             // y
-            for (int i = 0; i <= ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 if (y[i].Equals(double.NaN))
                 {
@@ -423,7 +437,7 @@ namespace LaserTestingApp
                 Color = color,
                 LineStyle = LineStyle.DashDashDot
             };
-            for (int i = 0; i <= ListLength; i++)
+            for (int i = 0; i < ListLength; i++)
             {
                 series.Points.Add(new DataPoint(x[i], y[i]));
             }
@@ -516,7 +530,7 @@ namespace LaserTestingApp
             double average = y.Average();
             double standardDev = StandardDeviation(y);
 
-            double threshold = 2 * standardDev;
+            double threshold = 3.0 * standardDev;
 
             var outliers = y.Select((value, index) => new { Value = value, Index = index })
                       .Where(item => Math.Abs(item.Value - average) > threshold);
@@ -524,7 +538,6 @@ namespace LaserTestingApp
             foreach (var outlier in outliers)
             {
                 myOutliers.Add(outlier.Index + 1);
-                Debug.WriteLine($"{ outlier.Value} + {outlier.Index}");
             }
 
             return myOutliers;

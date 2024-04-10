@@ -258,128 +258,141 @@ namespace LaserTestingApp
         }
         private void LoadDataWithoutOutliers(ViewModel viewModel, int RowsData)
         {
-            viewModel.MyModel = new PlotModel { Title = "Line Plot Without Outliers" };
-            viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-
-            if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+            if (outliersY.Count == 0 && outliersY2.Count == 0 && outliersY3.Count == 0 && outliersY4.Count == 0)
             {
-                switch (ComboBoxY.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
-                        color = OxyColors.Green;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2Outliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
-                        color2 = OxyColors.Green;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3Outliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
-                        color3 = OxyColors.Green;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4Outliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
-                        color4 = OxyColors.Green;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
+                System.Windows.MessageBox.Show("No Outliers found!","User feedback");
             }
-            //viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
-            //viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
-            if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")                
+            else
             {
-                switch (ComboBoxY2.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLineYOutliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
-                        color = OxyColors.Orange;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
-                        color2 = OxyColors.Orange;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
-                        color3 = OxyColors.Orange;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
-                        color4 = OxyColors.Orange;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
-            }
-            if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
-            {
-                switch (ComboBoxY3.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLineYOutliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
-                        color = OxyColors.Blue;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
-                        color2 = OxyColors.Blue;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
-                        color3 = OxyColors.Blue;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
-                        color4 = OxyColors.Blue;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
-            }
-            //viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
-            if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
-            {
-                switch (ComboBoxY4.SelectedIndex)
-                {
-                    case 2:
-                        viewModel.viewModelLineYOutliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
-                        color = OxyColors.Red;
-                        break;
-                    case 3:
-                        viewModel.viewModelLineY2Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
-                        color2 = OxyColors.Red;
-                        break;
-                    case 4:
-                        viewModel.viewModelLineY3Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
-                        color3 = OxyColors.Red;
-                        break;
-                    case 5:
-                        viewModel.viewModelLineY4Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
-                        color4 = OxyColors.Red;
-                        break;
-                    default:
-                        Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
-                        break;
-                }
+                Debug.WriteLine("y=" + outliersY.Count);
+                Debug.WriteLine("y2=" + outliersY2.Count);
+                Debug.WriteLine("y3=" + outliersY3.Count);
+                Debug.WriteLine("y4=" + outliersY4.Count);
 
+
+                viewModel.MyModel = new PlotModel { Title = "Line Plot Without Outliers" };
+                viewModel.MyModel.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(200) });
+                viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+                viewModel.MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = ComboBoxX.SelectedValue.ToString(), TitleFontWeight = OxyPlot.FontWeights.Bold, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+
+                if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
+                {
+                    switch (ComboBoxY.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                            color = OxyColors.Green;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2Outliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                            color2 = OxyColors.Green;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3Outliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                            color3 = OxyColors.Green;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4Outliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                            color4 = OxyColors.Green;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                //viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
+                //viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
+                if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
+                {
+                    switch (ComboBoxY2.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLineYOutliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
+                            color = OxyColors.Orange;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
+                            color2 = OxyColors.Orange;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
+                            color3 = OxyColors.Orange;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
+                            color4 = OxyColors.Orange;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
+                {
+                    switch (ComboBoxY3.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLineYOutliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
+                            color = OxyColors.Blue;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
+                            color2 = OxyColors.Blue;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
+                            color3 = OxyColors.Blue;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
+                            color4 = OxyColors.Blue;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+                }
+                //viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
+                if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
+                {
+                    switch (ComboBoxY4.SelectedIndex)
+                    {
+                        case 2:
+                            viewModel.viewModelLineYOutliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
+                            color = OxyColors.Red;
+                            break;
+                        case 3:
+                            viewModel.viewModelLineY2Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
+                            color2 = OxyColors.Red;
+                            break;
+                        case 4:
+                            viewModel.viewModelLineY3Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
+                            color3 = OxyColors.Red;
+                            break;
+                        case 5:
+                            viewModel.viewModelLineY4Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
+                            color4 = OxyColors.Red;
+                            break;
+                        default:
+                            Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                            break;
+                    }
+
+                }
+                //viewModel.viewModelLineY4Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
+
+                if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues.Count > 0)// Show spline if ticked
+                    viewModel.createInterpolation(xAxie, InterpolationYValues, RowsData, OxyColors.Cyan);
+                if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues2.Count > 0)// Show spline if ticked
+                    viewModel.createInterpolation(xAxie, InterpolationYValues2, RowsData, OxyColors.Cyan);
+                if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues3.Count > 0)// Show spline if ticked
+                    viewModel.createInterpolation(xAxie, InterpolationYValues3, RowsData, OxyColors.Cyan);
+                if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues4.Count > 0)// Show spline if ticked
+                    viewModel.createInterpolation(xAxie, InterpolationYValues4, RowsData, OxyColors.Cyan);
+
+                LoadDataLimits(viewModel, RowsData);
+                LoadGapMarker(viewModel, RowsData);
             }
-            //viewModel.viewModelLineY4Outliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
-
-            if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues.Count > 0)// Show spline if ticked
-                viewModel.createInterpolation(xAxie, InterpolationYValues, RowsData, OxyColors.Cyan);
-            if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues2.Count > 0)// Show spline if ticked
-                viewModel.createInterpolation(xAxie, InterpolationYValues2, RowsData, OxyColors.Cyan);
-            if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues3.Count > 0)// Show spline if ticked
-                viewModel.createInterpolation(xAxie, InterpolationYValues3, RowsData, OxyColors.Cyan);
-            if (DisplaySplineCheckBox.IsChecked == true && InterpolationYValues4.Count > 0)// Show spline if ticked
-                viewModel.createInterpolation(xAxie, InterpolationYValues4, RowsData, OxyColors.Cyan);
-
-            LoadDataLimits(viewModel, RowsData);
-            LoadGapMarker(viewModel, RowsData);
         }
         private void LoadDataAsIs(ViewModel viewModel, int RowsData)
         {
@@ -539,7 +552,7 @@ namespace LaserTestingApp
  
             LoadAllData();
 
-            int RowsData = laserTime.Count()-3; // Find number of rows
+            int RowsData = laserTime.Count(); // Find number of rows
             SetSelectedAxisValue(ComboBoxY, ref yAxie);
             SetSelectedAxisValue(ComboBoxY2, ref yAxie2);
             SetSelectedAxisValue(ComboBoxY3, ref yAxie3);
@@ -577,14 +590,15 @@ namespace LaserTestingApp
             //LoadDataLimits(viewModel, RowsData);
 
             LoadGapMarker(viewModel, RowsData);
+            outliersY.Clear();
+            outliersY2.Clear();
+            outliersY3.Clear();
+            outliersY4.Clear();
             LineChart.DataContext = viewModel; // Plot it up 
             // Assign flags
             LineChartYX = true;
             //LineChart.DataContext = viewModel;
-                outliersY.Clear();
-                outliersY2.Clear();
-            outliersY3.Clear();
-            outliersY4.Clear();
+
         }
         private void MainTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -650,18 +664,7 @@ namespace LaserTestingApp
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
-                {
-                    tempValue = ((double.Parse(worksheet.Cells[row - 1, 2].Text) + double.Parse(worksheet.Cells[row + 1, 2].Text)) / 2);
-                    double roundedTempValue = Math.Round(tempValue, 1);
-                    myValue.Add(roundedTempValue);
-                    mySeries.Points.Add(new ScatterPoint(row, 2, 100, 50)); // Add saved value's position
-                    gapsDictionaryY.Add(row, 2);
-                }
-                else
-                {
                     myValue.Add(cellValue);
-                }
             }
             else // Not a number
             {
@@ -678,18 +681,7 @@ namespace LaserTestingApp
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
-                {
-                    tempValue = ((double.Parse(worksheet.Cells[row - 1, 3].Text) + double.Parse(worksheet.Cells[row + 1, 3].Text)) / 2);
-                    double roundedTempValue = Math.Round(tempValue, 1);
-                    myValue.Add(roundedTempValue);
-                    mySeries2.Points.Add(new ScatterPoint(row, 3, 100, 50)); // Add saved value's position
-                    gapsDictionaryY2.Add(row, 3);
-                }
-                else
-                {
                     myValue.Add(cellValue);
-                }
             }
             else // Not a number
             {
@@ -707,18 +699,8 @@ namespace LaserTestingApp
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
-                {
-                    tempValue = ((double.Parse(worksheet.Cells[row - 1, 4].Text) + double.Parse(worksheet.Cells[row + 1, 4].Text)) / 2);
-                    double roundedTempValue = Math.Round(tempValue, 1);
-                    myValue.Add(roundedTempValue);
-                    mySeries3.Points.Add(new ScatterPoint(row, 4, 100, 50)); // Add saved value's position
-                    gapsDictionaryY3.Add(row, 4);
-                }
-                else
-                {
                     myValue.Add(cellValue);
-                }
+
             }
             else // Not a number
             {
@@ -735,18 +717,7 @@ namespace LaserTestingApp
 
             if (double.TryParse(cellText, out cellValue))
             {
-                if (cellValue.Equals(0.0) || cellValue.Equals(double.NaN) || cellValue.ToString().Length == 0) // Finding if value is 0.0/empty
-                {
-                    tempValue = ((double.Parse(worksheet.Cells[row - 1, 5].Text) + double.Parse(worksheet.Cells[row + 1, 5].Text)) / 2);
-                    double roundedTempValue = Math.Round(tempValue, 1);
-                    myValue.Add(roundedTempValue);
-                    mySeries4.Points.Add(new ScatterPoint(row, 5, 100, 50)); // Add saved value's position
-                    gapsDictionaryY4.Add(row, 5);
-                }
-                else
-                {
                     myValue.Add(cellValue);
-                }
             }
             else // Not a number
             {
