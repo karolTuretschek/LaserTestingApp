@@ -15,7 +15,7 @@ using System.Windows.Documents;
 
 namespace LaserTestingApp
 {
-    class ViewModel
+    public class ViewModel
     {
         MainWindow myWindow = new MainWindow();
         public void viewModelFast(List<double> x, List<double> y, int ListLength, OxyColor color)
@@ -530,7 +530,7 @@ namespace LaserTestingApp
             double average = y.Average();
             double standardDev = StandardDeviation(y);
 
-            double threshold = 3.0 * standardDev;
+            double threshold = 3 * standardDev;
 
             var outliers = y.Select((value, index) => new { Value = value, Index = index })
                       .Where(item => Math.Abs(item.Value - average) > threshold);

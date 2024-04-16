@@ -14,14 +14,13 @@
             <RowDefinition Height="0*"/>
             <RowDefinition Height="485*"/>
         </Grid.RowDefinitions>
-
-
         <TabControl x:Name ="MainTab"  Margin="195,10,21,95" MinHeight="2" MaxHeight="1000" Grid.RowSpan="3" SelectionChanged="MainTab_SelectionChanged">
             <TabItem x:Name="Data" Header="Data Grid">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                    <Label x:Name="TipLabel" IsEnabled="True" Content="Please Load Data Using Button on the Left Panel." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,0,0" FontSize="26" Panel.ZIndex="1"/>
                     <DataGrid x:Name ="DataTab" ItemsSource="{Binding}" AutoGenerateColumns="False" Width="Auto" Margin="10,10,10,10" MinHeight="2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Time"  Binding="{Binding Time}"/>
@@ -105,7 +104,7 @@
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,10,0,5"/>
         </StackPanel>
 
-        <StackPanel x:Name="LineStackPanel" Margin="10,10,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" >
+        <StackPanel x:Name="LineStackPanel" IsEnabled="False" Margin="10,10,1510,0" MinHeight="2" MaxWidth="175" Grid.RowSpan="3" HorizontalAlignment="Left" >
             <Label x:Name="AxiesLabel" Content="Axies" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,0" FontSize="16"/>
             <Separator HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5"/>
             <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\xLabel.png" Stretch="Uniform" Height="75" Width="75" Margin="0,5,0,5"/>
@@ -165,8 +164,8 @@
             </StackPanel>
 
 
-            <StackPanel x:Name = "ButtonsStack" Opacity="1" IsEnabled="True" Width="120" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
-                <Button x:Name ="ResetButton" Click="ResetDataButton_Click" Height="50" Width="50" Margin="5,0,0,0">
+            <StackPanel x:Name = "ButtonsStack"  Opacity="1" IsEnabled="True" Width="120" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0" MinHeight="2" MaxHeight="1000">
+                <Button x:Name ="ResetButton" IsEnabled="False" Click="ResetDataButton_Click" Height="50" Width="50" Margin="5,0,0,0">
                     <Image Source="C:\Users\venqu\OneDrive\Dokumenty\Honours\LaserTestingApp\LaserTestingApp\Images\deleteButtonLabel.png"/>
                 </Button>
                 <Button x:Name="ImportDataButton" Click="ImportDataButton_Click" Height="50" Width="50" Margin="5,0,0,0" IsEnabled="True">

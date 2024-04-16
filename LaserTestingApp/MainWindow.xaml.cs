@@ -138,7 +138,7 @@ namespace LaserTestingApp
         {
             LoadAllData();
 
-            int RowsData = laserTime.Count() - 3; // Find number of rows
+            int RowsData = laserTime.Count(); // Find number of rows
 
             ViewModel viewModel = new ViewModel();//Assign model 
 
@@ -277,6 +277,32 @@ namespace LaserTestingApp
 
                 if (ComboBoxY.SelectedIndex != -1 && ComboBoxY.SelectedValue != "")
                 {
+                    if(outliersY.Count == 0)
+                    {
+                        switch (ComboBoxY.SelectedIndex)
+                        {
+                            case 2:
+                                viewModel.viewModelLine(xAxie, yAxie, RowsData);
+                                color = OxyColors.Green;
+                                break;
+                            case 3:
+                                viewModel.viewModelLineY2(xAxie, yAxie, RowsData);
+                                color2 = OxyColors.Green;
+                                break;
+                            case 4:
+                                viewModel.viewModelLineY3(xAxie, yAxie, RowsData);
+                                color3 = OxyColors.Green;
+                                break;
+                            case 5:
+                                viewModel.viewModelLineY4(xAxie, yAxie, RowsData);
+                                color4 = OxyColors.Green;
+                                break;
+                            default:
+                                Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                                break;
+                        }
+                    }
+                    else
                     switch (ComboBoxY.SelectedIndex)
                     {
                         case 2:
@@ -300,11 +326,35 @@ namespace LaserTestingApp
                             break;
                     }
                 }
-                //viewModel.viewModelLineYOutliers(xAxie, yAxie, RowsData, outliersY, InterpolationYValues);
-                //viewModel.viewModelLineY2Outliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
                 if (ComboBoxY2.SelectedIndex != -1 && ComboBoxY2.SelectedValue != "")
                 {
-                    switch (ComboBoxY2.SelectedIndex)
+                    if (outliersY2.Count == 0)
+                    {
+                        switch (ComboBoxY2.SelectedIndex)
+                        {
+                            case 2:
+                                viewModel.viewModelLine(xAxie, yAxie2, RowsData);
+                                color = OxyColors.Orange;
+                                break;
+                            case 3:
+                                viewModel.viewModelLineY2(xAxie, yAxie2, RowsData);
+                                color2 = OxyColors.Orange;
+                                break;
+                            case 4:
+                                viewModel.viewModelLineY3(xAxie, yAxie2, RowsData);
+                                color3 = OxyColors.Orange;
+                                break;
+                            case 5:
+                                viewModel.viewModelLineY4(xAxie, yAxie2, RowsData);
+                                color4 = OxyColors.Orange;
+                                break;
+                            default:
+                                Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                                break;
+                        }
+                    }
+                    else
+                        switch (ComboBoxY2.SelectedIndex)
                     {
                         case 2:
                             viewModel.viewModelLineYOutliers(xAxie, yAxie2, RowsData, outliersY2, InterpolationYValues2);
@@ -329,7 +379,33 @@ namespace LaserTestingApp
                 }
                 if (ComboBoxY3.SelectedIndex != -1 && ComboBoxY3.SelectedValue != "")
                 {
-                    switch (ComboBoxY3.SelectedIndex)
+                    if (outliersY3.Count == 0)
+                    {
+                        switch (ComboBoxY3.SelectedIndex)
+                        {
+                            case 2:
+                                viewModel.viewModelLine(xAxie, yAxie3, RowsData);
+                                color = OxyColors.Blue;
+                                break;
+                            case 3:
+                                viewModel.viewModelLineY2(xAxie, yAxie3, RowsData);
+                                color2 = OxyColors.Blue;
+                                break;
+                            case 4:
+                                viewModel.viewModelLineY3(xAxie, yAxie3, RowsData);
+                                color3 = OxyColors.Blue;
+                                break;
+                            case 5:
+                                viewModel.viewModelLineY4(xAxie, yAxie3, RowsData);
+                                color4 = OxyColors.Blue;
+                                break;
+                            default:
+                                Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                                break;
+                        }
+                    }
+                    else
+                        switch (ComboBoxY3.SelectedIndex)
                     {
                         case 2:
                             viewModel.viewModelLineYOutliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
@@ -355,7 +431,32 @@ namespace LaserTestingApp
                 //viewModel.viewModelLineY3Outliers(xAxie, yAxie3, RowsData, outliersY3, InterpolationYValues3);
                 if (ComboBoxY4.SelectedIndex != -1 && ComboBoxY4.SelectedValue != "")
                 {
-                    switch (ComboBoxY4.SelectedIndex)
+                    if (outliersY4.Count == 0)
+                    {
+                        switch (ComboBoxY4.SelectedIndex)
+                        {
+                            case 2:
+                                viewModel.viewModelLine(xAxie, yAxie4, RowsData);
+                                color = OxyColors.Red;
+                                break;
+                            case 3:
+                                viewModel.viewModelLineY2(xAxie, yAxie4, RowsData);
+                                color2 = OxyColors.Red;
+                                break;
+                            case 4:
+                                viewModel.viewModelLineY3(xAxie, yAxie4, RowsData);
+                                color3 = OxyColors.Red;
+                                break;
+                            case 5:
+                                viewModel.viewModelLineY4(xAxie, yAxie4, RowsData);
+                                color4 = OxyColors.Red;
+                                break;
+                            default:
+                                Debug.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                                break;
+                        }
+                    }else
+                        switch (ComboBoxY4.SelectedIndex)
                     {
                         case 2:
                             viewModel.viewModelLineYOutliers(xAxie, yAxie4, RowsData, outliersY4, InterpolationYValues4);
@@ -1016,6 +1117,9 @@ namespace LaserTestingApp
                         myWindow.LoadDataButton.IsEnabled = false;
                         myWindow.IsEnabled = true;
                         myWindow.LoadAllData();
+                        myWindow.LineStackPanel.IsEnabled = true;
+                        myWindow.ResetButton.IsEnabled = true;
+                        myWindow.TipLabel.Height = 0;
                         break;
                     case ".json":
                         Debug.WriteLine("Json file");
@@ -1026,6 +1130,9 @@ namespace LaserTestingApp
                         myWindow.LoaddAllDataJson();
                         myWindow.LoadDataButton.IsEnabled = false;
                         myWindow.IsEnabled = true;
+                        myWindow.LineStackPanel.IsEnabled = true;
+                        myWindow.ResetButton.IsEnabled = true;
+                        myWindow.TipLabel.Height= 0;
                         break;
                     default:
                         Console.WriteLine("Unknown file format");
